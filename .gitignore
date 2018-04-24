@@ -5,3 +5,9 @@
 /target
 /build
 /.build
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/

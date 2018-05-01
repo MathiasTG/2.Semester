@@ -5,10 +5,17 @@
  */
 package Acq;
 
+import java.util.UUID;
+
 /**
  *
  * @author ulriksandberg
  */
 public interface IUser {
+    UUID getID();
+    String getUsername();
+    String getPassword();
+    int getAccessRight();
+    
     
 }

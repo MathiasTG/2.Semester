@@ -24,7 +24,23 @@ public class DomainFacade implements IDomainFacade {
 
     @Override
     public String createUser(String username, int accesRights) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*
+        if(persistenceFacade.verifyUsername(username))
+        {
+            Password pass = new Password();
+            
+
+        }
+        */
+        return "";
     }
     
+
+    public static void main(String[] args) {
+        
+        Password pass = new Password();
+        
+    }
+
+
 }

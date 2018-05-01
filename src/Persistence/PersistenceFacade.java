@@ -14,18 +14,23 @@ import Acq.IUser;
  */
 public class PersistenceFacade implements IPersistenceFacade {
 
-    
+    private PersistenceFile pFile;
     private IConfiguration configurations;
     
     public PersistenceFacade()
     {
+        pFile = new PersistenceFile();
         configurations = new Configuration();
     }
     
+    /**
+     * Validates Username in persistence.
+     * @param username
+     * @return True if Username is available else returns false
+     */
     @Override
     public boolean verifyUsername(String username) {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pFile.validateUsername(username);
     }
 
     @Override

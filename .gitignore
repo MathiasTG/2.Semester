@@ -5,8 +5,9 @@
 /target
 /build
 /.build
-nbproject/private/
+nbproject/
 build/
+build
 nbbuild/
 dist/
 nbdist/

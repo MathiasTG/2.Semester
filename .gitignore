@@ -1,0 +1,13 @@
+/.out
+/.idea
+/2.Semester.iml
+/.target
+/target
+/build
+/.build
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/

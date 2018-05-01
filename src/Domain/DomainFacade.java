@@ -7,6 +7,7 @@ package Domain;
 
 import Acq.IDomainFacade;
 import Acq.IPersistenceFacade;
+import Acq.IUser;
 
 /**
  *
@@ -24,14 +25,15 @@ public class DomainFacade implements IDomainFacade {
 
     @Override
     public String createUser(String username, int accesRights) {
-        /*
+        
         if(persistenceFacade.verifyUsername(username))
         {
-            Password pass = new Password();
             
+            IUser user = new Secretary(username, accesRights, new Password());
+            persistenceFacade.createUser(user);
 
         }
-        */
+        
         return "";
     }
     

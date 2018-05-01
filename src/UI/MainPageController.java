@@ -40,7 +40,7 @@ public class MainPageController implements Initializable {
     @FXML
     private void handle_CreateUser(ActionEvent event) {
         
-        domain.createUser("Casper Hansen", 4);
+        domain.createUser("Casper", 4);
         
     }
     

@@ -35,7 +35,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
     @Override
     public void createUser(IUser user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        pFile.createUser(user);
     }
     
 }

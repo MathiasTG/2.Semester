@@ -53,5 +53,10 @@ public class Password {
         
         
     }
+
+    public String getPassword() {
+        return password;
+    }
+    
     
 }

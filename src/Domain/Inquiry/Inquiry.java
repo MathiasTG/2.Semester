@@ -1,4 +1,6 @@
-package Domain;
+package Domain.Inquiry;
+
+import Domain.User;
 
 /**
  * @author mathias

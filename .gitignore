@@ -1,4 +1,6 @@
 /.out
+/out
+/production
 /.idea
 /2.Semester.iml
 /.target

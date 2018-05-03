@@ -7,6 +7,7 @@ package Domain;
 
 import Acq.IDomainFacade;
 import Acq.IPersistenceFacade;
+import Acq.IResponse;
 import Acq.IUser;
 
 /**
@@ -24,7 +25,7 @@ public class DomainFacade implements IDomainFacade {
     }
 
     @Override
-    public String createUser(String username, int accesRights) {
+    public IResponse createUser(String username, int accesRights) {
         
         if(persistenceFacade.verifyUsername(username))
         {
@@ -34,7 +35,7 @@ public class DomainFacade implements IDomainFacade {
 
         }
         
-        return "";
+        return null;
     }
     
 

@@ -7,11 +7,10 @@ package Acq;
 
 /**
  *
- * @author ulriksandberg
+ * @author Markb
  */
-public interface IDomainFacade {
+public interface IResponse {
     
-    void injectPersistence(IPersistenceFacade persistenceFacade);
-    IResponse createUser(String username, int accesRights);
-    
+    public boolean isSuccessful();
+    public String getMessage();
 }

@@ -59,6 +59,7 @@ public class UI extends Application implements IUI {
         System.out.println("UI initializing, bbeee bobb, beeeeeeb");
         
         ui = this;
+        System.out.println(ui);
         launch(args);
         
     }

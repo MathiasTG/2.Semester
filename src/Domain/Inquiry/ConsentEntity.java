@@ -1,18 +1,18 @@
 package Domain.Inquiry;
 
 public enum ConsentEntity {
+    PERSONAL_DOCTOR("Personlig Læge"),
+    SPECIAL_DOCTER("Speciallæge"),
+    HOSPITAL("Hospital"),
+    UNEMPLOYMENT_FUND("A-Kasse"),
+    OFFER("Tilbud"),
+    PREVIOUS_MUNICIPALITY("Tidligere Kommune"),
+    OTHER_MANAGEMENT("Anden forvaltning"),
+    OTHER("Andre");
 
-    PERSONAL_DOCTOR         ("personlig læge"),
-    SPECIAL_DOCTOR          ("special læge"),
-    HOSPITAL                ("hospital"),
-    UNEMPLOYMENT_FUND       ("arbejdsløshedsfond"),
-    OFFER                   ("tilbud"),
-    PREVIOUS_MUNICIPALITY   ("tidligere kommune"),
-    OTHER_MANAGEMENT        ("anden ledelse"),
-    OTHER                   ("anden");
 
 
-    private final String name;
+    private String name;
     ConsentEntity(String name){
         this.name=name;
     }

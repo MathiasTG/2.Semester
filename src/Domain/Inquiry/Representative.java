@@ -1,9 +1,9 @@
-package Domain;
+package Domain.Inquiry;
 
 /**
  * @author mathias
  */
-public class Representative {
+public class Representative implements ILegalGuardian {
     private String name;
     private String address;
     private String phoneNumber;
@@ -18,6 +18,13 @@ public class Representative {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.relation = relation;
+    }
+
+    @Override
+    public String getContactInfo() {
+        return "Email address: " + this.email + "\n" +
+                "Address: " + this.address + "\n" +
+                "Phonenumber: " + this.phoneNumber;
     }
 
     @Override

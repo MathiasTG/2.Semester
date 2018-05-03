@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  *
  * @author ulriksandberg
  */
-public class MainPageController implements Initializable {
+public class HenvendelsesPageController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -33,19 +33,9 @@ public class MainPageController implements Initializable {
     }    
 
     @FXML
-    private void handle_CreateInquiry(ActionEvent event) throws IOException {
-        
-        navigateNextPage(event, "HenvendelsesPage.fxml");
-        
-        
+    private void handle_NavigateBack(ActionEvent event) {
     }
-
-    @FXML
-    private void handle_logout(ActionEvent event) throws IOException {
-        
-        navigateNextPage(event, "LoginPage.fxml");
-    }
-
+    
     private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
     {
         
@@ -56,4 +46,6 @@ public class MainPageController implements Initializable {
         appStage.setScene(newScene);
         appStage.show();
     }
+    
+    
 }

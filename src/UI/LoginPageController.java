@@ -38,10 +38,8 @@ public class LoginPageController implements Initializable {
 
     @FXML
     private void Handle_LoginClicked(ActionEvent event) throws IOException {
-        
-        
+       
         navigateNextPage(event, "MainPage.fxml");
-        
     }
 
     @FXML
@@ -53,6 +51,7 @@ public class LoginPageController implements Initializable {
     
     private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
     {
+        
         Parent adminScene = FXMLLoader.load(getClass().getResource(pageName));
                 
         Scene newScene = new Scene(adminScene);

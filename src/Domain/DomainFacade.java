@@ -7,6 +7,7 @@ package Domain;
 
 import Acq.IDomainFacade;
 import Acq.IPersistenceFacade;
+import Acq.IUser;
 
 /**
  *
@@ -24,7 +25,24 @@ public class DomainFacade implements IDomainFacade {
 
     @Override
     public String createUser(String username, int accesRights) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        if(persistenceFacade.verifyUsername(username))
+        {
+            
+            IUser user = new Secretary(username, accesRights, new Password());
+            persistenceFacade.createUser(user);
+
+        }
+        
+        return "";
     }
     
+
+    public static void main(String[] args) {
+        
+        Password pass = new Password();
+        
+    }
+
+
 }

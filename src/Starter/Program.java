@@ -24,7 +24,7 @@ public class Program {
         domainFacade.injectPersistence(persistenceFacade);
         uiFacade.injectDomain(domainFacade);
         
-        System.out.println("System ready to launch, beeeb boob, beeeeeeb, boob");
+        System.out.println("System ready to launch, beeeb boob, beeeeeeb, boob bub");
         uiFacade.startApplication(args);
         
     }

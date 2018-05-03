@@ -6,6 +6,7 @@
 package Domain;
 
 import Acq.IUser;
+import java.util.UUID;
 
 /**
  *
@@ -13,9 +14,19 @@ import Acq.IUser;
  */
 public abstract class User implements IUser {
     
+    protected UUID id;
+    protected String username;
+    protected Password password;
+    int accessRight;
     
-    public User()
+    
+    
+    public User(String username, int accessRight, Password password)
     {
+        this.id = UUID.randomUUID();
+        this.username = username;
+        this.accessRight = accessRight;
+        this.password = password;
         
     }
     

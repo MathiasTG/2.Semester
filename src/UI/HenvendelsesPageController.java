@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author ulriksandberg
  */
-public class MainPageController implements Initializable {
+public class HenvendelsesPageController implements Initializable {
 
     /**
      * Initializes the controller class.

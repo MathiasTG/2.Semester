@@ -1,4 +1,7 @@
-package Domain;
+package Domain.Inquiry;
+
+import Domain.Inquiry.Relative;
+import Domain.Inquiry.Representative;
 
 import java.util.List;
 

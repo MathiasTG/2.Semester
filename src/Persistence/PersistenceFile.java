@@ -49,15 +49,16 @@ public class PersistenceFile {
     }
 
     public void createUser(IUser user) {
-
+        
+        System.out.println("Creating user");
         UUID userID = user.getID();
         String userName = user.getUsername();
         String password = user.getPassword();
         int accessRight = user.getAccessRight();
         
         
-        try (FileWriter fWriter = new FileWriter(file)) {
-            fWriter.append(userID + "\t" + userName + "\t" + password + "\t" + accessRight + "\r\n");
+        try (FileWriter fWriter = new FileWriter(file, true)) {
+            fWriter.write(userID + "\t" + userName + "\t" + password + "\t" + accessRight + "\r\n");
         } catch (IOException ex) {
             Logger.getLogger(PersistenceFile.class.getName()).log(Level.SEVERE, null, ex);
         }

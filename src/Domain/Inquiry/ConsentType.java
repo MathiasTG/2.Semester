@@ -1,8 +1,8 @@
 package Domain.Inquiry;
 
 public enum ConsentType {
-    VERBAL      ("verbalt"),
-    WRITTEN     ("skrevent");
+    VERBAL      ("Verbalt"),
+    WRITTEN     ("Skrevent");
 
     private final String name;
     ConsentType(String name){

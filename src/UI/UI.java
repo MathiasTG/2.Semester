@@ -14,54 +14,50 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
  * @author ulriksandberg
  */
 public class UI extends Application implements IUI {
-    
+
     private IDomainFacade domainFacade;
     private static UI ui;
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-        
+
         Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.show();
     }
 
-    
+
     /**
      * @param args the command line arguments
      */
-    
-    public static UI getInstance()
-    {
+
+    public static UI getInstance() {
         return ui;
     }
-    
-    public IDomainFacade getDomain()
-    {
+
+    public IDomainFacade getDomain() {
         return this.domainFacade;
     }
 
     @Override
     public void injectDomain(IDomainFacade domainFacade) {
-         this.domainFacade = domainFacade;
+        this.domainFacade = domainFacade;
     }
 
     @Override
     public void startApplication(String[] args) {
-        
+
         System.out.println("UI initializing, bbeee bobb, beeeeeeb");
-        
+
         ui = this;
-        System.out.println(ui);
         launch(args);
-        
+
     }
-    
+
 }

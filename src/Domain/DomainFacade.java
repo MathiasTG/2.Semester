@@ -17,7 +17,21 @@ import Acq.IUser;
 public class DomainFacade implements IDomainFacade {
 
     private IPersistenceFacade persistenceFacade;
-    
+    private static DomainFacade domain;
+    private DomainController domainController;
+
+    public DomainFacade() {
+        domain = this;
+        domainController = new DomainController();
+    }
+
+    public static DomainFacade getInstance() {
+        return domain;
+    }
+
+    public IPersistenceFacade getPersistenceFacade() {
+        return persistenceFacade;
+    }
 
     @Override
     public void injectPersistence(IPersistenceFacade persistenceFacade) {
@@ -27,15 +41,9 @@ public class DomainFacade implements IDomainFacade {
     @Override
     public IResponse createUser(String username, int accesRights) {
         
-        if(persistenceFacade.verifyUsername(username))
-        {
-            
-            IUser user = new Secretary(username, accesRights, new Password());
-            persistenceFacade.createUser(user);
 
-        }
         
-        return null;
+        return domainController.createUser(username,accesRights);
     }
     
 

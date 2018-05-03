@@ -24,7 +24,8 @@ public class UI extends Application implements IUI {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLMainPage.fxml"));
+        
+        Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
         
         Scene scene = new Scene(root);
         
@@ -32,10 +33,6 @@ public class UI extends Application implements IUI {
         stage.show();
     }
 
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
     
     /**
      * @param args the command line arguments

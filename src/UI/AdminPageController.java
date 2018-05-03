@@ -67,8 +67,13 @@ public class AdminPageController implements Initializable {
             }
             
             if(response.isSuccessful()){
-                StatusLabel.setText("Succes"); 
+
+                StatusLabel.setText("Oprettet med adgangskode:");
+            }else{
+
+                StatusLabel.setText("Fejl!");
             }
+            StatusUsernameLabel.setText("Bruger: " + UsernameField.getText());
             StatusMessage.setText(response.getMessage());
         }
         

@@ -33,7 +33,7 @@ public class Secretary extends User {
     }
 
     public int getAccessRight() {
-        return accessRight;
+        return super.accessRight;
     }
 
     

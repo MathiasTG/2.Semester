@@ -41,9 +41,14 @@ public class UI extends Application implements IUI {
      * @param args the command line arguments
      */
     
-    private UI getInstance()
+    public static UI getInstance()
     {
-        return this.ui;
+        return ui;
+    }
+    
+    public IDomainFacade getDomain()
+    {
+        return this.domainFacade;
     }
 
     @Override

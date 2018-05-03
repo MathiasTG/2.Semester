@@ -6,6 +6,8 @@ import java.util.List;
  * @author mathias
  */
 public class Citizen {
+
+    private String cpr;
     private String information;
     private List<Relative> relatives;
     private Representative representative;
@@ -34,4 +36,12 @@ public class Citizen {
     public void setRepresentative(Representative representative) {
         this.representative = representative;
     }
+    public String getCpr() {
+        return cpr;
+    }
+
+    public void setCpr(String cpr) {
+        this.cpr = cpr;
+    }
+
 }

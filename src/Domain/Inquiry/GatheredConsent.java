@@ -9,6 +9,18 @@ public class GatheredConsent {
         this.contactInfo=contactInfo;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        GatheredConsent t;
+        if(obj instanceof GatheredConsent){
+            t=(GatheredConsent) obj;
+        }else return false;
+        if(t.contactInfo.equals(this.contactInfo)&&
+                t.consentEntity==this.consentEntity)
+            return true;
+        else return false;
+    }
+
     public ConsentEntity getConsentEntity() {
         return consentEntity;
     }

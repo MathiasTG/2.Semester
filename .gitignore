@@ -14,3 +14,9 @@ dist/
 nbdist/
 .nb-gradle/
 build.xml
+out/production/2.Semester/Acq/IUser.class
+out/production/2.Semester/Domain/DomainController.class
+out/production/2.Semester/Acq/IDomainFacade.class
+out/production/2.Semester/Domain/TypeOfRelative.class
+*.class
+out/production/2.Semester/UI/FXMLMainPage.fxml

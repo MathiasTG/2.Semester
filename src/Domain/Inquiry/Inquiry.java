@@ -1,17 +1,17 @@
 package Domain.Inquiry;
 
-import Acq.IInquiry;
-import Acq.IInquiryBuilder;
+import Acq.IBuilder;
 import Acq.IUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * @author mathias
  */
-public class Inquiry implements IInquiry {
+public class Inquiry {
     private UUID id;
     private Citizen citizen;
     private boolean isDraft;
@@ -27,13 +27,14 @@ public class Inquiry implements IInquiry {
     private String specialConditions;
     private Municipality actingMunicipality;
     private Municipality payingMunicipality;
+    private Submitter submittedBy;
 
     /**
      * Builder providing possibility of creating an Inquiry for the UI layer.
      * This is under development and we should maybe configure
      * some of the parameters such as Citizen and add some checks to the setters. For example CPR number.
      */
-    public static class Builder implements IInquiryBuilder {
+    public static class Builder implements IBuilder<Inquiry> {
         private UUID id;
         private Citizen citizen;
         private boolean isDraft;
@@ -49,6 +50,7 @@ public class Inquiry implements IInquiry {
         private String specialConditions;
         private Municipality actingMunicipality;
         private Municipality payingMunicipality;
+        private Submitter submittedBy;
 
         public Builder(IUser createdBy){
             this.id=UUID.randomUUID();
@@ -56,80 +58,91 @@ public class Inquiry implements IInquiry {
             this.createdBy=createdBy;
         }
 
-        @Override
-        public IInquiryBuilder setCitizen(Citizen citizen) {
+        public Inquiry.Builder setCitizen(Citizen citizen) {
             this.citizen=citizen;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setCreatedBy(IUser createdBy) {
+
+        public Inquiry.Builder setCreatedBy(IUser createdBy) {
             this.createdBy=createdBy;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setDraft(boolean draft) {
+
+        public Inquiry.Builder setDraft(boolean draft) {
             this.isDraft=draft;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setSupportsVUM(boolean supportsVUM) {
+
+        public Inquiry.Builder setSupportsVUM(boolean supportsVUM) {
             this.supportsVUM=supportsVUM;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setDescription(String description) {
+
+        public Inquiry.Builder setDescription(String description) {
             this.description=description;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setIntentIsClear(boolean intentIsClear) {
+
+        public Inquiry.Builder setIntentIsClear(boolean intentIsClear) {
             this.intentIsClear=intentIsClear;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setCitizenInformedOfRights(boolean citizenInformedOfRights) {
+
+        public Inquiry.Builder setCitizenInformedOfRights(boolean citizenInformedOfRights) {
             this.isCitizenInformedOfRights=citizenInformedOfRights;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setCitizenInformedOfDataReservation(boolean citizenInformedOfDataReservation) {
+
+        public Inquiry.Builder setCitizenInformedOfDataReservation(boolean citizenInformedOfDataReservation) {
             this.isCitizenInformedOfDataReservation=citizenInformedOfDataReservation;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setAgreementOfProgress(String agreementOfProgress) {
+
+        public Inquiry.Builder setAgreementOfProgress(String agreementOfProgress) {
             this.agreementOfProgress=agreementOfProgress;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setConsentType(ConsentType consentType) {
+
+        public Inquiry.Builder setSubmittedBy(Submitter submittedBy) {
+            this.submittedBy=submittedBy;
+            return this;
+        }
+
+
+        public Inquiry.Builder addGatheredConsents(GatheredConsent... gatheredConsents) {
+            this.gatheredConsents.addAll(Arrays.asList(gatheredConsents));
+            return this;
+        }
+
+
+        public Inquiry.Builder setConsentType(ConsentType consentType) {
             this.consentType=consentType;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setSpecialConditions(String specialConditions) {
+
+        public Inquiry.Builder setSpecialConditions(String specialConditions) {
             this.specialConditions=specialConditions;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setActingMunicipality(Municipality actingMunicipality) {
+
+        public Inquiry.Builder setActingMunicipality(Municipality actingMunicipality) {
             this.actingMunicipality=actingMunicipality;
             return this;
         }
 
-        @Override
-        public IInquiryBuilder setPayingMunicipality(Municipality payingMunicipality) {
+
+        public Inquiry.Builder setPayingMunicipality(Municipality payingMunicipality) {
             this.payingMunicipality=payingMunicipality;
             return this;
         }
@@ -139,7 +152,7 @@ public class Inquiry implements IInquiry {
          * @return the complete IInquiry object, with all attributes set by the setters of this builder.
          */
         @Override
-        public IInquiry build() {
+        public Inquiry build() {
             return new Inquiry(id, citizen, isDraft,supportsVUM,createdBy,
                     description,intentIsClear,isCitizenInformedOfRights,
                     isCitizenInformedOfDataReservation,agreementOfProgress,consentType,
@@ -209,7 +222,17 @@ public class Inquiry implements IInquiry {
         this.payingMunicipality = payingMunicipality;
     }
 
-    @Override
+
+    public void setSubmittedBy(Submitter submittedBy) {
+        this.submittedBy=submittedBy;
+    }
+
+
+    public Submitter getSubmittedBy() {
+        return submittedBy;
+    }
+
+
     public UUID getId() {
         return id;
     }
@@ -218,37 +241,37 @@ public class Inquiry implements IInquiry {
         this.id = id;
     }
 
-    @Override
+
     public Citizen getCitizen() {
         return citizen;
     }
 
-    @Override
+
     public void setCitizen(Citizen citizen) {
         this.citizen = citizen;
     }
 
-    @Override
+
     public boolean isDraft() {
         return isDraft;
     }
 
-    @Override
+
     public void setDraft(boolean draft) {
         isDraft = draft;
     }
 
-    @Override
+
     public boolean isSupportsVUM() {
         return supportsVUM;
     }
 
-    @Override
+
     public void setSupportsVUM(boolean supportsVUM) {
         this.supportsVUM = supportsVUM;
     }
 
-    @Override
+
     public IUser getCreatedBy() {
         return createdBy;
     }
@@ -257,97 +280,97 @@ public class Inquiry implements IInquiry {
         this.createdBy = createdBy;
     }
 
-    @Override
+
     public String getDescription() {
         return description;
     }
 
-    @Override
+
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
+
     public boolean isIntentIsClear() {
         return intentIsClear;
     }
 
-    @Override
+
     public void setIntentIsClear(boolean intentIsClear) {
         this.intentIsClear = intentIsClear;
     }
 
-    @Override
+
     public boolean isCitizenInformedOfRights() {
         return isCitizenInformedOfRights;
     }
 
-    @Override
+
     public void setCitizenInformedOfRights(boolean citizenInformedOfRights) {
         isCitizenInformedOfRights = citizenInformedOfRights;
     }
 
-    @Override
+
     public boolean isCitizenInformedOfDataReservation() {
         return isCitizenInformedOfDataReservation;
     }
 
-    @Override
+
     public void setCitizenInformedOfDataReservation(boolean citizenInformedOfDataReservation) {
         isCitizenInformedOfDataReservation = citizenInformedOfDataReservation;
     }
 
-    @Override
+
     public String getAgreementOfProgress() {
         return agreementOfProgress;
     }
 
-    @Override
+
     public void setAgreementOfProgress(String agreementOfProgress) {
         this.agreementOfProgress = agreementOfProgress;
     }
 
-    @Override
+
     public ConsentType getConsentType() {
         return consentType;
     }
 
-    @Override
+
     public List<GatheredConsent> getGatheredConsents() {
         return gatheredConsents;
     }
 
-    @Override
+
     public void setConsentType(ConsentType consentType) {
         this.consentType = consentType;
     }
 
-    @Override
+
     public String getSpecialConditions() {
         return specialConditions;
     }
 
-    @Override
+
     public void setSpecialConditions(String specialConditions) {
         this.specialConditions = specialConditions;
     }
 
-    @Override
+
     public Municipality getActingMunicipality() {
         return actingMunicipality;
     }
 
-    @Override
+
     public void setActingMunicipality(Municipality actingMunicipality) {
         this.actingMunicipality = actingMunicipality;
     }
 
-    @Override
+
     public Municipality getPayingMunicipality() {
         return payingMunicipality;
     }
 
-    @Override
+
     public void setPayingMunicipality(Municipality payingMunicipality) {
         this.payingMunicipality = payingMunicipality;
     }

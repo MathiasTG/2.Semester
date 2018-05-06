@@ -1,10 +1,11 @@
 package Domain.Inquiry;
 
+
 public class Municipality {
     private String name;
     private String contactInfo;
 
-    public Municipality(String name, String contactInfo){
+    private Municipality(String name, String contactInfo){
         this.name = name;
         this.contactInfo = contactInfo;
     }

@@ -11,7 +11,6 @@ import java.util.TreeSet;
  * @author mathias
  */
 public class Citizen implements ILegalGuardian {
-
     private String cpr;
     private String email;
     private String address;

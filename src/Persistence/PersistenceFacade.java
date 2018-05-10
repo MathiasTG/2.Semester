@@ -7,6 +7,7 @@ package Persistence;
 
 import Acq.IPersistenceFacade;
 import Acq.IUser;
+import DTO.Inquiry;
 
 /**
  *
@@ -16,6 +17,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
     private PersistenceFile pFile;
     private IConfiguration configurations;
+    private Inquiry inquiry;
     
     public PersistenceFacade()
     {
@@ -40,5 +42,8 @@ public class PersistenceFacade implements IPersistenceFacade {
         pFile.createUser(user);
     }
 
+    public void injectInquiry(Inquiry inquiry){
+        this.inquiry = inquiry;
+    }
     
 }

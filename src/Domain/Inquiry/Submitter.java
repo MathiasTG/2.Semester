@@ -4,7 +4,7 @@ public class Submitter {
     private SubmitterType type;
     private String contactInfo;
 
-    Submitter(SubmitterType type, String info){
+    public Submitter(SubmitterType type, String info){
         this.type = type;
         this.contactInfo = info;
     }

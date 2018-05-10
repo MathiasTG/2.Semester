@@ -1,7 +1,10 @@
 package Domain.Inquiry;
 
-import Domain.User;
+import Acq.IBuilder;
+import Acq.IUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,9 +16,9 @@ public class Inquiry {
     private Citizen citizen;
     private boolean isDraft;
     private boolean supportsVUM;
-    private User createdBy;
-    private String desciption;
-    private boolean isIntentIsClear;
+    private IUser createdBy;
+    private String description;
+    private boolean intentIsClear;
     private boolean isCitizenInformedOfRights;
     private boolean isCitizenInformedOfDataReservation;
     private String agreementOfProgress;
@@ -24,20 +27,160 @@ public class Inquiry {
     private String specialConditions;
     private Municipality actingMunicipality;
     private Municipality payingMunicipality;
+    private Submitter submittedBy;
 
+    /**
+     * Builder providing possibility of creating an Inquiry for the UI layer.
+     * This is under development and we should maybe configure
+     * some of the parameters such as Citizen and add some checks to the setters. For example CPR number.
+     */
+    public static class Builder implements IBuilder<Inquiry> {
+        private UUID id;
+        private Citizen citizen;
+        private boolean isDraft;
+        private boolean supportsVUM;
+        private IUser createdBy;
+        private String description;
+        private boolean intentIsClear;
+        private boolean isCitizenInformedOfRights;
+        private boolean isCitizenInformedOfDataReservation;
+        private String agreementOfProgress;
+        private ConsentType consentType;
+        private List<GatheredConsent> gatheredConsents;
+        private String specialConditions;
+        private Municipality actingMunicipality;
+        private Municipality payingMunicipality;
+        private Submitter submittedBy;
+
+        public Builder(IUser createdBy){
+            this.id=UUID.randomUUID();
+            this.gatheredConsents=new ArrayList<>();
+            this.createdBy=createdBy;
+        }
+
+        public Inquiry.Builder setCitizen(Citizen citizen) {
+            this.citizen=citizen;
+            return this;
+        }
+
+
+        public Inquiry.Builder setCreatedBy(IUser createdBy) {
+            this.createdBy=createdBy;
+            return this;
+        }
+
+
+        public Inquiry.Builder setDraft(boolean draft) {
+            this.isDraft=draft;
+            return this;
+        }
+
+
+        public Inquiry.Builder setSupportsVUM(boolean supportsVUM) {
+            this.supportsVUM=supportsVUM;
+            return this;
+        }
+
+
+        public Inquiry.Builder setDescription(String description) {
+            this.description=description;
+            return this;
+        }
+
+
+        public Inquiry.Builder setIntentIsClear(boolean intentIsClear) {
+            this.intentIsClear=intentIsClear;
+            return this;
+        }
+
+
+        public Inquiry.Builder setCitizenInformedOfRights(boolean citizenInformedOfRights) {
+            this.isCitizenInformedOfRights=citizenInformedOfRights;
+            return this;
+        }
+
+
+        public Inquiry.Builder setCitizenInformedOfDataReservation(boolean citizenInformedOfDataReservation) {
+            this.isCitizenInformedOfDataReservation=citizenInformedOfDataReservation;
+            return this;
+        }
+
+
+        public Inquiry.Builder setAgreementOfProgress(String agreementOfProgress) {
+            this.agreementOfProgress=agreementOfProgress;
+            return this;
+        }
+
+
+        public Inquiry.Builder setSubmittedBy(Submitter submittedBy) {
+            this.submittedBy=submittedBy;
+            return this;
+        }
+
+
+        public Inquiry.Builder addGatheredConsents(GatheredConsent... gatheredConsents) {
+            this.gatheredConsents.addAll(Arrays.asList(gatheredConsents));
+            return this;
+        }
+
+
+        public Inquiry.Builder setConsentType(ConsentType consentType) {
+            this.consentType=consentType;
+            return this;
+        }
+
+
+        public Inquiry.Builder setSpecialConditions(String specialConditions) {
+            this.specialConditions=specialConditions;
+            return this;
+        }
+
+
+        public Inquiry.Builder setActingMunicipality(Municipality actingMunicipality) {
+            this.actingMunicipality=actingMunicipality;
+            return this;
+        }
+
+
+        public Inquiry.Builder setPayingMunicipality(Municipality payingMunicipality) {
+            this.payingMunicipality=payingMunicipality;
+            return this;
+        }
+
+        /**
+         *method returning the built object.
+         * @return the complete IInquiry object, with all attributes set by the setters of this builder.
+         */
+        @Override
+        public Inquiry build() {
+            return new Inquiry(id, citizen, isDraft,supportsVUM,createdBy,
+                    description,intentIsClear,isCitizenInformedOfRights,
+                    isCitizenInformedOfDataReservation,agreementOfProgress,consentType,
+                    gatheredConsents,specialConditions,actingMunicipality,payingMunicipality);
+        }
+    }
+
+
+
+
+    /**
+     * empty constructor where id and list of gathered consents are generated automatically.
+     * all other fields are null.
+     */
     private Inquiry() {
         this.id=UUID.randomUUID();
+        this.gatheredConsents= new ArrayList<>();
     }
 
     /**
-     * GetRekt params
+     * All parameters.
      * @param id
      * @param citizen
      * @param isDraft
      * @param supportsVUM
      * @param createdBy
-     * @param desciption
-     * @param isIntentIsClear
+     * @param description
+     * @param intentIsClear
      * @param isCitizenInformedOfRights
      * @param isCitizenInformedOfDataReservation
      * @param agreementOfProgress
@@ -47,13 +190,13 @@ public class Inquiry {
      * @param actingMunicipality
      * @param payingMunicipality
      */
-    public Inquiry(UUID id,
+    private Inquiry(UUID id,
                    Citizen citizen,
                    boolean isDraft,
                    boolean supportsVUM,
-                   User createdBy,
-                   String desciption,
-                   boolean isIntentIsClear,
+                   IUser createdBy,
+                   String description,
+                   boolean intentIsClear,
                    boolean isCitizenInformedOfRights,
                    boolean isCitizenInformedOfDataReservation,
                    String agreementOfProgress,
@@ -67,8 +210,8 @@ public class Inquiry {
         this.isDraft = isDraft;
         this.supportsVUM = supportsVUM;
         this.createdBy = createdBy;
-        this.desciption = desciption;
-        this.isIntentIsClear = isIntentIsClear;
+        this.description = description;
+        this.intentIsClear = intentIsClear;
         this.isCitizenInformedOfRights = isCitizenInformedOfRights;
         this.isCitizenInformedOfDataReservation = isCitizenInformedOfDataReservation;
         this.agreementOfProgress = agreementOfProgress;
@@ -79,122 +222,165 @@ public class Inquiry {
         this.payingMunicipality = payingMunicipality;
     }
 
+
+    public void setSubmittedBy(Submitter submittedBy) {
+        this.submittedBy=submittedBy;
+    }
+
+
+    public Submitter getSubmittedBy() {
+        return submittedBy;
+    }
+
+
     public UUID getId() {
         return id;
     }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
 
     public Citizen getCitizen() {
         return citizen;
     }
 
+
     public void setCitizen(Citizen citizen) {
         this.citizen = citizen;
     }
+
 
     public boolean isDraft() {
         return isDraft;
     }
 
+
     public void setDraft(boolean draft) {
         isDraft = draft;
     }
+
 
     public boolean isSupportsVUM() {
         return supportsVUM;
     }
 
+
     public void setSupportsVUM(boolean supportsVUM) {
         this.supportsVUM = supportsVUM;
     }
 
-    public User getCreatedBy() {
+
+    public IUser getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
+    public void setCreatedBy(IUser createdBy) {
         this.createdBy = createdBy;
     }
 
-    public String getDesciption() {
-        return desciption;
+
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
+
 
     public boolean isIntentIsClear() {
-        return isIntentIsClear;
+        return intentIsClear;
     }
 
+
     public void setIntentIsClear(boolean intentIsClear) {
-        isIntentIsClear = intentIsClear;
+        this.intentIsClear = intentIsClear;
     }
+
 
     public boolean isCitizenInformedOfRights() {
         return isCitizenInformedOfRights;
     }
 
+
     public void setCitizenInformedOfRights(boolean citizenInformedOfRights) {
         isCitizenInformedOfRights = citizenInformedOfRights;
     }
+
 
     public boolean isCitizenInformedOfDataReservation() {
         return isCitizenInformedOfDataReservation;
     }
 
+
     public void setCitizenInformedOfDataReservation(boolean citizenInformedOfDataReservation) {
         isCitizenInformedOfDataReservation = citizenInformedOfDataReservation;
     }
+
 
     public String getAgreementOfProgress() {
         return agreementOfProgress;
     }
 
+
     public void setAgreementOfProgress(String agreementOfProgress) {
         this.agreementOfProgress = agreementOfProgress;
     }
+
 
     public ConsentType getConsentType() {
         return consentType;
     }
 
-    public void setConsentType(ConsentType consentType) {
-        this.consentType = consentType;
-    }
-
-    public String getSpecialConditions() {
-        return specialConditions;
-    }
-
-    public void setSpecialConditions(String specialConditions) {
-        this.specialConditions = specialConditions;
-    }
-
-    public Municipality getActingMunicipality() {
-        return actingMunicipality;
-    }
-
-    public void setActingMunicipality(Municipality actingMunicipality) {
-        this.actingMunicipality = actingMunicipality;
-    }
-
-    public Municipality getPayingMunicipality() {
-        return payingMunicipality;
-    }
-
-    public void setPayingMunicipality(Municipality payingMunicipality) {
-        this.payingMunicipality = payingMunicipality;
-    }
 
     public List<GatheredConsent> getGatheredConsents() {
         return gatheredConsents;
     }
 
+
+    public void setConsentType(ConsentType consentType) {
+        this.consentType = consentType;
+    }
+
+
+    public String getSpecialConditions() {
+        return specialConditions;
+    }
+
+
+    public void setSpecialConditions(String specialConditions) {
+        this.specialConditions = specialConditions;
+    }
+
+
+    public Municipality getActingMunicipality() {
+        return actingMunicipality;
+    }
+
+
+    public void setActingMunicipality(Municipality actingMunicipality) {
+        this.actingMunicipality = actingMunicipality;
+    }
+
+
+    public Municipality getPayingMunicipality() {
+        return payingMunicipality;
+    }
+
+
+    public void setPayingMunicipality(Municipality payingMunicipality) {
+        this.payingMunicipality = payingMunicipality;
+    }
+
     public void addGatheredConsent(GatheredConsent gatheredConsent){
         gatheredConsents.add(gatheredConsent);
     }
+
     public void removeGatheredConsent(GatheredConsent gatheredConsent){
         gatheredConsents.remove(gatheredConsent);
     }
+
 }

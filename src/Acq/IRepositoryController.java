@@ -8,7 +8,7 @@ public interface IRepositoryController {
      *
      * @param iInquiry deletes the chosen inguiry from the database
      */
-    void delete(IInquiry iInquiry);
+    //void delete(IInquiry iInquiry);
 
 
     /**
@@ -16,7 +16,7 @@ public interface IRepositoryController {
      * @param uuid of the Inquiry you want to get
      * @return the IInquiry of the chosen id
      */
-    IInquiry getById(UUID uuid);
+   // IInquiry getById(UUID uuid);
 
 
     /**
@@ -24,7 +24,7 @@ public interface IRepositoryController {
      * @param cpr of the Inquiry you want to get
      * @return the IInwuiry of the chosen cpr number
      */
-    IInquiry getByCpr(String cpr);
+   // IInquiry getByCpr(String cpr);
 
 
     /**
@@ -32,12 +32,12 @@ public interface IRepositoryController {
      * @param name of the Inquiry you want to get
      * @return the IInwuiry of the chosen cpr number
      */
-    IInquiry getByName(String name);
+   // IInquiry getByName(String name);
 
 
     /**
      *
      * @param iInquiry you want to save in the database
      */
-    void save(IInquiry iInquiry);
+   // void save(IInquiry iInquiry);
 }

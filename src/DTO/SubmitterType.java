@@ -1,4 +1,4 @@
-package Domain.Inquiry;
+package DTO;
 
 public enum SubmitterType {
     ONGOING_EFFORT      ("Igangværende indsats"),

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Acq;
+import DTO.Inquiry;
 
 /**
  *
@@ -13,5 +14,7 @@ public interface IDomainFacade {
     
     void injectPersistence(IPersistenceFacade persistenceFacade);
     IResponse createUser(String username, int accesRights);
+
+    void injectInquiry(Inquiry inquiry);
     
 }

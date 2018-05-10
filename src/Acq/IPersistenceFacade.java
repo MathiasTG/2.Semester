@@ -5,6 +5,8 @@
  */
 package Acq;
 
+import DTO.Inquiry;
+
 /**
  *
  * @author ulriksandberg
@@ -14,7 +16,7 @@ public interface IPersistenceFacade {
     boolean verifyUsername(String username);
     void createUser(IUser user);
 
-    
+    void injectInquiry(Inquiry inquiry);
     
     
 }

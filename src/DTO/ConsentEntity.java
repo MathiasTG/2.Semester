@@ -1,4 +1,4 @@
-package Domain.Inquiry;
+package DTO;
 
 public enum ConsentEntity {
     PERSONAL_DOCTOR("Personlig Læge"),

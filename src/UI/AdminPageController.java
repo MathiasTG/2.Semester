@@ -40,6 +40,8 @@ public class AdminPageController implements Initializable {
     private Label StatusMessage;
     @FXML
     private TextField UsernameField;
+    private final String SECRETARY = "Sekretær";
+    private final String CASEWORKER = "Sagsbehandler";
 
     
     private UI ui;
@@ -59,10 +61,10 @@ public class AdminPageController implements Initializable {
         IResponse response = null;
         
         if(role != null){
-            if(role.contains("Sekretær")){
+            if(role.contains(SECRETARY)){
                 response = ui.getDomain().createUser(UsernameField.getText(), 1);
             }
-            else if(role.contains("Sagsbehandler")){
+            else if(role.contains(CASEWORKER)){
                 response = ui.getDomain().createUser(UsernameField.getText(), 2);
             }
             

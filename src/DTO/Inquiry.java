@@ -19,8 +19,9 @@ public class Inquiry {
     private IUser createdBy;
     private String description;
     private boolean intentIsClear;
-    private boolean isCitizenInformedOfRights;
-    private boolean isCitizenInformedOfDataReservation;
+    private boolean citizenAwareOfInquiry;
+    private boolean citizenInformedOfRights;
+    private boolean citizenInformedOfDataReservation;
     private String agreementOfProgress;
     private ConsentType consentType;
     private List<GatheredConsent> gatheredConsents;
@@ -42,8 +43,9 @@ public class Inquiry {
         private IUser createdBy;
         private String description;
         private boolean intentIsClear;
-        private boolean isCitizenInformedOfRights;
-        private boolean isCitizenInformedOfDataReservation;
+        private boolean citizenAwareOfInquiry;
+        private boolean citizenInformedOfRights;
+        private boolean citizenInformedOfDataReservation;
         private String agreementOfProgress;
         private ConsentType consentType;
         private List<GatheredConsent> gatheredConsents;
@@ -53,9 +55,12 @@ public class Inquiry {
         private Submitter submittedBy;
 
         public Builder(IUser createdBy){
-            this.id=UUID.randomUUID();
             this.gatheredConsents=new ArrayList<>();
             this.createdBy=createdBy;
+        }
+
+        public void setId(UUID id) {
+            this.id = id;
         }
 
         public Inquiry.Builder setCitizen(Citizen citizen) {
@@ -95,13 +100,13 @@ public class Inquiry {
 
 
         public Inquiry.Builder setCitizenInformedOfRights(boolean citizenInformedOfRights) {
-            this.isCitizenInformedOfRights=citizenInformedOfRights;
+            this.citizenInformedOfRights =citizenInformedOfRights;
             return this;
         }
 
 
         public Inquiry.Builder setCitizenInformedOfDataReservation(boolean citizenInformedOfDataReservation) {
-            this.isCitizenInformedOfDataReservation=citizenInformedOfDataReservation;
+            this.citizenInformedOfDataReservation =citizenInformedOfDataReservation;
             return this;
         }
 
@@ -147,6 +152,10 @@ public class Inquiry {
             return this;
         }
 
+        public void setCitizenAwareOfInquiry(boolean citizenAwareOfInquiry) {
+            this.citizenAwareOfInquiry = citizenAwareOfInquiry;
+        }
+
         /**
          *method returning the built object.
          * @return the complete IInquiry object, with all attributes set by the setters of this builder.
@@ -154,9 +163,9 @@ public class Inquiry {
         @Override
         public Inquiry build() {
             return new Inquiry(id, citizen, isDraft,supportsVUM,createdBy,
-                    description,intentIsClear,isCitizenInformedOfRights,
-                    isCitizenInformedOfDataReservation,agreementOfProgress,consentType,
-                    gatheredConsents,specialConditions,actingMunicipality,payingMunicipality);
+                    description,intentIsClear, citizenInformedOfRights,
+                    citizenInformedOfDataReservation,agreementOfProgress,consentType,
+                    gatheredConsents,specialConditions,actingMunicipality,payingMunicipality,submittedBy,citizenAwareOfInquiry);
         }
     }
 
@@ -204,7 +213,8 @@ public class Inquiry {
                    List<GatheredConsent> gatheredConsents,
                    String specialConditions,
                    Municipality actingMunicipality,
-                   Municipality payingMunicipality) {
+                   Municipality payingMunicipality,
+                    Submitter submittedBy,boolean citizenAwareOfInquiry) {
         this.id=id;
         this.citizen = citizen;
         this.isDraft = isDraft;
@@ -212,14 +222,16 @@ public class Inquiry {
         this.createdBy = createdBy;
         this.description = description;
         this.intentIsClear = intentIsClear;
-        this.isCitizenInformedOfRights = isCitizenInformedOfRights;
-        this.isCitizenInformedOfDataReservation = isCitizenInformedOfDataReservation;
+        this.citizenInformedOfRights = isCitizenInformedOfRights;
+        this.citizenInformedOfDataReservation = isCitizenInformedOfDataReservation;
         this.agreementOfProgress = agreementOfProgress;
         this.consentType = consentType;
         this.gatheredConsents = gatheredConsents;
         this.specialConditions = specialConditions;
         this.actingMunicipality = actingMunicipality;
         this.payingMunicipality = payingMunicipality;
+        this.submittedBy=submittedBy;
+        this.citizenAwareOfInquiry=citizenAwareOfInquiry;
     }
 
 
@@ -302,22 +314,22 @@ public class Inquiry {
 
 
     public boolean isCitizenInformedOfRights() {
-        return isCitizenInformedOfRights;
+        return citizenInformedOfRights;
     }
 
 
     public void setCitizenInformedOfRights(boolean citizenInformedOfRights) {
-        isCitizenInformedOfRights = citizenInformedOfRights;
+        this.citizenInformedOfRights = citizenInformedOfRights;
     }
 
 
     public boolean isCitizenInformedOfDataReservation() {
-        return isCitizenInformedOfDataReservation;
+        return citizenInformedOfDataReservation;
     }
 
 
     public void setCitizenInformedOfDataReservation(boolean citizenInformedOfDataReservation) {
-        isCitizenInformedOfDataReservation = citizenInformedOfDataReservation;
+        this.citizenInformedOfDataReservation = citizenInformedOfDataReservation;
     }
 
 
@@ -382,5 +394,14 @@ public class Inquiry {
     public void removeGatheredConsent(GatheredConsent gatheredConsent){
         gatheredConsents.remove(gatheredConsent);
     }
+
+    public boolean isCitizenAwareOfInquiry() {
+        return citizenAwareOfInquiry;
+    }
+
+    public void setCitizenAwareOfInquiry(boolean citizenAwareOfInquiry) {
+        this.citizenAwareOfInquiry = citizenAwareOfInquiry;
+    }
+
 
 }

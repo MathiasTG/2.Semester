@@ -5,6 +5,7 @@
  */
 package UI;
 
+import Acq.IResponse;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -53,7 +54,28 @@ public class AdminPageController implements Initializable {
     @FXML
     private void handle_createUser(ActionEvent event) {
         
-        System.out.println("Creating user");
+        String role = RoleGroup.getSelectedToggle().toString();
+        
+        IResponse response = null;
+        
+        if(role != null){
+            if(role.contains("Sekretær")){
+                response = ui.getDomain().createUser(UsernameField.getText(), 1);
+            }
+            else if(role.contains("Sagsbehandler")){
+                response = ui.getDomain().createUser(UsernameField.getText(), 2);
+            }
+            
+            if(response.isSuccessful()){
+
+                StatusLabel.setText("Oprettet med adgangskode:");
+            }else{
+
+                StatusLabel.setText("Fejl!");
+            }
+            StatusUsernameLabel.setText("Bruger: " + UsernameField.getText());
+            StatusMessage.setText(response.getMessage());
+        }
         
     }
 

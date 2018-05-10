@@ -1,16 +1,46 @@
 package Domain.Inquiry;
 
+import Acq.IBuilder;
+
 /**
  * @author mathias
  */
-public class Representative implements ILegalGuardian {
+public class Representative {
     private String name;
     private String address;
     private String phoneNumber;
     private String email;
     private String relation;
 
-    public Representative(String name, String address,
+    public static class Builder implements IBuilder<Representative> {
+        private String name;
+        private String address;
+        private String phoneNumber;
+        private String email;
+        private String relation;
+
+        public Builder(String name, String address, String relation){
+            this.name=name;
+            this.address=address;
+            this.relation=relation;
+        }
+
+        public Representative.Builder setEmail(String email) {
+            this.email=email;
+            return this;
+        }
+
+        public Representative.Builder setPhoneNumber(String phoneNumber) {
+            this.phoneNumber=phoneNumber;
+            return this;
+        }
+
+        @Override
+        public Representative build() {
+            return new Representative(name,address,phoneNumber,email,relation);
+        }
+    }
+    private Representative(String name, String address,
                           String phoneNumber, String email,
                           String relation) {
         this.name = name;
@@ -20,7 +50,6 @@ public class Representative implements ILegalGuardian {
         this.relation = relation;
     }
 
-    @Override
     public String getContactInfo() {
         return "Email address: " + this.email + "\n" +
                 "Address: " + this.address + "\n" +

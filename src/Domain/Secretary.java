@@ -27,17 +27,13 @@ public class Secretary extends User {
         return super.username;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     @Override
     public String getPassword() {
         return password.getPassword();
     }
 
     public int getAccessRight() {
-        return accessRight;
+        return super.accessRight;
     }
 
     

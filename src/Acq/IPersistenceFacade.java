@@ -13,6 +13,8 @@ public interface IPersistenceFacade {
     
     boolean verifyUsername(String username);
     void createUser(IUser user);
+
+    
     
     
 }

@@ -13,5 +13,6 @@ public interface IDomainFacade {
     
     void injectPersistence(IPersistenceFacade persistenceFacade);
     String createUser(String username, int accesRights);
+
     
 }

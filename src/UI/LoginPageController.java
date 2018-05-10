@@ -40,6 +40,7 @@ public class LoginPageController implements Initializable {
     private void Handle_LoginClicked(ActionEvent event) throws IOException {
        
         navigateNextPage(event, "MainPage.fxml");
+
     }
 
     @FXML

@@ -60,6 +60,8 @@ public class UI extends Application implements IUI {
         
         ui = this;
         launch(args);
+
+
         
     }
     

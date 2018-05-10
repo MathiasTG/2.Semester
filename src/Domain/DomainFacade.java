@@ -32,6 +32,7 @@ public class DomainFacade implements IDomainFacade {
             IUser user = new Secretary(username, accesRights, new Password());
             persistenceFacade.createUser(user);
 
+
         }
         
         return "";

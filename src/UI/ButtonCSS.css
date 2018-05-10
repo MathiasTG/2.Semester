@@ -47,6 +47,8 @@ and open the template in the editor.
     
 }
 
+
+
 .text-field {
     -fx-background-color: -fx-text-box-border, -fx-background ;
     -fx-background-insets: 0, 0 0 1 0 ;
@@ -201,4 +203,13 @@ height               : 5px   ; /* Not working */
 .table-view > .virtual-flow > .scroll-bar > .increment-button, 
 .table-view > .virtual-flow > .scroll-bar > .decrement-button {
     -fx-opacity: 0;
+}
+
+
+.pane {
+    -fx-background-color: "#ffffff";
+}
+
+.grid {
+    -fx-background-color: white;
 }

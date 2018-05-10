@@ -1,4 +1,4 @@
-package Domain.Inquiry;
+package DTO;
 
 
 public class Municipality {

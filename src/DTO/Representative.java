@@ -1,4 +1,4 @@
-package Domain.Inquiry;
+package DTO;
 
 import Acq.IBuilder;
 

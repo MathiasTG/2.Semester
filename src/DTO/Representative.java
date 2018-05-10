@@ -8,6 +8,7 @@ import java.net.Proxy;
  * @author mathias
  */
 public class Representative {
+
     private String name;
     private String address;
     private String phoneNumber;

@@ -152,8 +152,9 @@ public class Inquiry {
             return this;
         }
 
-        public void setCitizenAwareOfInquiry(boolean citizenAwareOfInquiry) {
+        public Inquiry.Builder setCitizenAwareOfInquiry(boolean citizenAwareOfInquiry) {
             this.citizenAwareOfInquiry = citizenAwareOfInquiry;
+            return this;
         }
 
         /**

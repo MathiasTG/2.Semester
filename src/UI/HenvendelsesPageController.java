@@ -5,10 +5,18 @@
  */
 package UI;
 
-import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TreeSet;
+
+import Acq.IUser;
+import Domain.Caseworker;
+import Domain.Password;
+import Domain.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +31,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import DTO.*;
 
 /**
  * FXML Controller class
@@ -142,7 +151,10 @@ public class HenvendelsesPageController implements Initializable {
     private javafx.scene.control.TextArea textAreaSubmittedByCONTACTINFO;
     @FXML
     private RadioButton togHowIsConsentGivenWRITEN;
-    
+
+
+    IUser user;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -153,6 +165,9 @@ public class HenvendelsesPageController implements Initializable {
         textAreaRepresentativeContactInfo.setDisable(true);
         txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
+
+        //******* NOT THE ACTUAL USER, DELETE WHEN LOGIN AND CREATE USER IS IMPLEMENTED!!!!!!!!!!!!! *******************
+        this.user = new Caseworker("Ulrik", 10, new Password());
     }    
 
     @FXML
@@ -194,7 +209,8 @@ public class HenvendelsesPageController implements Initializable {
     private void handle_togGrExternalConsentSelected(ActionEvent event) {
         
         System.out.println("externalConsentSelected");
-        
+        txtSpecifyOtherConsentFromExternal.setVisible(false);
+
         if(togConsentFromExternalOTHER.isSelected())
         {
             txtSpecifyOtherConsentFromExternal.setDisable(false);
@@ -221,12 +237,97 @@ public class HenvendelsesPageController implements Initializable {
         
     }
 
+
+    public Representative getRepresentative(){
+        String contactInfo = this.textAreaRepresentativeContactInfo.getText();
+        TypeOfRepresentative type;
+
+        if(togRepresentativeLEGALGUARDIAN.isSelected()){
+            type = TypeOfRepresentative.LEGAL_GUARDIAN;
+        }
+        else if(togRepresentativePOWEROFATTORNEY.isSelected()){
+            type = TypeOfRepresentative.POWER_OF_ATTORNEY;
+        }
+        else if (togRepresentativeREPRESENTATIVE.isSelected()){
+            type = TypeOfRepresentative.PART_REPRESENTATIVE;
+        }
+        else
+            type = null;
+
+        return new Representative.Builder(contactInfo, type).build();
+    }
+
+    public Citizen getCitizen(Representative representative){
+
+        String cpr = this.txtCitizenCPR.getText();
+        String name = this.txtCitizenName.getText();
+        String address = this.txtCitizenAddress.getText();
+        String email = this.txtCitizenEmail.getText();
+        int phoneNumber = Integer.parseInt(this.txtCitizenPhone.getText());
+
+
+
+        return new Citizen.Builder(cpr, name, address).setEmail(email).setPhoneNumber(phoneNumber).
+                setRepresentative(representative).build();
+    }
+
+    /*public List<GatheredConsent> getGatheredConsent(){
+
+    }*/
+
+
     @FXML
     private void handle_createApplication(ActionEvent event) {
-        
-        System.out.println("Create inquiry");
-        
-        
+
+        Representative representative = this.getRepresentative();
+        Citizen citizen = getCitizen(representative);
+        String description = this.txtAreaInqueryDescription.getText();
+        boolean intentIsClear;
+        boolean citizenAwareOfInquiry;
+        boolean citizenInformedOfRights;
+        boolean citizenInformedOfDataReservation;
+        String agreementOfProgress = this.txtAreaSubmitFurtherProgress.getText();
+        ConsentType consentType;
+        boolean isRelevantToGatherConsent;
+
+        if(this.togIsConsentRelevantYES.isSelected()){
+            isRelevantToGatherConsent = true;
+        } else
+            isRelevantToGatherConsent = false;
+
+        if(isRelevantToGatherConsent){
+            if(this.togHowIsConsentGivenVERBAL.isSelected())
+                consentType = ConsentType.VERBAL;
+            else if(this.togHowIsConsentGivenWRITEN.isSelected())
+                consentType = ConsentType.WRITTEN;
+            else
+                consentType = null;
+        }
+
+        if(this.togIsCitizenInformedOfOnlineSavingYES.isSelected())
+            citizenInformedOfDataReservation = true;
+        else
+            citizenInformedOfDataReservation = false;
+
+        if (this.togRightToByStanderAndRepresentative.isSelected())
+            citizenInformedOfRights = true;
+        else
+            citizenInformedOfRights = false;
+
+        if(this.togIsCitizenAwareOfInquiryYES.isSelected())
+            citizenAwareOfInquiry = true;
+        else
+            citizenAwareOfInquiry = false;
+
+        if(this.togIntentIsClearYES.isSelected())
+            intentIsClear = true;
+        else
+            intentIsClear = false;
+
+
+       /* UI.getInstance().getDomain().injectInquiry(new Inquiry.Builder(this.user).
+        setCitizen(citizen).setDraft(false).setDescription(description)
+        .setIntentIsClear(intentIsClear).setCitizenAwareOfInquiry(citizenAwareOfInquiry);*/
     }
 
     @FXML

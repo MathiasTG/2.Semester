@@ -8,6 +8,8 @@ package UI;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import Acq.IUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,7 +56,7 @@ public class LoginPageController implements Initializable {
     {
         
         Parent adminScene = FXMLLoader.load(getClass().getResource(pageName));
-                
+
         Scene newScene = new Scene(adminScene);
         Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
         appStage.setScene(newScene);

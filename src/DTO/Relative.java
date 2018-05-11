@@ -1,12 +1,11 @@
 package DTO;
 
 import Acq.IBuilder;
-import Acq.ILegalGuardian;
 
 /**
  * @author mathias
  */
-public class Relative implements ILegalGuardian {
+public class Relative{
     private String name;
     private String address;
     private String email;
@@ -104,7 +103,6 @@ public class Relative implements ILegalGuardian {
         this.typeOfRelative = typeOfRelative;
     }
 
-    @Override
     public String getContactInfo() {
         return "Email address: " + this.email + "\n" +
                 "Address: " + this.address + "\n" +

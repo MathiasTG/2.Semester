@@ -1,7 +1,6 @@
 package DTO;
 
 import Acq.IBuilder;
-import Acq.ILegalGuardian;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -10,7 +9,7 @@ import java.util.TreeSet;
 /**
  * @author mathias
  */
-public class Citizen implements ILegalGuardian {
+public class Citizen {
     private String cpr;
     private String name;
     private String email;
@@ -18,7 +17,6 @@ public class Citizen implements ILegalGuardian {
     private int phoneNumber;
     private Set<Relative> relatives;
     private Representative representative;
-    private ILegalGuardian legalGuardian;
 
     public static class Builder implements IBuilder<Citizen> {
         private String cpr;
@@ -28,7 +26,6 @@ public class Citizen implements ILegalGuardian {
         private int phoneNumber;
         private Set<Relative> relatives;
         private Representative representative;
-        private ILegalGuardian legalGuardian;
 
         public Builder(String cpr, String name, String address){
             this.relatives=new TreeSet<>();
@@ -56,18 +53,15 @@ public class Citizen implements ILegalGuardian {
             return this;
         }
 
-        public Citizen.Builder setLegalGuardian(ILegalGuardian legalGuardian) {
-            this.legalGuardian=legalGuardian;
-            return this;
-        }
+
 
         @Override
         public Citizen build() {
-            return new Citizen(cpr,email,name,address,phoneNumber,relatives,representative,legalGuardian);
+            return new Citizen(cpr,email,name,address,phoneNumber,relatives,representative);
         }
     }
 
-    private Citizen(String cpr,String name, String email, String address, int phoneNumber, Set<Relative> relatives, Representative representative, ILegalGuardian legalGuardian) {
+    private Citizen(String cpr,String name, String email, String address, int phoneNumber, Set<Relative> relatives, Representative representative) {
         this.cpr = cpr;
         this.email = email;
         this.name=name;
@@ -75,7 +69,6 @@ public class Citizen implements ILegalGuardian {
         this.phoneNumber = phoneNumber;
         this.relatives = relatives;
         this.representative = representative;
-        this.legalGuardian=legalGuardian;
     }
     public String getName() {
         return name;
@@ -85,13 +78,6 @@ public class Citizen implements ILegalGuardian {
         this.name = name;
     }
 
-    public ILegalGuardian getLegalGuardian() {
-        return legalGuardian;
-    }
-
-    public void setLegalGuardian(ILegalGuardian legalGuardian) {
-        this.legalGuardian = legalGuardian;
-    }
 
     public String getEmail() {
         return email;

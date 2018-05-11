@@ -29,6 +29,7 @@ public class Inquiry {
     private Municipality actingMunicipality;
     private Municipality payingMunicipality;
     private Submitter submittedBy;
+    private boolean isRelevantToGatherConsent;
 
     /**
      * Builder providing possibility of creating an Inquiry for the UI layer.
@@ -47,6 +48,7 @@ public class Inquiry {
         private boolean citizenInformedOfRights;
         private boolean citizenInformedOfDataReservation;
         private String agreementOfProgress;
+        private boolean isRelevantToGatherConsent;
         private ConsentType consentType;
         private List<GatheredConsent> gatheredConsents;
         private String specialConditions;
@@ -68,6 +70,10 @@ public class Inquiry {
             return this;
         }
 
+        public Inquiry.Builder setIsRelevantToGatherConsent(boolean isRelevantToGatherConsent){
+            this.isRelevantToGatherConsent = isRelevantToGatherConsent;
+            return this;
+        }
 
         public Inquiry.Builder setCreatedBy(IUser createdBy) {
             this.createdBy=createdBy;
@@ -165,7 +171,8 @@ public class Inquiry {
             return new Inquiry(id, citizen, isDraft,supportsVUM,createdBy,
                     description,intentIsClear, citizenInformedOfRights,
                     citizenInformedOfDataReservation,agreementOfProgress,consentType,
-                    gatheredConsents,specialConditions,actingMunicipality,payingMunicipality,submittedBy,citizenAwareOfInquiry);
+                    gatheredConsents,specialConditions,actingMunicipality,payingMunicipality,submittedBy,citizenAwareOfInquiry
+            , isRelevantToGatherConsent);
         }
     }
 
@@ -214,7 +221,8 @@ public class Inquiry {
                    String specialConditions,
                    Municipality actingMunicipality,
                    Municipality payingMunicipality,
-                    Submitter submittedBy,boolean citizenAwareOfInquiry) {
+                    Submitter submittedBy,boolean citizenAwareOfInquiry,
+                    boolean isRelevantToGatherConsent) {
         this.id=id;
         this.citizen = citizen;
         this.isDraft = isDraft;
@@ -232,8 +240,14 @@ public class Inquiry {
         this.payingMunicipality = payingMunicipality;
         this.submittedBy=submittedBy;
         this.citizenAwareOfInquiry=citizenAwareOfInquiry;
+        this.isRelevantToGatherConsent = isRelevantToGatherConsent;
+
     }
 
+
+    public boolean getIsRelevantToGatherConsent(){
+        return this.isRelevantToGatherConsent;
+    }
 
     public void setSubmittedBy(Submitter submittedBy) {
         this.submittedBy=submittedBy;

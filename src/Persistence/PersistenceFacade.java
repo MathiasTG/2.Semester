@@ -6,6 +6,7 @@
 package Persistence;
 
 import Acq.IPersistenceFacade;
+import Acq.IRepositoryInquiry;
 import Acq.IUser;
 import DTO.Inquiry;
 

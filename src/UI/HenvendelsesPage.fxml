@@ -40,7 +40,7 @@
                </font>
             </Label>
             <Button id="rich-red" layoutX="27.0" layoutY="586.0" mnemonicParsing="false" onAction="#handle_NavigateBack" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Tilbage" textFill="WHITE" />
-            <ScrollPane hbarPolicy="NEVER" layoutX="240.0" layoutY="1.0" prefHeight="677.0" prefWidth="590.0">
+            <ScrollPane hbarPolicy="NEVER" layoutX="240.0" layoutY="1.0" prefHeight="679.0" prefWidth="590.0">
                <content>
                   <FlowPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2258.0" prefWidth="574.0">
                      <children>
@@ -57,7 +57,7 @@
                               <TextField fx:id="txtCitizenPhone" layoutX="392.0" layoutY="48.0" promptText="Telefon: XX XX XX XX" stylesheets="@ButtonCSS.css" />
                            </children>
                         </Pane>
-                        <GridPane id=".grid" fx:id="gridPane" gridLinesVisible="true" prefHeight="2020.0" prefWidth="572.0" stylesheets="@ButtonCSS.css">
+                        <GridPane id=".grid" fx:id="gridPane" gridLinesVisible="true" prefHeight="2612.0" prefWidth="572.0" stylesheets="@ButtonCSS.css">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="281.0" minWidth="10.0" prefWidth="211.0006103515625" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="371.00152587890625" minWidth="10.0" prefWidth="361.4993896484375" />
@@ -70,9 +70,9 @@
                               <RowConstraints maxHeight="438.493408203125" minHeight="0.0" prefHeight="92.5830078125" vgrow="NEVER" />
                               <RowConstraints maxHeight="549.4580078125" minHeight="0.0" prefHeight="175.366455078125" vgrow="NEVER" />
                               <RowConstraints maxHeight="590.5447998046875" minHeight="0.0" prefHeight="176.5391845703125" vgrow="NEVER" />
-                              <RowConstraints maxHeight="738.1669921875" minHeight="0.0" prefHeight="434.304931640625" vgrow="NEVER" />
-                              <RowConstraints maxHeight="542.5411376953125" minHeight="0.0" prefHeight="162.0643310546875" vgrow="NEVER" />
-                              <RowConstraints maxHeight="497.2337646484375" minHeight="10.0" prefHeight="179.581787109375" vgrow="NEVER" />
+                              <RowConstraints maxHeight="1060.66796875" minHeight="0.0" prefHeight="793.853271484375" vgrow="NEVER" />
+                              <RowConstraints maxHeight="542.5411376953125" minHeight="0.0" prefHeight="190.343017578125" vgrow="NEVER" />
+                              <RowConstraints maxHeight="497.2337646484375" minHeight="10.0" prefHeight="384.656982421875" vgrow="NEVER" />
                           </rowConstraints>
                            <children>
                               <Pane prefHeight="200.0" prefWidth="234.0" stylesheets="@ButtonCSS.css">
@@ -227,19 +227,20 @@
                               </Pane>
                               <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <children>
-                                    <RadioButton fx:id="togConsentFromExternalOWNDOCTOR" layoutX="28.0" layoutY="23.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Egen læge [Mogens Mogensen, Aplevej xx, xxx]">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="togGrConsentForExternalInfo" />
-                                       </toggleGroup></RadioButton>
-                                    <RadioButton fx:id="togConsentFromExternalSPECIALDOCTOR" layoutX="28.0" layoutY="53.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Speciallæge [angiv læge]" toggleGroup="$togGrConsentForExternalInfo" />
-                                    <RadioButton fx:id="togConsentFromExternalHOSPITAL" layoutX="28.0" layoutY="83.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Hospital" toggleGroup="$togGrConsentForExternalInfo" />
-                                    <RadioButton fx:id="togConsentFromExternalUNEMPLOYMENTFUND" layoutX="28.0" layoutY="113.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="A-Kasse" toggleGroup="$togGrConsentForExternalInfo" />
-                                    <RadioButton fx:id="togConsentFromExternalEmployer" layoutX="28.0" layoutY="143.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Arbejdsgiver" toggleGroup="$togGrConsentForExternalInfo" />
-                                    <RadioButton fx:id="togConsentFromExternalFORMERMUNICIPALITY" layoutX="28.0" layoutY="173.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Tidligere bopælskommune" toggleGroup="$togGrConsentForExternalInfo" />
-                                    <RadioButton fx:id="togConsentFromExternalOTHERMANAGEMENT" layoutX="28.0" layoutY="203.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Andre forvaltninger [Jobcentret, xxx, xxx]" toggleGroup="$togGrConsentForExternalInfo" />
-                                    <RadioButton fx:id="togConsentFromExternalOTHER" layoutX="28.0" layoutY="233.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Andre: [angiv hvilke]" toggleGroup="$togGrConsentForExternalInfo" />
-                                    <TextField fx:id="txtSpecifyOtherConsentFromExternal" layoutX="32.0" layoutY="274.0" prefHeight="27.0" prefWidth="304.0" promptText="Specificer andre" />
-                                    <TextArea layoutX="33.0" layoutY="314.0" prefHeight="107.0" prefWidth="305.0" promptText="Angiv ekstra information vedrørende den valgte instansAngiv ekstra information vedrørende den valgte instans" wrapText="true" />
+                                    <RadioButton fx:id="togConsentFromExternalOWNDOCTOR" layoutX="28.0" layoutY="23.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Egen læge [Mogens Mogensen, Aplevej xx, xxx]" />
+                                    <RadioButton fx:id="togConsentFromExternalSPECIALDOCTOR" layoutX="28.0" layoutY="125.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Speciallæge [angiv læge]" />
+                                    <RadioButton fx:id="togConsentFromExternalHOSPITAL" layoutX="28.0" layoutY="235.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Hospital" />
+                                    <RadioButton fx:id="togConsentFromExternalUNEMPLOYMENTFUND" layoutX="28.0" layoutY="335.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="A-Kasse" />
+                                    <RadioButton fx:id="togConsentFromExternalEmployer" layoutX="28.0" layoutY="445.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Arbejdsgiver" />
+                                    <RadioButton fx:id="togConsentFromExternalFORMERMUNICIPALITY" layoutX="28.0" layoutY="555.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Tidligere bopælskommune" />
+                                    <RadioButton fx:id="togConsentFromExternalOTHERMANAGEMENT" layoutX="28.0" layoutY="665.0" mnemonicParsing="false" onAction="#handle_togGrExternalConsentSelected" text="Andre forvaltninger [Jobcentret, xxx, xxx]" />
+                                    <TextArea fx:id="textAreaConsentFromOWNDOCTOR" disable="true" layoutX="35.0" layoutY="58.0" prefHeight="52.0" prefWidth="284.0" />
+                                    <TextArea fx:id="textAreaConsentFromSPECIALDOCTOR" disable="true" layoutX="35.0" layoutY="158.0" prefHeight="52.0" prefWidth="284.0" />
+                                    <TextArea fx:id="textAreaConsentFromHOSPITAL" disable="true" layoutX="35.0" layoutY="268.0" prefHeight="52.0" prefWidth="284.0" />
+                                    <TextArea fx:id="textAreaConsentFromUNEMPLOYMENTFUND" disable="true" layoutX="35.0" layoutY="368.0" prefHeight="52.0" prefWidth="284.0" />
+                                    <TextArea fx:id="textAreaConsentFromEMPLOYER" disable="true" layoutX="35.0" layoutY="478.0" prefHeight="52.0" prefWidth="284.0" />
+                                    <TextArea fx:id="textAreaConsentFromFORMERMUNICIPALITY" disable="true" layoutX="35.0" layoutY="588.0" prefHeight="52.0" prefWidth="284.0" />
+                                    <TextArea fx:id="textAreaConsentFromOTHERMANAGEMENT" disable="true" layoutX="35.0" layoutY="698.0" prefHeight="52.0" prefWidth="284.0" />
                                  </children>
                               </Pane>
                               <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8">

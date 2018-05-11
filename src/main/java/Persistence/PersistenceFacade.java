@@ -35,8 +35,7 @@ public class PersistenceFacade implements IPersistenceFacade {
     public boolean verifyUsername(String username) {
         return pFile.validateUsername(username);
     }
-
-
+    
 
     @Override
     public void createUser(IUser user) {

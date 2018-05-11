@@ -18,12 +18,11 @@ import DTO.Inquiry;
 public class DomainFacade implements IDomainFacade {
 
     private IPersistenceFacade persistenceFacade;
-    private DomainController domainController;
     private Inquiry inquiry;
 
     public DomainFacade() {
 
-        domainController = new DomainController();
+
     }
 
     public IPersistenceFacade getPersistenceFacade() {
@@ -35,23 +34,37 @@ public class DomainFacade implements IDomainFacade {
          this.persistenceFacade = persistenceFacade;
     }
 
-
-
-    @Override
-    public IResponse createUser(String username, int accesRights) {
-        
-        return domainController.createUser(username,accesRights);
-    }
-
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
     }
 
-    public static void main(String[] args) {
-        
-        Password pass = new Password();
-        
-    }
+    @Override
+    public IResponse createUser(String username, int accessright) {
 
+        if (persistenceFacade.verifyUsername(username)) {
+
+            String type = null;
+            IUser user = null;
+
+            switch (accessright) {
+                case 1:
+                    user = new Secretary(username, accessright, new Password());
+                    type = "Sekretær";
+                    break;
+                case 2:
+                    user = new Caseworker(username,accessright, new Password());
+                    type = "Sagsbehandler";
+                    break;
+                case 3:
+                    user = new Admin(username, accessright, new Password());
+                    type = "Admin";
+                    break;
+            }
+
+            persistenceFacade.createUser(user);
+            return new Response(true, user.getPassword());
+        }
+        return new Response(false, "Brugernavn er allerede i brug");
+    }
 
 }

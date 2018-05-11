@@ -26,8 +26,8 @@ public class Inquiry {
     private ConsentType consentType;
     private List<GatheredConsent> gatheredConsents;
     private String specialConditions;
-    private Municipality actingMunicipality;
-    private Municipality payingMunicipality;
+    private String actingMunicipality;
+    private String payingMunicipality;
     private Submitter submittedBy;
     private boolean isRelevantToGatherConsent;
 
@@ -52,8 +52,8 @@ public class Inquiry {
         private ConsentType consentType;
         private List<GatheredConsent> gatheredConsents;
         private String specialConditions;
-        private Municipality actingMunicipality;
-        private Municipality payingMunicipality;
+        private String actingMunicipality;
+        private String payingMunicipality;
         private Submitter submittedBy;
 
         public Builder(IUser createdBy){
@@ -147,13 +147,13 @@ public class Inquiry {
         }
 
 
-        public Inquiry.Builder setActingMunicipality(Municipality actingMunicipality) {
+        public Inquiry.Builder setActingMunicipality(String actingMunicipality) {
             this.actingMunicipality=actingMunicipality;
             return this;
         }
 
 
-        public Inquiry.Builder setPayingMunicipality(Municipality payingMunicipality) {
+        public Inquiry.Builder setPayingMunicipality(String payingMunicipality) {
             this.payingMunicipality=payingMunicipality;
             return this;
         }
@@ -220,8 +220,8 @@ public class Inquiry {
                    ConsentType consentType,
                    List<GatheredConsent> gatheredConsents,
                    String specialConditions,
-                   Municipality actingMunicipality,
-                   Municipality payingMunicipality,
+                   String actingMunicipality,
+                   String payingMunicipality,
                     Submitter submittedBy,boolean citizenAwareOfInquiry,
                     boolean isRelevantToGatherConsent) {
         this.id=id;
@@ -383,22 +383,22 @@ public class Inquiry {
     }
 
 
-    public Municipality getActingMunicipality() {
+    public String getActingMunicipality() {
         return actingMunicipality;
     }
 
 
-    public void setActingMunicipality(Municipality actingMunicipality) {
+    public void setActingMunicipality(String actingMunicipality) {
         this.actingMunicipality = actingMunicipality;
     }
 
 
-    public Municipality getPayingMunicipality() {
+    public String getPayingMunicipality() {
         return payingMunicipality;
     }
 
 
-    public void setPayingMunicipality(Municipality payingMunicipality) {
+    public void setPayingMunicipality(String payingMunicipality) {
         this.payingMunicipality = payingMunicipality;
     }
 

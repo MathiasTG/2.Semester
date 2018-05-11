@@ -6,6 +6,7 @@ public enum ConsentEntity {
     HOSPITAL("Hospital"),
     UNEMPLOYMENT_FUND("A-Kasse"),
     OFFER("Tilbud"),
+    EMPLOYER("Arbejdsgiver"),
     PREVIOUS_MUNICIPALITY("Tidligere Kommune"),
     OTHER_MANAGEMENT("Anden forvaltning"),
     OTHER("Andre");

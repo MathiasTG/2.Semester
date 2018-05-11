@@ -8,10 +8,7 @@ package UI;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import Acq.IUser;
 import Domain.Caseworker;
@@ -135,7 +132,9 @@ public class HenvendelsesPageController implements Initializable {
     private RadioButton togConsentFromExternalFORMERMUNICIPALITY;
     @FXML
     private RadioButton togConsentFromExternalOTHERMANAGEMENT;
-    private RadioButton togConsentFromExternalOTHER;
+    @FXML
+    private RadioButton togConsentFromOFFER;
+    // SE HER !!!!     private RadioButton togConsentFromExternalOTHER;
     private javafx.scene.control.TextField txtSpecifyOtherConsentFromExternal;
     @FXML
     private javafx.scene.control.TextArea textAreaExtraOrdinaryConditions;
@@ -166,6 +165,8 @@ public class HenvendelsesPageController implements Initializable {
     private TextArea textAreaConsentFromFORMERMUNICIPALITY;
     @FXML
     private TextArea textAreaConsentFromOTHERMANAGEMENT;
+    @FXML
+    private TextArea textAreaConsentFromOFFER;
 
 
     @Override
@@ -220,7 +221,10 @@ public class HenvendelsesPageController implements Initializable {
     @FXML
     private void handle_togGrExternalConsentSelected(ActionEvent event) {
         
-        
+        if(togConsentFromOFFER.isSelected())
+        {
+            textAreaConsentFromOFFER.setDisable(false);
+        }
         if(togConsentFromExternalOWNDOCTOR.isSelected())
         {
             textAreaConsentFromOWNDOCTOR.setDisable(false);
@@ -326,7 +330,11 @@ public class HenvendelsesPageController implements Initializable {
         String name = this.txtCitizenName.getText();
         String address = this.txtCitizenAddress.getText();
         String email = this.txtCitizenEmail.getText();
-        int phoneNumber = Integer.parseInt(this.txtCitizenPhone.getText());
+        int phoneNumber;
+        if(this.txtCitizenPhone.getText().matches("\\d*")) {
+            phoneNumber = Integer.parseInt(this.txtCitizenPhone.getText());
+        } else
+            phoneNumber = 00000000;
 
 
 
@@ -334,9 +342,54 @@ public class HenvendelsesPageController implements Initializable {
                 setRepresentative(representative).build();
     }
 
-    /*public List<GatheredConsent> getGatheredConsent(){
+    public List<GatheredConsent> getGatheredConsent(){
+        List<GatheredConsent> gatheredConsent = new ArrayList<>();
 
-    }*/
+        if(this.togConsentFromExternalEmployer.isSelected())
+            gatheredConsent.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
+        if(this.togConsentFromExternalSPECIALDOCTOR.isSelected())
+            gatheredConsent.add(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
+        if(this.togConsentFromExternalHOSPITAL.isSelected())
+            gatheredConsent.add(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
+        if(this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
+            gatheredConsent.add(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
+        if(this.togConsentFromOFFER.isSelected())
+            gatheredConsent.add(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
+        if(this.togConsentFromExternalEmployer.isSelected())
+            gatheredConsent.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
+        if(this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
+            gatheredConsent.add(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
+
+        return gatheredConsent;
+
+    }
+
+    public Submitter getSubmitter(){
+        SubmitterType type;
+        String contactInfo = this.textAreaSubmittedByCONTACTINFO.getText();
+
+        if (togSubmittedByCITIZEN.isSelected())
+            type = SubmitterType.CITIZIN;
+        if (togSubmittedByDOCTOR.isSelected())
+            type = SubmitterType.DOCTOR;
+        if(togSubmittedByHOSPITAL.isSelected())
+            type = SubmitterType.HOSPITAL;
+        if(togSubmittedByMISCELLAEOUS.isSelected())
+            type = SubmitterType.MISCELLANEOUS;
+        if(togSubmittedByONGOINGEFFORT.isSelected())
+            type = SubmitterType.ONGOING_EFFORT;
+        if(togSubmittedByOTHERMANAGEMENT.isSelected())
+            type = SubmitterType.OTER_MUNICIPALITY;
+        if(togSubmittedByRELATIVE.isSelected())
+            type = SubmitterType.RELATIVE;
+        if(togSubmittedByOTHERMUNICIPALITY.isSelected())
+            type = SubmitterType.OTER_MUNICIPALITY;
+        else
+            type = null;
+
+        return new Submitter(type, contactInfo);
+
+    }
 
 
     @FXML
@@ -352,6 +405,12 @@ public class HenvendelsesPageController implements Initializable {
         String agreementOfProgress = this.txtAreaSubmitFurtherProgress.getText();
         ConsentType consentType;
         boolean isRelevantToGatherConsent;
+        List<GatheredConsent> gatheredConsent = this.getGatheredConsent();
+        String specialConditions = this.textAreaExtraOrdinaryConditions.getText();
+        String actingMunicipality = this.txtActingMunicipality.getText();
+        String payingMunicipality = this.txtPaymentMunicipality.getText();
+        Submitter submitter = this.getSubmitter();
+
 
         if(this.togIsConsentRelevantYES.isSelected()){
             isRelevantToGatherConsent = true;

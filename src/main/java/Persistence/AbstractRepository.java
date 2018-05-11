@@ -21,7 +21,7 @@ public abstract class AbstractRepository {
         config=new Configuration();
         conn= DriverManager.getConnection(config.getServerUrl());
         executor= Executors.newFixedThreadPool(4);
-        conn2 = conn.createPooledConnectionBuilder();
+        //conn2 = conn.createPooledConnectionBuilder();
     }
 
     protected ResponseMessage executeStm(final String statement){

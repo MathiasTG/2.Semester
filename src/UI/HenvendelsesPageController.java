@@ -17,6 +17,7 @@ import Acq.IUser;
 import Domain.Caseworker;
 import Domain.Password;
 import Domain.User;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -334,6 +335,8 @@ public class HenvendelsesPageController implements Initializable {
     private void handle_saveInquiry(ActionEvent event) {
         
         System.out.println("save inquiry");
+
+
         
     }
 

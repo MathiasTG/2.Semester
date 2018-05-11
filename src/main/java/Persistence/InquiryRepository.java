@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class InquiryRepository extends AbstractRepository implements IRepositoryInquiry {
+
+
     public InquiryRepository() throws SQLException {
         super();
     }

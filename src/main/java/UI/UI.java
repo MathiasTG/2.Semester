@@ -18,8 +18,10 @@ import javafx.stage.Stage;
  */
 public class UI extends Application implements IUI {
 
-    private IDomainFacade domainFacade;
-    private static UI ui;
+    //private IDomainFacade domainFacade;
+    //private static UI ui;
+
+    private static IDomainFacade domainFacade;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -37,13 +39,16 @@ public class UI extends Application implements IUI {
      * @param args the command line arguments
      */
 
+    /*
     public static UI getInstance() {
         return ui;
     }
+*/
+    public static IDomainFacade getDomain() {return domainFacade; }
 
-    public IDomainFacade getDomain() {
-        return this.domainFacade;
-    }
+    //public IDomainFacade getDomain() {
+    //    return this.domainFacade;
+    //}
 
     @Override
     public void injectDomain(IDomainFacade domainFacade) {
@@ -55,7 +60,7 @@ public class UI extends Application implements IUI {
 
         System.out.println("UI initializing, bbeee bobb, beeeeeeb");
 
-        ui = this;
+        //ui = this;
         launch(args);
 
     }

@@ -18,17 +18,12 @@ import DTO.Inquiry;
 public class DomainFacade implements IDomainFacade {
 
     private IPersistenceFacade persistenceFacade;
-    private static DomainFacade domain;
     private DomainController domainController;
     private Inquiry inquiry;
 
     public DomainFacade() {
-        domain = this;
-        domainController = new DomainController();
-    }
 
-    public static DomainFacade getInstance() {
-        return domain;
+        domainController = new DomainController();
     }
 
     public IPersistenceFacade getPersistenceFacade() {
@@ -40,13 +35,14 @@ public class DomainFacade implements IDomainFacade {
          this.persistenceFacade = persistenceFacade;
     }
 
+
+
     @Override
     public IResponse createUser(String username, int accesRights) {
         
-
-        
         return domainController.createUser(username,accesRights);
     }
+
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
     }

@@ -18,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
@@ -25,7 +27,14 @@ import javafx.stage.Stage;
  * @author ulriksandberg
  */
 public class LoginPageController implements Initializable {
-    
+
+    @FXML
+    public PasswordField txtPassword;
+    @FXML
+    public TextField txtUsername;
+    @FXML
+    public Label errorLabel;
+
     private Label label;
     
     private void handleButtonAction(ActionEvent event) {
@@ -40,8 +49,23 @@ public class LoginPageController implements Initializable {
 
     @FXML
     private void Handle_LoginClicked(ActionEvent event) throws IOException {
-       
-        navigateNextPage(event, "MainPage.fxml");
+
+
+        if(txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty())
+        {
+            errorLabel.setText("Udfyld alle felter");
+            return;
+        }
+
+
+
+        System.out.println("Hej");
+
+
+
+
+
+        //navigateNextPage(event, "MainPage.fxml");
 
     }
 

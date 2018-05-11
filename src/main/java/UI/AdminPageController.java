@@ -43,14 +43,12 @@ public class AdminPageController implements Initializable {
     private final String SECRETARY = "Sekretær";
     private final String CASEWORKER = "Sagsbehandler";
 
-    
-    private UI ui;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ui = UI.getInstance();
     }    
 
     @FXML
@@ -62,11 +60,11 @@ public class AdminPageController implements Initializable {
         
         if(role != null){
             if(role.contains(SECRETARY)){
-                response = ui.getDomain().createUser(UsernameField.getText(), 1);
+                response = UI.getDomain().createUser(UsernameField.getText(), 1);
 
             }
             else if(role.contains(CASEWORKER)){
-                response = ui.getDomain().createUser(UsernameField.getText(), 2);
+                response = UI.getDomain().createUser(UsernameField.getText(), 2);
             }
             
             if(response.isSuccessful()){

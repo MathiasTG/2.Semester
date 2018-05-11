@@ -5,6 +5,8 @@
  */
 package Starter;
 import Acq.*;
+import DTO.Citizen;
+import DTO.Inquiry;
 import Domain.DomainFacade;
 import Persistence.PersistenceFacade;
 import UI.UI;
@@ -26,7 +28,7 @@ public class Program {
         
         System.out.println("System ready to launch, beeeb boob, beeeeeeb, boob bub");
         uiFacade.startApplication(args);
-        
+
     }
     
     

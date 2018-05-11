@@ -9,6 +9,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import DTO.Inquiry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -233,6 +235,8 @@ public class HenvendelsesPageController implements Initializable {
     private void handle_saveInquiry(ActionEvent event) {
         
         System.out.println("save inquiry");
+
+
         
     }
 

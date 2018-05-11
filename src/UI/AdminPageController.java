@@ -63,6 +63,7 @@ public class AdminPageController implements Initializable {
         if(role != null){
             if(role.contains(SECRETARY)){
                 response = ui.getDomain().createUser(UsernameField.getText(), 1);
+
             }
             else if(role.contains(CASEWORKER)){
                 response = ui.getDomain().createUser(UsernameField.getText(), 2);

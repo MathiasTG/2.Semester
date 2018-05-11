@@ -55,7 +55,7 @@ public class LoginPageController implements Initializable {
     private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
     {
         
-        Parent adminScene = FXMLLoader.load(getClass().getResource(pageName));
+        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
 
         Scene newScene = new Scene(adminScene);
         Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();

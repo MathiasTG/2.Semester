@@ -2,10 +2,8 @@ package Persistence;
 
 import javax.sql.ConnectionPoolDataSource;
 import javax.sql.PooledConnection;
-<<<<<<< HEAD
 //import javax.sql.PooledConnectionBuilder;
-=======
->>>>>>> dc6a6a12c4dc07ae351f066e43cbe93d3f724f18
+
 import java.sql.*;
 import java.util.concurrent.*;
 

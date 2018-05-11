@@ -11,10 +11,10 @@ package Persistence;
  */
 public class Configuration implements IConfiguration {
 
-    String serverUrl = "myDatabase.db.elephantSQL.902379238yri23u.key=??10394923hi";
+    String serverUrl = "jdbc:postgresql://myDatabase.db.elephantSQL.902379238yri23u.key=??10394923hi";
     
     
-    @Override
+
     public String getServerUrl() {
         return serverUrl;
     }

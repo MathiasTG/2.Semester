@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="679.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.HenvendelsesPageController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="679.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.HenvendelsesPageController">
    <children>
       <Pane layoutX="100.0" layoutY="55.0" prefHeight="882.0" prefWidth="979.0" stylesheets="@ButtonCSS.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -40,7 +40,7 @@
                </font>
             </Label>
             <Button id="rich-red" layoutX="27.0" layoutY="586.0" mnemonicParsing="false" onAction="#handle_NavigateBack" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Tilbage" textFill="WHITE" />
-            <ScrollPane hbarPolicy="NEVER" layoutX="240.0" layoutY="1.0" prefHeight="679.0" prefWidth="590.0">
+            <ScrollPane hbarPolicy="NEVER" layoutX="240.0" layoutY="1.0" prefHeight="678.0" prefWidth="590.0">
                <content>
                   <FlowPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2258.0" prefWidth="574.0">
                      <children>
@@ -71,8 +71,8 @@
                               <RowConstraints maxHeight="549.4580078125" minHeight="0.0" prefHeight="175.366455078125" vgrow="NEVER" />
                               <RowConstraints maxHeight="590.5447998046875" minHeight="0.0" prefHeight="176.5391845703125" vgrow="NEVER" />
                               <RowConstraints maxHeight="1060.66796875" minHeight="0.0" prefHeight="912.0" vgrow="NEVER" />
-                              <RowConstraints maxHeight="542.5411376953125" minHeight="0.0" prefHeight="73.0" vgrow="NEVER" />
-                              <RowConstraints maxHeight="497.2337646484375" minHeight="10.0" prefHeight="384.656982421875" vgrow="NEVER" />
+                              <RowConstraints maxHeight="542.5411376953125" minHeight="0.0" prefHeight="225.530517578125" vgrow="NEVER" />
+                              <RowConstraints maxHeight="497.2337646484375" minHeight="10.0" prefHeight="232.469482421875" vgrow="NEVER" />
                           </rowConstraints>
                            <children>
                               <Pane prefHeight="200.0" prefWidth="234.0" stylesheets="@ButtonCSS.css">

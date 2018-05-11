@@ -65,7 +65,7 @@ public class LoginPageController implements Initializable {
 
 
 
-        //navigateNextPage(event, "MainPage.fxml");
+        navigateNextPage(event, "MainPage.fxml");
 
     }
 

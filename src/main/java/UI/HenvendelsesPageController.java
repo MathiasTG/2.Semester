@@ -33,6 +33,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import DTO.*;
+import javafx.scene.control.TextArea;
 
 /**
  * FXML Controller class
@@ -123,8 +124,6 @@ public class HenvendelsesPageController implements Initializable {
     @FXML
     private RadioButton togConsentFromExternalOWNDOCTOR;
     @FXML
-    private ToggleGroup togGrConsentForExternalInfo;
-    @FXML
     private RadioButton togConsentFromExternalSPECIALDOCTOR;
     @FXML
     private RadioButton togConsentFromExternalHOSPITAL;
@@ -136,9 +135,7 @@ public class HenvendelsesPageController implements Initializable {
     private RadioButton togConsentFromExternalFORMERMUNICIPALITY;
     @FXML
     private RadioButton togConsentFromExternalOTHERMANAGEMENT;
-    @FXML
     private RadioButton togConsentFromExternalOTHER;
-    @FXML
     private javafx.scene.control.TextField txtSpecifyOtherConsentFromExternal;
     @FXML
     private javafx.scene.control.TextArea textAreaExtraOrdinaryConditions;
@@ -155,6 +152,20 @@ public class HenvendelsesPageController implements Initializable {
 
 
     IUser user;
+    @FXML
+    private TextArea textAreaConsentFromOWNDOCTOR;
+    @FXML
+    private TextArea textAreaConsentFromSPECIALDOCTOR;
+    @FXML
+    private TextArea textAreaConsentFromHOSPITAL;
+    @FXML
+    private TextArea textAreaConsentFromUNEMPLOYMENTFUND;
+    @FXML
+    private TextArea textAreaConsentFromEMPLOYER;
+    @FXML
+    private TextArea textAreaConsentFromFORMERMUNICIPALITY;
+    @FXML
+    private TextArea textAreaConsentFromOTHERMANAGEMENT;
 
 
     @Override
@@ -164,7 +175,7 @@ public class HenvendelsesPageController implements Initializable {
         togHowIsConsentGivenVERBAL.setDisable(true);
         togHowIsConsentGivenWRITEN.setDisable(true);
         textAreaRepresentativeContactInfo.setDisable(true);
-        txtSpecifyOtherConsentFromExternal.setDisable(true);
+        //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
 
         //******* NOT THE ACTUAL USER, DELETE WHEN LOGIN AND CREATE USER IS IMPLEMENTED!!!!!!!!!!!!! *******************
@@ -209,18 +220,69 @@ public class HenvendelsesPageController implements Initializable {
     @FXML
     private void handle_togGrExternalConsentSelected(ActionEvent event) {
         
-        System.out.println("externalConsentSelected");
-        txtSpecifyOtherConsentFromExternal.setVisible(false);
-
-        if(togConsentFromExternalOTHER.isSelected())
+        
+        if(togConsentFromExternalOWNDOCTOR.isSelected())
         {
-            txtSpecifyOtherConsentFromExternal.setDisable(false);
+            textAreaConsentFromOWNDOCTOR.setDisable(false);
         }
         else
         {
-            txtSpecifyOtherConsentFromExternal.setDisable(true);
+            textAreaConsentFromSPECIALDOCTOR.setDisable(true);
         }
         
+        if(togConsentFromExternalSPECIALDOCTOR.isSelected())
+        {
+            textAreaConsentFromSPECIALDOCTOR.setDisable(false);
+        }
+        else
+        {
+            textAreaConsentFromSPECIALDOCTOR.setDisable(true);
+        }
+        
+        if(togConsentFromExternalHOSPITAL.isSelected())
+        {
+            textAreaConsentFromHOSPITAL.setDisable(false);
+        }
+        else
+        {
+            textAreaConsentFromHOSPITAL.setDisable(true);
+        }
+        
+        if(togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
+        {
+            textAreaConsentFromUNEMPLOYMENTFUND.setDisable(false);
+        }
+        else
+        {
+            textAreaConsentFromUNEMPLOYMENTFUND.setDisable(true);
+        }
+        
+        if(togConsentFromExternalEmployer.isSelected())
+        {
+            textAreaConsentFromEMPLOYER.setDisable(false);
+        }
+        else
+        {
+            textAreaConsentFromEMPLOYER.setDisable(true);
+        }
+        
+        if(togConsentFromExternalFORMERMUNICIPALITY.isSelected())
+        {
+            textAreaConsentFromFORMERMUNICIPALITY.setDisable(false);
+        }
+        else
+        {
+            textAreaConsentFromFORMERMUNICIPALITY.setDisable(true);
+        }
+        
+        if(togConsentFromExternalOTHERMANAGEMENT.isSelected())
+        {
+            textAreaConsentFromOTHERMANAGEMENT.setDisable(false);
+        }
+        else
+        {
+            textAreaConsentFromOTHERMANAGEMENT.setDisable(true);
+        }
     }
 
     @FXML

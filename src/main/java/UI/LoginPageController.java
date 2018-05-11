@@ -8,6 +8,8 @@ package UI;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import Acq.IUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,45 +17,51 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
  *
  * @author ulriksandberg
  */
-public class MainPageController implements Initializable {
-
-    /**
-     * Initializes the controller class.
-     */
+public class LoginPageController implements Initializable {
+    
+    private Label label;
+    
+    private void handleButtonAction(ActionEvent event) {
+        System.out.println("You clicked me!");
+        label.setText("Hello World!");
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
 
     @FXML
-    private void handle_CreateInquiry(ActionEvent event) throws IOException {
-        
-        navigateNextPage(event, "HenvendelsesPage.fxml");
-        
-        
+    private void Handle_LoginClicked(ActionEvent event) throws IOException {
+       
+        navigateNextPage(event, "MainPage.fxml");
+
     }
 
     @FXML
-    private void handle_logout(ActionEvent event) throws IOException {
+    private void Handle_AdminClicked(ActionEvent event) throws IOException {
         
-        navigateNextPage(event, "LoginPage.fxml");
+        navigateNextPage(event, "AdminPage.fxml");
     }
-
+    
+    
     private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
     {
         
-        Parent adminScene = FXMLLoader.load(getClass().getResource(pageName));
-                
+        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
+
         Scene newScene = new Scene(adminScene);
         Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
         appStage.setScene(newScene);
         appStage.show();
     }
+    
+    
 }

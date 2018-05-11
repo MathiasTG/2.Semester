@@ -44,4 +44,16 @@ public interface IRepositoryUser {
     void deleteById(UUID uuid);
 
 
+    /**
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    IUser login(String userName , String password);
+
+
+
+
 }
+

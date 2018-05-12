@@ -57,7 +57,7 @@ public class Citizen {
 
         @Override
         public Citizen build() {
-            return new Citizen(cpr,email,name,address,phoneNumber,relatives,representative);
+            return new Citizen(cpr,name, email,address,phoneNumber,relatives,representative);
         }
     }
 

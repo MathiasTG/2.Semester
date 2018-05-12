@@ -474,6 +474,16 @@ public class HenvendelsesPageController implements Initializable {
             intentIsClear = false;
 
 
+
+
+        System.out.println("Representative: " + representative.getContactInfo());
+        System.out.println("Citizen: " + citizen.getContactInfo());
+        System.out.println("Description: " + description);
+        System.out.println("IntentIsClear? " + intentIsClear);
+        System.out.println("citizenAwareOfInquiry? " + citizenAwareOfInquiry);
+        System.out.println("AgreementOfProgress: " + agreementOfProgress);
+
+
        /* UI.getInstance().getDomain().injectInquiry(new Inquiry.Builder(this.user).
         setCitizen(citizen).setDraft(false).setDescription(description)
         .setIntentIsClear(intentIsClear).setCitizenAwareOfInquiry(citizenAwareOfInquiry);*/

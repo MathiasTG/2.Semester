@@ -359,26 +359,21 @@ public class HenvendelsesPageController implements Initializable {
     from different relevant sources. Returns the list, which is used in the Inquiry class´ constructor.
     Both classes are from the DTO pacakge
      */
-    public List<GatheredConsent> getGatheredConsent(){
-        List<GatheredConsent> gatheredConsent = new ArrayList<>();
-
+    public void getGatheredConsent(Inquiry.Builder builder){
         if(this.togConsentFromExternalEmployer.isSelected())
-            gatheredConsent.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
+            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
         if(this.togConsentFromExternalSPECIALDOCTOR.isSelected())
-            gatheredConsent.add(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
+            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
         if(this.togConsentFromExternalHOSPITAL.isSelected())
-            gatheredConsent.add(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
+            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
         if(this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
-            gatheredConsent.add(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
+            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
         if(this.togConsentFromOFFER.isSelected())
-            gatheredConsent.add(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
+            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
         if(this.togConsentFromExternalEmployer.isSelected())
-            gatheredConsent.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
+            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
         if(this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
-            gatheredConsent.add(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
-
-        return gatheredConsent;
-
+            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
     }
 
     /*
@@ -432,7 +427,6 @@ public class HenvendelsesPageController implements Initializable {
         String agreementOfProgress = this.txtAreaSubmitFurtherProgress.getText();
         ConsentType consentType;
         boolean isRelevantToGatherConsent;
-        List<GatheredConsent> gatheredConsent = this.getGatheredConsent();
         String specialConditions = this.textAreaExtraOrdinaryConditions.getText();
         String actingMunicipality = this.txtActingMunicipality.getText();
         String payingMunicipality = this.txtPaymentMunicipality.getText();
@@ -451,7 +445,8 @@ public class HenvendelsesPageController implements Initializable {
                 consentType = ConsentType.WRITTEN;
             else
                 consentType = null;
-        }
+        } else
+            consentType = null;
 
         if(this.togIsCitizenInformedOfOnlineSavingYES.isSelected())
             citizenInformedOfDataReservation = true;
@@ -483,6 +478,20 @@ public class HenvendelsesPageController implements Initializable {
         System.out.println("citizenAwareOfInquiry? " + citizenAwareOfInquiry);
         System.out.println("AgreementOfProgress: " + agreementOfProgress);
 
+        UI.getDomain().injectInquiry(new Inquiry.Builder(this.user).setCitizen(citizen)
+                .setCreatedBy(user).setDescription(description).setIntentIsClear(intentIsClear)
+                .setCitizenAwareOfInquiry(citizenAwareOfInquiry).setCitizenInformedOfRights(citizenInformedOfRights)
+                .setCitizenInformedOfDataReservation(citizenInformedOfDataReservation)
+                .setAgreementOfProgress(agreementOfProgress).setConsentType(consentType)
+                .setSpecialConditions(specialConditions)
+                .setActingMunicipality(actingMunicipality).setPayingMunicipality(payingMunicipality)
+                .setSubmittedBy(submitter).setIsRelevantToGatherConsent(isRelevantToGatherConsent)
+                .build());
+        //Hvor for jeg UUIDid fra? Er det Id op brugeren eller på henvendelsen?
+        //Hvor får jeg supportsVUM? Tror ikke den er implementeret i GUI´en endnu :)
+        // .addGatheredConsents(this.getGatheredConsent()) Fix, kan ikke tage liste. Metoden jeg har lavet
+        //kan ikke tage et Builder objekt, da vi laver det anonymt. Man kan heller ikke få det i et loop,
+        // da det anonyme objekt injectes samtidig med det laves.
 
        /* UI.getInstance().getDomain().injectInquiry(new Inquiry.Builder(this.user).
         setCitizen(citizen).setDraft(false).setDescription(description)

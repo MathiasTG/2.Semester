@@ -26,13 +26,15 @@ public class PersistenceFacade implements IPersistenceFacade {
     {
         pFile = new PersistenceFile();
         configurations = new Configuration();
+
+
         try
         {
             repositoryUser = new UserRepository();
         }
         catch (SQLException ex)
         {
-            System.out.println(ex.getStackTrace());
+            ex.printStackTrace();
         }
 
         System.out.println(ResponseCode.SUCCESS.toString());

@@ -4,6 +4,7 @@ import Acq.IRepositoryInquiry;
 import Acq.IUser;
 import DTO.Inquiry;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -17,9 +18,15 @@ public class InquiryRepository extends AbstractRepository implements IRepository
     @Override
     public Inquiry getById(UUID uuid) {
 
-        super.executeStm("SELECT * FROM Inquiry where ID=" + uuid);
+        ResultSet result = super.executeStm("SELECT * FROM Inquiry where ID=" + uuid).getData();
 
-        return In
+        try {
+            result.getRow();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override

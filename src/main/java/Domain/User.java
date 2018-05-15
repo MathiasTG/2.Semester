@@ -5,6 +5,7 @@
  */
 package Domain;
 
+import Acq.ISaveablePassword;
 import Acq.IUser;
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
  *
  * @author ulriksandberg
  */
-public abstract class User implements IUser {
+public abstract class User implements IUser, ISaveablePassword {
     
     protected UUID id;
     protected String username;

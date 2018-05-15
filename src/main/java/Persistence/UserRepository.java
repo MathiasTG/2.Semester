@@ -14,7 +14,20 @@ public class UserRepository extends AbstractRepository implements IRepositoryUse
 
     @Override
     public ResponseMessage createUser(IUser iUser) {
-
+        StringBuilder stmB = new StringBuilder()
+                .append("insert into user values ")
+                .append(iUser.getID().toString()+", ")
+                .append(iUser.getUsername()+", ")
+                .append(iUser.getAccessRight()+";");
+        String userStm=stmB.toString();
+        stmB.delete(0,stmB.length()-1);
+        stmB.append("insert into password values ")
+                .append(iUser.getPassword().getPassword().toString()+", ")
+                .append(iUser.getPassword().isTemporary().toString()+", ")
+                .append(iUser.getPassword().getExpirationDate().toString(";"));
+        String pswd=stmB.toString();
+        stmB.delete(0,stmB.length()-1);
+        
         return super.executeStm("Our statement");
 
     }

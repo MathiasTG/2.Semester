@@ -14,7 +14,6 @@ public class UserRepository extends AbstractRepository implements IRepositoryUse
 
     @Override
     public void createUser(IUser iUser) {
-
     }
 
     @Override

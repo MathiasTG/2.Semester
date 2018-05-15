@@ -12,5 +12,7 @@ package Persistence;
 public interface IConfiguration {
     
     String getServerUrl();
+    String getUsername();
+    String getPassword();
     
 }

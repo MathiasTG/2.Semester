@@ -11,13 +11,20 @@ package Persistence;
  */
 public class Configuration implements IConfiguration {
 
-    String serverUrl = "jdbc:mysql://mysql54.unoeuro.com:3306/bring_software_com";
+    String serverUrl = "jdbc:mysql://mysql54.unoeuro.com:3306/bring_software_com_db";
     String username = "bring_software_com";
-    String password = "wutavufimegi11";
+    String password = "Ntc53aqT";
     
 
     public String getServerUrl() {
         return serverUrl;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
     
 }

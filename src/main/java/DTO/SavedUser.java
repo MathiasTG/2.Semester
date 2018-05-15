@@ -1,5 +1,6 @@
 package DTO;
 
+import Acq.ISaveablePassword;
 import Acq.ISaveableUser;
 
 import java.util.UUID;
@@ -8,10 +9,10 @@ public class SavedUser implements ISaveableUser {
 
     private UUID id;
     private String username;
-    private String password;
+    private ISaveablePassword password;
     private int accessRight;
 
-    public SavedUser(UUID id, String username, String password, int accessRight) {
+    public SavedUser(UUID id, String username, ISaveablePassword password, int accessRight) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -29,7 +30,7 @@ public class SavedUser implements ISaveableUser {
     }
 
     @Override
-    public String getPassword() {
+    public ISaveablePassword getPassword() {
         return password;
     }
 

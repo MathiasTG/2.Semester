@@ -12,7 +12,7 @@ public interface IRepositoryUser {
      *
      * @param iUser
      */
-    ResponseMessage createUser(IUser iUser);
+    ResponseMessage createUser(ISaveableUser iUser);
 
 
     /**

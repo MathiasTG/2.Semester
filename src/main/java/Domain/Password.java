@@ -77,7 +77,7 @@ public class Password implements ISaveablePassword {
 
     @Override
     public boolean getIsTemporary() {
-        return false;
+        return isTemperary;
     }
 
 

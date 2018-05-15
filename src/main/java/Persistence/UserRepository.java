@@ -8,6 +8,11 @@ import java.util.Collection;
 import java.util.UUID;
 
 public class UserRepository extends AbstractRepository implements IRepositoryUser {
+
+
+
+
+
     public UserRepository() throws SQLException {
         super();
     }

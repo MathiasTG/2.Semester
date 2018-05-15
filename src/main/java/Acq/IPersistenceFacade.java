@@ -14,7 +14,7 @@ import DTO.Inquiry;
 public interface IPersistenceFacade {
     
     boolean verifyUsername(String username);
-    void createUser(IUser user);
+    IResponse createUser(IUser user);
 
     void injectInquiry(Inquiry inquiry);
     

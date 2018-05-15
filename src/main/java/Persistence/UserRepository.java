@@ -13,12 +13,14 @@ public class UserRepository extends AbstractRepository implements IRepositoryUse
     }
 
     @Override
-    public void createUser(IUser iUser) {
+    public ResponseMessage createUser(IUser iUser) {
+
+        return super.executeStm("Our statement");
 
     }
 
     @Override
-    public boolean validateUser(IUser iUser) {
+    public boolean validateUsername(String username) {
         return false;
     }
 

@@ -5,10 +5,11 @@
  */
 package Persistence;
 
-import Acq.IPersistenceFacade;
-import Acq.IRepositoryInquiry;
-import Acq.IUser;
+import Acq.*;
 import DTO.Inquiry;
+import Domain.Response;
+
+import java.sql.SQLException;
 
 /**
  *
@@ -19,11 +20,22 @@ public class PersistenceFacade implements IPersistenceFacade {
     private PersistenceFile pFile;
     private IConfiguration configurations;
     private Inquiry inquiry;
+    private IRepositoryUser repositoryUser;
     
     public PersistenceFacade()
     {
         pFile = new PersistenceFile();
         configurations = new Configuration();
+        try
+        {
+            repositoryUser = new UserRepository();
+        }
+        catch (SQLException ex)
+        {
+            System.out.println(ex.getStackTrace());
+        }
+
+        System.out.println(ResponseCode.SUCCESS.toString());
     }
     
     /**
@@ -33,13 +45,21 @@ public class PersistenceFacade implements IPersistenceFacade {
      */
     @Override
     public boolean verifyUsername(String username) {
-        return pFile.validateUsername(username);
+        return repositoryUser.validateUsername(username);
     }
     
 
     @Override
-    public void createUser(IUser user) {
-        pFile.createUser(user);
+    public IResponse createUser(IUser user) {
+
+        ResponseMessage response  = repositoryUser.createUser(user);
+
+        if(response.getResponseCode().equals(ResponseCode.SUCCESS))
+        {
+            return new Response(true);
+        }
+
+        return new Response(false, response.getResponseCode().toString());
     }
 
     public void injectInquiry(Inquiry inquiry){

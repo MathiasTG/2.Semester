@@ -1,5 +1,7 @@
 package Acq;
 
+import Persistence.ResponseMessage;
+
 import java.util.Collection;
 import java.util.UUID;
 
@@ -10,7 +12,7 @@ public interface IRepositoryUser {
      *
      * @param iUser
      */
-    void createUser(IUser iUser);
+    ResponseMessage createUser(IUser iUser);
 
 
     /**
@@ -18,7 +20,7 @@ public interface IRepositoryUser {
      * @param iUser
      * @return
      */
-    boolean validateUser(IUser iUser);
+    boolean validateUsername(String username);
 
 
     /**

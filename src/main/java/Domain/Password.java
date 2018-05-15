@@ -24,8 +24,8 @@ import java.util.UUID;
 public class Password implements ISaveablePassword {
     
     private String password;
-    private Date createdDate;
-    private Date experationDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime experationDate;
     private boolean isTemperary;
     
     public Password()
@@ -53,8 +53,16 @@ public class Password implements ISaveablePassword {
     
     private void createPasswordDates()
     {
-        
-        
+
+        LocalDateTime currentDate = LocalDateTime.now();
+
+        // Sets created dste to current date and time
+        this.createdDate = currentDate;
+
+        LocalDateTime experationDate = LocalDateTime.now();
+
+        // sets expiration date to currentdate plus x days
+        this.experationDate = experationDate.plusDays(1);
         
     }
 

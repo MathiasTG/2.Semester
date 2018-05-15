@@ -2,7 +2,8 @@ package DTO;
 
 import Acq.IBuilder;
 import Acq.IUser;
-
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,9 @@ import java.util.UUID;
 /**
  * @author mathias
  */
+
+@Entity
+@Table(name="Inquiry")
 public class Inquiry {
     private UUID id;
     private Citizen citizen;

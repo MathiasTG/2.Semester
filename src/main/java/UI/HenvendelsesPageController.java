@@ -419,7 +419,16 @@ public class HenvendelsesPageController implements Initializable {
      */
     @FXML
     private void handle_createApplication(ActionEvent event) {
+        UI.getDomain().injectInquiry(this.createInquiry(false));
+    }
 
+    @FXML
+    private void handle_saveInquiry(ActionEvent event) {
+        UI.getDomain().injectInquiry(this.createInquiry(true));
+    }
+
+
+    private Inquiry createInquiry(boolean isDraft){
         Representative representative = this.getRepresentative();
         Citizen citizen = getCitizen(representative);
         String description = this.txtAreaInqueryDescription.getText();
@@ -434,6 +443,7 @@ public class HenvendelsesPageController implements Initializable {
         String actingMunicipality = this.txtActingMunicipality.getText();
         String payingMunicipality = this.txtPaymentMunicipality.getText();
         Submitter submitter = this.getSubmitter();
+        List<GatheredConsent> gatheredConsents = this.getGatheredConsent();
 
 
         if(this.togIsConsentRelevantYES.isSelected()){
@@ -470,45 +480,45 @@ public class HenvendelsesPageController implements Initializable {
             intentIsClear = true;
         else
             intentIsClear = false;
-
-
-
-       /* System.out.println("Representative: " + representative.getContactInfo());
-        System.out.println("Citizen: " + citizen.getContactInfo());
+        /*
+        System.out.println("---------- Inquiry --------");
+        System.out.println("IsDraft: " + isDraft);
+        System.out.println("Created by (User): " + user.toString());
         System.out.println("Description: " + description);
-        System.out.println("IntentIsClear? " + intentIsClear);
-        System.out.println("citizenAwareOfInquiry? " + citizenAwareOfInquiry);
-        System.out.println("AgreementOfProgress: " + agreementOfProgress);*/ 
+        System.out.println("IntentIsClear: " + intentIsClear);
+        System.out.println("CitizenAwareOfInquiry: " + citizenAwareOfInquiry);
+        System.out.println("CitizenInformedOfRights: " + citizenInformedOfRights);
+        System.out.println("CitizenInformedOfDataReservation: " + citizenInformedOfDataReservation);
+        System.out.println("AgreementOfProgress: " + agreementOfProgress);
+        System.out.println("ConentType: " + consentType);
+        System.out.println("Gathered consent: " + gatheredConsents);
+        System.out.println("Special conditions: " + specialConditions);
+        System.out.println("Acting municipality: " + actingMunicipality);
+        System.out.println("Paying municipality: " + payingMunicipality);
+        System.out.println("SubmittedBy: " + submitter);
+        System.out.println("IsRelevantToGatherConsent: " + isRelevantToGatherConsent);
 
-        UI.getDomain().injectInquiry(new Inquiry.Builder(this.user).setCitizen(citizen)
+        System.out.println("-----------CITIZEN-----------");
+        System.out.println("CPR: " + citizen.getCpr());
+        System.out.println("Name: " + citizen.getName());
+        System.out.println("Email: " + citizen.getAddress());
+        System.out.println("Phone number: " + citizen.getPhoneNumber());
+        System.out.println("Representative: " + citizen.getRepresentative().getContactInfo());
+        */
+
+                return new Inquiry.Builder(this.user).setCitizen(citizen)
                 .setCreatedBy(user).setDescription(description).setIntentIsClear(intentIsClear)
                 .setCitizenAwareOfInquiry(citizenAwareOfInquiry).setCitizenInformedOfRights(citizenInformedOfRights)
                 .setCitizenInformedOfDataReservation(citizenInformedOfDataReservation)
                 .setAgreementOfProgress(agreementOfProgress).setConsentType(consentType)
-                .setSpecialConditions(specialConditions)
+                .setSpecialConditions(specialConditions).setDraft(isDraft)
                 .setActingMunicipality(actingMunicipality).setPayingMunicipality(payingMunicipality)
                 .setSubmittedBy(submitter).setIsRelevantToGatherConsent(isRelevantToGatherConsent)
-                .addGatheredConsents(this.getGatheredConsent())
-                .build());
-        //Hvor for jeg UUIDid fra? Er det Id op brugeren eller på henvendelsen?
-        //Hvor får jeg supportsVUM? Tror ikke den er implementeret i GUI´en endnu :)
-        // .addGatheredConsents(this.getGatheredConsent()) Fix, kan ikke tage liste. Metoden jeg har lavet
-        //kan ikke tage et Builder objekt, da vi laver det anonymt. Man kan heller ikke få det i et loop,
-        // da det anonyme objekt injectes samtidig med det laves.
+                .addGatheredConsents(gatheredConsents).build();
 
-       /* UI.getInstance().getDomain().injectInquiry(new Inquiry.Builder(this.user).
-        setCitizen(citizen).setDraft(false).setDescription(description)
-        .setIntentIsClear(intentIsClear).setCitizenAwareOfInquiry(citizenAwareOfInquiry);*/
     }
 
-    @FXML
-    private void handle_saveInquiry(ActionEvent event) {
-        
-        System.out.println("save inquiry");
 
-
-        
-    }
 
     @FXML
     private void handle_togGrIsConsentRelevant(ActionEvent event) {

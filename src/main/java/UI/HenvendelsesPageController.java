@@ -359,21 +359,24 @@ public class HenvendelsesPageController implements Initializable {
     from different relevant sources. Returns the list, which is used in the Inquiry class´ constructor.
     Both classes are from the DTO pacakge
      */
-    public void getGatheredConsent(Inquiry.Builder builder){
+    public List<GatheredConsent> getGatheredConsent(){
+        List<GatheredConsent> gatheredConsents = new ArrayList<>();
         if(this.togConsentFromExternalEmployer.isSelected())
-            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
         if(this.togConsentFromExternalSPECIALDOCTOR.isSelected())
-            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
         if(this.togConsentFromExternalHOSPITAL.isSelected())
-            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
         if(this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
-            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
         if(this.togConsentFromOFFER.isSelected())
-            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
         if(this.togConsentFromExternalEmployer.isSelected())
-            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
         if(this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
-            builder.addGatheredConsents(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
+
+        return gatheredConsents;
     }
 
     /*
@@ -470,13 +473,12 @@ public class HenvendelsesPageController implements Initializable {
 
 
 
-
-        System.out.println("Representative: " + representative.getContactInfo());
+       /* System.out.println("Representative: " + representative.getContactInfo());
         System.out.println("Citizen: " + citizen.getContactInfo());
         System.out.println("Description: " + description);
         System.out.println("IntentIsClear? " + intentIsClear);
         System.out.println("citizenAwareOfInquiry? " + citizenAwareOfInquiry);
-        System.out.println("AgreementOfProgress: " + agreementOfProgress);
+        System.out.println("AgreementOfProgress: " + agreementOfProgress);*/ 
 
         UI.getDomain().injectInquiry(new Inquiry.Builder(this.user).setCitizen(citizen)
                 .setCreatedBy(user).setDescription(description).setIntentIsClear(intentIsClear)
@@ -486,6 +488,7 @@ public class HenvendelsesPageController implements Initializable {
                 .setSpecialConditions(specialConditions)
                 .setActingMunicipality(actingMunicipality).setPayingMunicipality(payingMunicipality)
                 .setSubmittedBy(submitter).setIsRelevantToGatherConsent(isRelevantToGatherConsent)
+                .addGatheredConsents(this.getGatheredConsent())
                 .build());
         //Hvor for jeg UUIDid fra? Er det Id op brugeren eller på henvendelsen?
         //Hvor får jeg supportsVUM? Tror ikke den er implementeret i GUI´en endnu :)

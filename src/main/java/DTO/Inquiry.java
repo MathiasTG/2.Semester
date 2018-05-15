@@ -129,8 +129,8 @@ public class Inquiry {
         }
 
 
-        public Inquiry.Builder addGatheredConsents(GatheredConsent... gatheredConsents) {
-            this.gatheredConsents.addAll(Arrays.asList(gatheredConsents));
+        public Inquiry.Builder addGatheredConsents(List<GatheredConsent> gatheredConsents) {
+            this.gatheredConsents = gatheredConsents;
             return this;
         }
 

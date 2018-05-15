@@ -16,7 +16,10 @@ public class InquiryRepository extends AbstractRepository implements IRepository
 
     @Override
     public Inquiry getById(UUID uuid) {
-        return null;
+
+        super.executeStm("SELECT * FROM Inquiry where ID=" + uuid);
+
+        return In
     }
 
     @Override

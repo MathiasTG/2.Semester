@@ -59,7 +59,7 @@ public class LoginPageController implements Initializable {
 
 
 
-        System.out.println("Hej");
+        // vallidates user
 
 
 

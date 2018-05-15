@@ -49,15 +49,15 @@ public class DomainFacade implements IDomainFacade {
             switch (accessright) {
                 case 1:
                     user = new Secretary(username, accessright, new Password());
-                    type = "Sekretær";
+
                     break;
                 case 2:
                     user = new Caseworker(username,accessright, new Password());
-                    type = "Sagsbehandler";
+
                     break;
                 case 3:
                     user = new Admin(username, accessright, new Password());
-                    type = "Admin";
+
                     break;
             }
 

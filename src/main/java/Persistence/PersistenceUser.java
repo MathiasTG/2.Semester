@@ -29,7 +29,7 @@ public class PersistenceUser implements IPersistanceUser {
     @Override
     public UUID getID() {
         return this.id;
-    } s
+    } 
 
     public String getUsername() {
         return this.username;

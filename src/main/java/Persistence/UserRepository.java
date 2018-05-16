@@ -1,15 +1,14 @@
 package Persistence;
 
 import Acq.IPersistanceUser;
-import Acq.IRepositoryUser;
-import Acq.ISaveableUser;
+import Acq.IUserRepository;
 import Acq.IUser;
 
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
 
-public class UserRepository extends AbstractRepository implements IRepositoryUser {
+public class UserRepository extends AbstractRepository implements IUserRepository {
 
 
 
@@ -20,7 +19,8 @@ public class UserRepository extends AbstractRepository implements IRepositoryUse
     }
 
     @Override
-    public ResponseMessage createUser(ISaveableUser iUser) {
+    public ResponseMessage createUser(IUser iUser) {
+       /*
         StringBuilder stmB = new StringBuilder();
 
         stmB.append("insert into password values ")
@@ -38,6 +38,7 @@ public class UserRepository extends AbstractRepository implements IRepositoryUse
         String userStm=stmB.toString();
 
         executeUpdate(pswd,userStm);
+        */
         return super.executeStm("Our statement");
 
     }
@@ -64,6 +65,19 @@ public class UserRepository extends AbstractRepository implements IRepositoryUse
 
     @Override
     public IPersistanceUser login(String userName, String password) {
-        return null;
+
+        String dbId = "a42c0621-b7da-409c-8c9d-baa7b5df067a\n";
+        String _username = "test";
+        int accesRight = 2;
+
+        UUID id = UUID.fromString(dbId);
+
+
+
+
+        IPersistanceUser user = new PersistenceUser(id , _username , accesRight );
+
+
+        return user;
     }
 }

@@ -20,7 +20,7 @@ public class PersistenceFacade implements IPersistenceFacade {
     private PersistenceFile pFile;
     private IConfiguration configurations;
     private Inquiry inquiry;
-    private IRepositoryUser repositoryUser;
+    private IUserRepository userRepository;
     
     public PersistenceFacade()
     {
@@ -30,7 +30,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
         try
         {
-            repositoryUser = new UserRepository();
+            userRepository = new UserRepository();
         }
         catch (SQLException ex)
         {
@@ -47,14 +47,14 @@ public class PersistenceFacade implements IPersistenceFacade {
      */
     @Override
     public boolean verifyUsername(String username) {
-        return repositoryUser.validateUsername(username);
+        return userRepository.validateUsername(username);
     }
     
 
     @Override
     public IResponse createUser(IUser user) {
 
-        ResponseMessage response  = repositoryUser.createUser(user);
+        ResponseMessage response  = userRepository.createUser(user);
 
         if(response.getResponseCode().equals(ResponseCode.SUCCESS))
         {
@@ -68,7 +68,9 @@ public class PersistenceFacade implements IPersistenceFacade {
     public IPersistanceUser login(String userNamer , String password) {
 
 
-        IPersistanceUser user = repositoryUser.login(userNamer , password);
+
+        IPersistanceUser user = userRepository.login(userNamer , password);
+
 
         return user;
     }

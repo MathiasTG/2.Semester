@@ -69,9 +69,11 @@ public class DomainFacade implements IDomainFacade {
         return new Response(false, "Brugernavn er allerede i brug");
     }
 
+
     public void logIn(String userName , String password) {
 
 
+        userManager.login(userName,password);
 
     }
 

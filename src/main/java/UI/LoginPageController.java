@@ -58,12 +58,14 @@ public class LoginPageController implements Initializable {
         }
 
 
+        //login
 
-        // vallidates user
+        UI.getDomain().logIn(txtUsername.getText() , txtPassword.getText());
 
 
 
 
+        // if response is true navigate next page
 
         navigateNextPage(event, "MainPage.fxml");
 

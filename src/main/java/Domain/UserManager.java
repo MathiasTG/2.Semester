@@ -19,9 +19,14 @@ public class UserManager {
     public void login(String userName , String password) {
 
 
+
         IPersistanceUser puser =  persistenceFacade.login(userName , password);
 
+        if (puser == null) {
+            return;
+        }
 
+        // if succesfull do this
 
         switch (puser.getAccessRight()) {
             case 1:
@@ -36,6 +41,9 @@ public class UserManager {
 
         }
 
+
+        // if unsuccesful send error fucking response
+
     }
 
 
@@ -47,7 +55,12 @@ public class UserManager {
     }
 
     public String getUsername() {
-        if (currentUser!= null)
+        if (currentUser != null) {
+
+            return this.currentUser.getUsername();
+        }
+
+        return null;
     }
 
 

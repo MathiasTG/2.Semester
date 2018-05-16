@@ -16,10 +16,11 @@ public class DomainFacade implements IDomainFacade {
 
     private IPersistenceFacade persistenceFacade;
     private Inquiry inquiry;
+    private UserManager userManager;
 
     public DomainFacade() {
 
-
+        userManager = new UserManager();
     }
 
     public IPersistenceFacade getPersistenceFacade() {
@@ -29,7 +30,11 @@ public class DomainFacade implements IDomainFacade {
     @Override
     public void injectPersistence(IPersistenceFacade persistenceFacade) {
          this.persistenceFacade = persistenceFacade;
+         userManager.injectpersistenceFacade(persistenceFacade);
+
     }
+
+
 
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
@@ -65,18 +70,10 @@ public class DomainFacade implements IDomainFacade {
     }
 
     public void logIn(String userName , String password) {
-       IPersistanceUser puser =  persistenceFacade.login(userName , password);
 
-       IUser user = null;
 
-       switch (puser.getAccessRight()) {
-           case 1:
-               user = new Secretary(puser.getUsername() , puser.getAccessRight() , new Password());
-               break;
-           case 2:
-               user = new Caseworker(puser.getUsername() , puser.getAccessRight() , new Password());
 
-       }
     }
+
 
 }

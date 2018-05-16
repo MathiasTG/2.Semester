@@ -1,13 +1,10 @@
 package Acq;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-public interface ISaveablePassword {
+public interface IPersistencePassword {
 
     String getPassword();
     LocalDateTime getExpirationDate();
     boolean getIsTemporary();
-
-
 }

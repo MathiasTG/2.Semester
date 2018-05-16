@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Acq.IResponse;
 import Acq.IUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,14 +61,20 @@ public class LoginPageController implements Initializable {
 
         //login
 
-        UI.getDomain().logIn(txtUsername.getText() , txtPassword.getText());
+       IResponse response = UI.getDomain().logIn(txtUsername.getText() , txtPassword.getText());
 
-
-
+        if(response.isSuccessful())
+        {
+            navigateNextPage(event, "MainPage.fxml");
+        }
+        else
+        {
+            errorLabel.setText(response.getMessage());
+        }
 
         // if response is true navigate next page
 
-        navigateNextPage(event, "MainPage.fxml");
+
 
     }
 

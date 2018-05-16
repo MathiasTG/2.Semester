@@ -1,25 +1,49 @@
 package Persistence;
 
 import Acq.IPersistanceUser;
+import Acq.IPersistencePassword;
 import Acq.IUserRepository;
 import Acq.IUser;
+import Persistence.PersistenceModels.PersistencePassword;
+import Persistence.PersistenceModels.PersistenceUser;
 
-import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 public class UserRepository extends AbstractRepository implements IUserRepository {
 
 
+    private ArrayList<PersistenceUser> users = null;
 
 
-
-    public UserRepository() throws SQLException {
+    public UserRepository() {
         super();
+        populateUsers();
+    }
+
+    private void populateUsers()
+    {
+        users = new ArrayList<>();
+
+        IPersistencePassword pas1 = new PersistencePassword("1234" ,  LocalDateTime.now(), LocalDateTime.now().plusDays(1) , true );
+
+
+        IPersistencePassword pas2 = new PersistencePassword("4567" ,  LocalDateTime.now(), LocalDateTime.now().plusDays(1) , true );
+        PersistenceUser user1 = new PersistenceUser(UUID.randomUUID(), "Casper", 2 , pas1);
+        PersistenceUser user2 = new PersistenceUser(UUID.randomUUID(), "Ulrik", 2, pas2) ;
+        PersistenceUser user3 = new PersistenceUser(UUID.randomUUID(), "Gitte", 1, pas1);
+
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
     }
 
     @Override
     public ResponseMessage createUser(IUser iUser) {
+
+        int myInt = 0;
        /*
         StringBuilder stmB = new StringBuilder();
 
@@ -45,7 +69,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     @Override
     public boolean validateUsername(String username) {
-        return false;
+        return true;
     }
 
     @Override
@@ -66,18 +90,20 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
     @Override
     public IPersistanceUser login(String userName, String password) {
 
-        String dbId = "a42c0621-b7da-409c-8c9d-baa7b5df067a\n";
-        String _username = "test";
-        int accesRight = 2;
-
-        UUID id = UUID.fromString(dbId);
 
 
 
+        for(PersistenceUser user : users)
+        {
+            if(user.getUsername().equals(userName) &&  user.getPersistencePassword().getPassword().equals(password))
+            {
+                IPersistanceUser user1 = new PersistenceUser(user.getID() , user.getUsername() , user.getAccessRight() , user.getPersistencePassword());
 
-        IPersistanceUser user = new PersistenceUser(id , _username , accesRight );
+                return user1;
+            }
+        }
 
+        return null;
 
-        return user;
     }
 }

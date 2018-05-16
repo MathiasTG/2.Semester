@@ -8,6 +8,7 @@ package Persistence;
 import Acq.*;
 import DTO.Inquiry;
 import Domain.Response;
+import Domain.User;
 
 import java.sql.SQLException;
 
@@ -27,17 +28,8 @@ public class PersistenceFacade implements IPersistenceFacade {
         pFile = new PersistenceFile();
         configurations = new Configuration();
 
+        userRepository = new UserRepository();
 
-        try
-        {
-            userRepository = new UserRepository();
-        }
-        catch (SQLException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        System.out.println(ResponseCode.SUCCESS.toString());
     }
     
     /**
@@ -66,9 +58,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 
     public IPersistanceUser login(String userNamer , String password) {
-
-
-
+        
         IPersistanceUser user = userRepository.login(userNamer , password);
 
 

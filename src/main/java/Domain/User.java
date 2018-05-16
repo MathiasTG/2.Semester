@@ -5,7 +5,7 @@
  */
 package Domain;
 
-import Acq.ISaveablePassword;
+
 import Acq.IUser;
 import java.util.UUID;
 

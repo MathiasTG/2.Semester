@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 /**
@@ -24,12 +25,19 @@ import javafx.stage.Stage;
  */
 public class MainPageController implements Initializable {
 
+    @FXML
+    public Label CurrentUserName;
+
+    @FXML
+    public Label CurrentUserTitle;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        SetCurrentUserInfo();
     }    
 
     @FXML
@@ -42,7 +50,9 @@ public class MainPageController implements Initializable {
 
     @FXML
     private void handle_logout(ActionEvent event) throws IOException {
-        
+
+        UI.getDomain().logout();
+
         navigateNextPage(event, "LoginPage.fxml");
     }
 
@@ -55,5 +65,18 @@ public class MainPageController implements Initializable {
         Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
         appStage.setScene(newScene);
         appStage.show();
+    }
+
+    private void SetCurrentUserInfo()
+    {
+        CurrentUserName.setText(UI.getDomain().getCurrentUserName());
+        if(UI.getDomain().getCurrentUserAccessRights() == 1)
+        {
+            CurrentUserTitle.setText("Sekretær");
+        }
+        else
+        {
+            CurrentUserTitle.setText("Sagsbehandler");
+        }
     }
 }

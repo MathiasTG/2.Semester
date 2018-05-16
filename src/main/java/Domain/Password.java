@@ -5,7 +5,7 @@
  */
 package Domain;
 
-import Acq.ISaveablePassword;
+import Acq.IPersistencePassword;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.random;
@@ -21,7 +21,7 @@ import java.util.UUID;
  *
  * @author ulriksandberg
  */
-public class Password implements ISaveablePassword {
+public class Password  {
     
     private String password;
     private LocalDateTime createdDate;
@@ -70,12 +70,12 @@ public class Password implements ISaveablePassword {
         return password;
     }
 
-    @Override
+
     public LocalDateTime getExpirationDate() {
         return experationDate;
     }
 
-    @Override
+
     public boolean getIsTemporary() {
         return isTemperary;
     }

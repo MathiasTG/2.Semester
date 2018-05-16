@@ -34,8 +34,6 @@ public class DomainFacade implements IDomainFacade {
 
     }
 
-
-
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
     }
@@ -70,12 +68,32 @@ public class DomainFacade implements IDomainFacade {
     }
 
 
-    public void logIn(String userName , String password) {
+    public IResponse logIn(String userName , String password) {
 
+      boolean IsSuccesfull = userManager.login(userName,password);
 
-        userManager.login(userName,password);
+      if(IsSuccesfull)
+      {
+          return new Response(true);
+      }
+
+      return new Response(false, "Something went wrong, try again!");
 
     }
 
+    public String getCurrentUserName()
+    {
+        return userManager.getUsername();
+    }
+
+    public int getCurrentUserAccessRights()
+    {
+        return userManager.getAuthenticationLevel();
+    }
+
+    public void logout()
+    {
+        userManager.logout();
+    }
 
 }

@@ -15,7 +15,13 @@ public interface IDomainFacade {
     void injectPersistence(IPersistenceFacade persistenceFacade);
     IResponse createUser(String username, int accesRights);
 
-    void logIn(String userName , String password);
+    IResponse logIn(String userName , String password);
     void injectInquiry(Inquiry inquiry);
+
+    String getCurrentUserName();
+    int getCurrentUserAccessRights();
+
+    void logout();
+
     
 }

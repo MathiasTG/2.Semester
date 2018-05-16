@@ -14,9 +14,14 @@ public abstract class AbstractRepository {
     private static Connection conn;
 
 
-    public AbstractRepository() throws SQLException {
+    public AbstractRepository()  {
         if(conn==null)
-            initiate();
+            try {
+                initiate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
     }
 
     /**

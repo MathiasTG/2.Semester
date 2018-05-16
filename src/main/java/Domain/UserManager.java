@@ -16,34 +16,27 @@ public class UserManager {
     }
 
 
-    public void login(String userName , String password) {
-
-
+    public boolean login(String userName , String password) {
 
         IPersistanceUser puser =  persistenceFacade.login(userName , password);
 
         if (puser == null) {
-            return;
+            return false;
         }
 
         // if succesfull do this
-
         switch (puser.getAccessRight()) {
             case 1:
                 currentUser = new Secretary(puser.getUsername() , puser.getAccessRight() , new Password());
-                break;
+                return true;
             case 2:
                 currentUser = new Caseworker(puser.getUsername() , puser.getAccessRight() , new Password());
-                break;
-
+                return true;
             default:
-                System.out.println("Cant create user with that accesright");
+                System.out.println("Cant login user with that accesright");
+                return false;
 
         }
-
-
-        // if unsuccesful send error fucking response
-
     }
 
 

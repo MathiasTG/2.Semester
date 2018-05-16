@@ -14,8 +14,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="672.0" prefWidth="763.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9" fx:controller="UI.MainPageController">
+<AnchorPane id="AnchorPane" prefHeight="672.0" prefWidth="763.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainPageController">
    <children>
       <Pane layoutX="90.0" layoutY="45.0" prefHeight="717.0" prefWidth="853.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,13 +26,13 @@
                   <Image url="@Sensum%20Udred-logo%20(2).png" />
                </image>
             </ImageView>
-            <Label layoutX="29.0" layoutY="132.0" prefHeight="30.0" prefWidth="134.0" text="Ulrik Sandberg" textFill="WHITE">
+            <Label fx:id="CurrentUserName" layoutX="29.0" layoutY="132.0" prefHeight="30.0" prefWidth="134.0" text="Ulrik Sandberg" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>
             </Label>
             <Button id="rich-blue" layoutX="580.0" layoutY="620.0" mnemonicParsing="false" onAction="#handle_CreateInquiry" stylesheets="@ButtonCSS.css" text="Opret Henvendelse" />
-            <Label layoutX="29.0" layoutY="153.0" prefHeight="30.0" prefWidth="134.0" text="Sagsbehandler" textFill="WHITE">
+            <Label fx:id="CurrentUserTitle" layoutX="29.0" layoutY="153.0" prefHeight="30.0" prefWidth="134.0" text="Sagsbehandler" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>

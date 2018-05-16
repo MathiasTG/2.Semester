@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 public abstract class AbstractRepository {
     private IConfiguration config;
     private static ExecutorService executor;
-    private static Connection conn;
+    protected static Connection conn;
 
 
     public AbstractRepository()  {

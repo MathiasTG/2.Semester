@@ -16,6 +16,8 @@ public interface IPersistenceFacade {
     boolean verifyUsername(String username);
     IResponse createUser(IUser user);
 
+    IPersistanceUser login(String userName , String password);
+
     void injectInquiry(Inquiry inquiry);
     
     

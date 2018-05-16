@@ -1,5 +1,6 @@
 package Persistence;
 
+import Acq.IPersistanceUser;
 import Acq.IRepositoryUser;
 import Acq.ISaveableUser;
 import Acq.IUser;
@@ -62,7 +63,7 @@ public class UserRepository extends AbstractRepository implements IRepositoryUse
     }
 
     @Override
-    public IUser login(String userName, String password) {
+    public IPersistanceUser login(String userName, String password) {
         return null;
     }
 }

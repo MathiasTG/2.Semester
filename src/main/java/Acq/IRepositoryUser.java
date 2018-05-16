@@ -52,9 +52,10 @@ public interface IRepositoryUser {
      * @param password
      * @return
      */
-    IUser login(String userName , String password);
 
 
+
+    IPersistanceUser login(String userName, String password);
 
 
 }

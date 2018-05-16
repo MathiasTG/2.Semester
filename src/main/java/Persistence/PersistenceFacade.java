@@ -64,6 +64,16 @@ public class PersistenceFacade implements IPersistenceFacade {
         return new Response(false, response.getResponseCode().toString());
     }
 
+
+    public IPersistanceUser login(String userNamer , String password) {
+
+
+        IPersistanceUser user = repositoryUser.login(userNamer , password);
+
+        return user;
+    }
+
+
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
     }

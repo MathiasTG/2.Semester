@@ -5,10 +5,7 @@
  */
 package Domain;
 
-import Acq.IDomainFacade;
-import Acq.IPersistenceFacade;
-import Acq.IResponse;
-import Acq.IUser;
+import Acq.*;
 import DTO.Inquiry;
 
 /**
@@ -65,6 +62,21 @@ public class DomainFacade implements IDomainFacade {
             return new Response(true, user.getPassword());
         }
         return new Response(false, "Brugernavn er allerede i brug");
+    }
+
+    public void logIn(String userName , String password) {
+       IPersistanceUser puser =  persistenceFacade.login(userName , password);
+
+       IUser user = null;
+
+       switch (puser.getAccessRight()) {
+           case 1:
+               user = new Secretary(puser.getUsername() , puser.getAccessRight() , new Password());
+               break;
+           case 2:
+               user = new Caseworker(puser.getUsername() , puser.getAccessRight() , new Password());
+
+       }
     }
 
 }

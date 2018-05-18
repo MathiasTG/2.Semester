@@ -8,6 +8,8 @@ package Domain;
 import Acq.*;
 import DTO.Inquiry;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -112,6 +114,30 @@ public class DomainFacade implements IDomainFacade {
     public int getCurrentUserAccessRights()
     {
         return userManager.getAuthenticationLevel();
+    }
+
+    @Override
+    public List<Inquiry> downloadCurrentUserInquiries() {
+
+        return persistenceFacade.downloadCurrentUserInquiries(userManager.getCurrentUser().getID());
+    }
+
+    @Override
+    public List<Inquiry> getInquriesByInquiryId(UUID id) {
+
+        return persistenceFacade.getInquriesByInquiryId(id);
+    }
+
+    @Override
+    public List<Inquiry> getInquiresByCPR(String cpr) {
+
+        return persistenceFacade.getInquiresByCPR(cpr);
+    }
+
+    @Override
+    public List<Inquiry> getInquiresByCitizenName(String name) {
+
+        return persistenceFacade.getInquiresByCitizenName(name);
     }
 
     public void logout()

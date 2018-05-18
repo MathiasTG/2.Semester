@@ -6,6 +6,9 @@ import DTO.Inquiry;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public class InquiryRepository extends AbstractRepository implements IInquiryRepository {
@@ -25,13 +28,105 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     }
 
     @Override
-    public Inquiry getByParameters(String... a) {
-        return null;
+    public List<Inquiry> getInquriesByInquiryId(UUID id) {
+        StringBuilder query = new StringBuilder();
+        //select * from users where users.id = '3b3d1763-d32a-4980-8871-21858c10641b'
+        query.append("SELECT * FROM inquiry WHERE id = " + "'" + id + "'");
+
+        ResultSet result = super.executeStm(query.toString()).getData();
+
+        List<Inquiry> userInquires = new ArrayList<>();
+
+        try {
+
+            while(result.next())
+            {
+                //Map into inquiry
+            }
+            return userInquires;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return userInquires;
+        }
     }
 
     @Override
-    public Inquiry getByUser(IUser user) {
-        return null;
+    public List<Inquiry> getInquiresByCPR(String cpr) {
+        StringBuilder query = new StringBuilder();
+
+        //("Select * From");
+        //("(Select * from inquiry, citizen WHERE inquiry.citizenId = citizen.id) as b ");
+        //("WHERE b.cpr = cpr);
+
+        ResultSet result = super.executeStm(query.toString()).getData();
+
+        List<Inquiry> userInquires = new ArrayList<>();
+
+        try {
+
+            while(result.next())
+            {
+                //Map into inquiry
+            }
+            return userInquires;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return userInquires;
+        }
+    }
+
+    @Override
+    public List<Inquiry> getInquiresByCitizenName(String name) {
+        StringBuilder query = new StringBuilder();
+
+        //("Select * From");
+        //("(Select * from inquiry, citizen WHERE inquiry.citzenId = citizen.id) as b ");
+        //("(WHERE b.cpr = cpr);
+
+        ResultSet result = super.executeStm(query.toString()).getData();
+
+        List<Inquiry> userInquires = new ArrayList<>();
+
+        try {
+
+            while(result.next())
+            {
+                //Map into inquiry
+            }
+            return userInquires;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return userInquires;
+        }
+    }
+
+
+    @Override
+    public List<Inquiry> getAllInquiriesByUserId(UUID id)
+    {
+        StringBuilder query = new StringBuilder();
+        //select * from users where users.id = '3b3d1763-d32a-4980-8871-21858c10641b'
+        query.append("SELECT * FROM inquiry WHERE createdby = " + "'" + id + "'");
+
+        ResultSet result = super.executeStm(query.toString()).getData();
+
+        List<Inquiry> userInquires = new ArrayList<>();
+
+        try {
+
+            while(result.next())
+            {
+                //Map into inquiry
+            }
+            return userInquires;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return userInquires;
+        }
     }
 
     @Override

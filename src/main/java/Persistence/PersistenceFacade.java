@@ -11,6 +11,9 @@ import Domain.Response;
 import Domain.User;
 
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -57,6 +60,26 @@ public class PersistenceFacade implements IPersistenceFacade {
         }
 
         return new Response(false, response.getResponseCode().toString());
+    }
+
+    @Override
+    public List<Inquiry> downloadCurrentUserInquiries(UUID currentUserId) {
+       return inquiryRepository.getAllInquiriesByUserId(currentUserId);
+    }
+
+    @Override
+    public List<Inquiry> getInquriesByInquiryId(UUID id) {
+        return inquiryRepository.getInquriesByInquiryId(id);
+    }
+
+    @Override
+    public List<Inquiry> getInquiresByCPR(String cpr) {
+        return inquiryRepository.getInquiresByCPR(cpr);
+    }
+
+    @Override
+    public List<Inquiry> getInquiresByCitizenName(String name) {
+        return inquiryRepository.getInquiresByCitizenName(name);
     }
 
 

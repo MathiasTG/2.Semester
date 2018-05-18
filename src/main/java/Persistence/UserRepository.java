@@ -15,13 +15,6 @@ import java.util.UUID;
 
 public class UserRepository extends AbstractRepository implements IUserRepository {
 
-
-
-    public UserRepository() {
-        super();
-    }
-
-
     @Override
     public ResponseMessage createUser(IUser iUser) {
 
@@ -76,13 +69,45 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     }
 
+    /**
+     * returns true if username is available,
+     * false if username is taken or an unexpected error happens.
+     * @param username
+     * @return validity
+     */
     @Override
     public boolean validateUsername(String username) {
+        StringBuilder query = new StringBuilder();
+        query.append("Select username from users;");
+        ResponseMessage r = executeStm(query.toString());
+        switch(r.getResponseCode()){
+            case SERVER_UNREACHABLE:
+                return false;
+            case INVALID_SQL:
+                return false;
+            case REJECTED:
+                return false;
+            case EXECUTION_TIMEOUT:
+                return false;
+        }
+        ResultSet set = r.getData();
+        try{
+            while(set.next())
+                if(set.getString(1).equals(username))
+                    return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
     @Override
     public Collection<IUser> getAllUsers(int page, int pageSize) {
+        String q ="Select * from users left join password on users.password =password.password;";
+
+        pass = new PersistencePassword(result.getString(6), LocalDateTime.now(), LocalDateTime.now(), true);
+        user = new PersistenceUser(UUID.fromString(result.getString(1)), result.getString(2), Integer.parseInt(result.getString(4)), pass);
         return null;
     }
 
@@ -128,7 +153,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                 System.out.println(result.getString(7) + "\t");
                 System.out.println(result.getString(8) + "\t");
 
-                pass = new PersistencePassword(result.getString(6), LocalDateTime.now(), LocalDateTime.now(), true);
+                pass = new PersistencePassword(result.getString(6), null, result.getDate(), true);
                 user = new PersistenceUser(UUID.fromString(result.getString(1)), result.getString(2), Integer.parseInt(result.getString(4)), pass);
 
             }

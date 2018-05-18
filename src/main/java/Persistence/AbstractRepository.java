@@ -1,10 +1,10 @@
 package Persistence;
 
 
+import javax.swing.plaf.FontUIResource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -37,8 +37,8 @@ public abstract class AbstractRepository {
 
     protected ResponseMessage executeStm(final String statement){
         //response message is final because we need to access it from a seperate thread.
-        final ResponseMessage res = new ResponseMessage();
-        executor.execute(()-> {
+        ResponseMessage res = new ResponseMessage();
+        Future<ResponseMessage> t =executor.submit(()-> {
             {
                 try {
                     synchronized (conn) {
@@ -51,21 +51,23 @@ public abstract class AbstractRepository {
                     res.setResponseCode(ResponseCode.REJECTED);
                 }
             }
-        });
-        executor.shutdown();
-        try {
-            executor.awaitTermination(Long.MAX_VALUE,TimeUnit.NANOSECONDS);
-        } catch (InterruptedException e) {
-            res.setResponseCode(ResponseCode.EXECUTION_TIMEOUT);
+        },res);
+        while (!t.isDone()) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return res;
     }
 
 
     protected ResponseCode executeUpdate(final String... statements){
+        List<Future> list = new ArrayList<>();
         final ResponseCode[] res = new ResponseCode[1];
         Arrays.asList(statements).forEach( t ->
-            executor.execute(()-> {
+            list.add(executor.submit(()-> {
                 {
                     try {
                         synchronized (conn) {
@@ -77,13 +79,16 @@ public abstract class AbstractRepository {
                        res[0] =ResponseCode.REJECTED;
                     }
                 }
-            }));
+            })));
 
-        executor.shutdown();
-        try {
-            executor.awaitTermination(Long.MAX_VALUE,TimeUnit.NANOSECONDS);
-        } catch (InterruptedException e) {
-            res[0]=ResponseCode.EXECUTION_TIMEOUT;
+        for(Future f : list){
+            while(!f.isDone()) {
+                try {
+                    Thread.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return res[0];
     }

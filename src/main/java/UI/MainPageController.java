@@ -44,8 +44,6 @@ public class MainPageController implements Initializable {
     private void handle_CreateInquiry(ActionEvent event) throws IOException {
         
         navigateNextPage(event, "HenvendelsesPage.fxml");
-        
-        
     }
 
     @FXML

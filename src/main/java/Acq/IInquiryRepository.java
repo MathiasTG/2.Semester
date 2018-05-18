@@ -35,7 +35,7 @@ public interface IInquiryRepository {
     Inquiry getByUser(IUser user);
 
 
-    ResponseMessage create(Inquiry inquiry);
+    void create(Inquiry inquiry);
 
     /**
      *

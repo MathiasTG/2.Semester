@@ -35,16 +35,16 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     }
 
     @Override
-    public ResponseMessage create(Inquiry inquiry) {
+    public void create(Inquiry inquiry) {
 
         StringBuilder inquiryBuilder = new StringBuilder();
         inquiryBuilder.append("INSERT INTO Inquiry VALUES('");
         inquiryBuilder.append(inquiry.getId() + "', ");
         inquiryBuilder.append(inquiry.isDraft() + ", ");
         inquiryBuilder.append(inquiry.isSupportsVUM() + ", ");
-        if(inquiry.getCreatedBy() != null){
+        if (inquiry.getCreatedBy() != null) {
             inquiryBuilder.append("'" + inquiry.getCreatedBy() + "', '");
-        }else{
+        } else {
             inquiryBuilder.append(inquiry.getCreatedBy() + ", '");
         }
         inquiryBuilder.append(inquiry.getDescription() + "', ");
@@ -54,21 +54,19 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         inquiryBuilder.append(inquiry.isCitizenInformedOfDataReservation() + ", '");
         inquiryBuilder.append(inquiry.getAgreementOfProgress() + "', '");
         inquiryBuilder.append(inquiry.getSpecialConditions() + "', ");
-        if(inquiry.getActingMunicipality() != null){
+        if (inquiry.getActingMunicipality() != null) {
             inquiryBuilder.append("'" + inquiry.getActingMunicipality() + "', ");
-        }else{
+        } else {
             inquiryBuilder.append(inquiry.getActingMunicipality() + ", ");
         }
-        if(inquiry.getPayingMunicipality() != null){
+        if (inquiry.getPayingMunicipality() != null) {
             inquiryBuilder.append("'" + inquiry.getPayingMunicipality() + "');");
-        }else{
+        } else {
             inquiryBuilder.append(inquiry.getPayingMunicipality() + ");");
         }
 
 
-
-
-        return null;
+        ResultSet result = executeStm(inquiryBuilder.toString()).getData();
     }
 
     @Override

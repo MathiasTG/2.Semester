@@ -6,6 +6,7 @@
 package Domain;
 
 import Acq.*;
+import DTO.ConsentEntity;
 import DTO.Inquiry;
 
 import java.util.UUID;
@@ -38,6 +39,11 @@ public class DomainFacade implements IDomainFacade {
 
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
+        try {
+            prepareInquiry();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     private void prepareInquiry() throws Exception {
@@ -47,10 +53,12 @@ public class DomainFacade implements IDomainFacade {
         {
             this.inquiry.setCreatedBy(userManager.getCurrentUser());
             //Create inquiry
+            persistenceFacade.injectInquiry(this.inquiry);
         }
-
-        //Reject
-        throw new Exception("Can't create inquiry when no user is logged-in");
+        else {
+            //Reject
+            throw new Exception("Can't create inquiry when no user is logged-in");
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package Acq;
 
 import DTO.Inquiry;
+import Persistence.ResponseMessage;
 
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public interface IInquiryRepository {
     Inquiry getByUser(IUser user);
 
 
-
+    ResponseMessage create(Inquiry inquiry);
 
     /**
      *

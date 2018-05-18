@@ -40,6 +40,30 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     }
 
     @Override
+    public ResponseMessage create(Inquiry inquiry) {
+
+        StringBuilder inquiryBuilder = new StringBuilder();
+        inquiryBuilder.append("INSERT INTO Inquiry VALUES('");
+        inquiryBuilder.append(inquiry.getId() + "', ");
+        inquiryBuilder.append(inquiry.isDraft() + ", ");
+        inquiryBuilder.append(inquiry.isSupportsVUM() + ", ");
+        inquiryBuilder.append(inquiry.getCreatedBy() + ", ");
+        inquiryBuilder.append(inquiry.getDescription() + ", ");
+        inquiryBuilder.append(inquiry.isIntentIsClear() + ", ");
+        inquiryBuilder.append(inquiry.isCitizenAwareOfInquiry() + ", ");
+        inquiryBuilder.append(inquiry.isCitizenInformedOfRights() + ", ");
+        inquiryBuilder.append(inquiry.isCitizenInformedOfDataReservation() + ", ");
+        inquiryBuilder.append(inquiry.getAgreementOfProgress() + ", ");
+        inquiryBuilder.append(inquiry.getSpecialConditions() + ", ");
+        inquiryBuilder.append(inquiry.getActingMunicipality() + ", ");
+        inquiryBuilder.append(inquiry.getPayingMunicipality() + ");");
+
+
+
+        return null;
+    }
+
+    @Override
     public void save(Inquiry inquiry) {
 
     }
@@ -48,4 +72,6 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     public void delete(Inquiry inquiry) {
 
     }
+
+
 }

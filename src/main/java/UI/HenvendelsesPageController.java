@@ -179,8 +179,7 @@ public class HenvendelsesPageController implements Initializable {
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
 
-        //******* NOT THE ACTUAL USER, DELETE WHEN LOGIN AND CREATE USER IS IMPLEMENTED!!!!!!!!!!!!! *******************
-        this.user = new Caseworker("Ulrik", 10, new Password());
+        user = null;
     }    
 
     @FXML
@@ -341,6 +340,8 @@ public class HenvendelsesPageController implements Initializable {
         String address = this.txtCitizenAddress.getText();
         String email = this.txtCitizenEmail.getText();
         int phoneNumber;
+        // TODO
+        // check for input mismatch exception
         if(this.txtCitizenPhone.getText().matches("\\d*")) {
             phoneNumber = Integer.parseInt(this.txtCitizenPhone.getText());
         } else

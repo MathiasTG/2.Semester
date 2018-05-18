@@ -553,7 +553,7 @@ public class HenvendelsesPageController implements Initializable {
         if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
             this.txtCitizenCPR.setStyle("-fx-background-color: red;");
         else
-            this.txtCitizenCPR.setStyle("-fx-background-color: grey;");
+            this.txtCitizenCPR.setStyle("-fx-background-color: lightgrey;");
     }
 
     @FXML

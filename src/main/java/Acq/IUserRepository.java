@@ -5,19 +5,19 @@ import Persistence.ResponseMessage;
 import java.util.Collection;
 import java.util.UUID;
 
-public interface IRepositoryUser {
+public interface IUserRepository {
 
 
     /**
      *
      * @param iUser
      */
-    ResponseMessage createUser(ISaveableUser iUser);
+    ResponseMessage createUser(IUser iUser);
 
 
     /**
      *
-     * @param iUser
+     * @param IUser
      * @return
      */
     boolean validateUsername(String username);
@@ -52,9 +52,10 @@ public interface IRepositoryUser {
      * @param password
      * @return
      */
-    IUser login(String userName , String password);
 
 
+
+    IPersistanceUser login(String userName, String password);
 
 
 }

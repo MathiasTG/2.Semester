@@ -5,11 +5,10 @@
  */
 package Domain;
 
-import Acq.IDomainFacade;
-import Acq.IPersistenceFacade;
-import Acq.IResponse;
-import Acq.IUser;
+import Acq.*;
 import DTO.Inquiry;
+
+import java.util.UUID;
 
 /**
  *
@@ -19,10 +18,11 @@ public class DomainFacade implements IDomainFacade {
 
     private IPersistenceFacade persistenceFacade;
     private Inquiry inquiry;
+    private UserManager userManager;
 
     public DomainFacade() {
 
-
+        userManager = new UserManager();
     }
 
     public IPersistenceFacade getPersistenceFacade() {
@@ -32,10 +32,25 @@ public class DomainFacade implements IDomainFacade {
     @Override
     public void injectPersistence(IPersistenceFacade persistenceFacade) {
          this.persistenceFacade = persistenceFacade;
+         userManager.injectpersistenceFacade(persistenceFacade);
+
     }
 
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
+    }
+
+    private void prepareInquiry() throws Exception {
+        this.inquiry.setId(UUID.randomUUID());
+        IUser currentUser = userManager.getCurrentUser();
+        if(currentUser != null)
+        {
+            this.inquiry.setCreatedBy(userManager.getCurrentUser());
+            //Create inquiry
+        }
+
+        //Reject
+        throw new Exception("Can't create inquiry when no user is logged-in");
     }
 
     @Override
@@ -65,6 +80,35 @@ public class DomainFacade implements IDomainFacade {
             return new Response(true, user.getPassword());
         }
         return new Response(false, "Brugernavn er allerede i brug");
+    }
+
+
+    public IResponse logIn(String userName , String password) {
+
+      boolean IsSuccesfull = userManager.login(userName,password);
+
+      if(IsSuccesfull)
+      {
+          return new Response(true);
+      }
+
+      return new Response(false, "Something went wrong, try again!");
+
+    }
+
+    public String getCurrentUserName()
+    {
+        return userManager.getUsername();
+    }
+
+    public int getCurrentUserAccessRights()
+    {
+        return userManager.getAuthenticationLevel();
+    }
+
+    public void logout()
+    {
+        userManager.logout();
     }
 
 }

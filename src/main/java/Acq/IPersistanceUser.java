@@ -2,9 +2,11 @@ package Acq;
 
 import java.util.UUID;
 
-public interface ISaveableUser {
+public interface IPersistanceUser {
+
+
     UUID getID();
     String getUsername();
-    ISaveablePassword getPassword();
+
     int getAccessRight();
 }

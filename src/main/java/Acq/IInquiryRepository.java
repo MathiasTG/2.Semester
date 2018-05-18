@@ -4,7 +4,7 @@ import DTO.Inquiry;
 
 import java.util.UUID;
 
-public interface IRepositoryInquiry {
+public interface IInquiryRepository {
 
 
 

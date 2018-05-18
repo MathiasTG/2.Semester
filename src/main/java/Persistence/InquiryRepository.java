@@ -1,6 +1,6 @@
 package Persistence;
 
-import Acq.IRepositoryInquiry;
+import Acq.IInquiryRepository;
 import Acq.IUser;
 import DTO.Inquiry;
 
@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class InquiryRepository extends AbstractRepository implements IRepositoryInquiry {
+public class InquiryRepository extends AbstractRepository implements IInquiryRepository {
 
 
     public InquiryRepository() throws SQLException {

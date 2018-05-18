@@ -1,5 +1,7 @@
 package Domain;
 
+import java.util.regex.Pattern;
+
 public class Validate {
 
 
@@ -14,14 +16,19 @@ public class Validate {
     }
 
     public boolean validateEmail(String email){
-        if(!email.contains("@"))
-            return false;
-        if (!email.contains("."))
-            return false;
-        if(email.contains(" "))
-            return false;
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{1,7}$";
 
-        return true;
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        if(pat.matcher(email).matches())
+            return true;
+        else
+            return false;
     }
 
 

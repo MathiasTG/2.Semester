@@ -30,7 +30,7 @@ public class PersistenceFacade implements IPersistenceFacade {
         configurations = new Configuration();
 
         userRepository = new UserRepository();
-        //inquiryRepository = new InquiryRepository();
+        inquiryRepository = new InquiryRepository();
 
 
     }
@@ -69,7 +69,7 @@ public class PersistenceFacade implements IPersistenceFacade {
 
 
     public void injectInquiry(Inquiry inquiry){
-        this.inquiry = inquiry;
 
+        inquiryRepository.create(inquiry);
     }
 }

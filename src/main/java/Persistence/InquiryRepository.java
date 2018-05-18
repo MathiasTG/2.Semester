@@ -10,11 +10,6 @@ import java.util.UUID;
 
 public class InquiryRepository extends AbstractRepository implements IInquiryRepository {
 
-
-    public InquiryRepository() throws SQLException {
-        super();
-    }
-
     @Override
     public Inquiry getById(UUID uuid) {
 

@@ -42,7 +42,12 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
         userBuilder.append(passId.toString() + "', ");
         userBuilder.append(iUser.getAccessRight() + ")");
 
-        try
+
+        //alternative løsning
+        ResponseCode r = executeUpdate(passBuilder.toString(),userBuilder.toString());
+        return new ResponseMessage(null,r);
+
+        /*try
         {
             Statement p = conn.createStatement();
 
@@ -64,7 +69,8 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             ex.printStackTrace();
 
             return new ResponseMessage(null, ResponseCode.INVALID_SQL);
-        }
+        }*/
+
 
 
     }
@@ -106,11 +112,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
         try {
 
-            Statement query = conn.createStatement();
-
             ResultSet result = executeStm(loginQuery.toString()).getData();
-            //ResultSet result = query.executeQuery(loginQuery.toString());
-
             IPersistencePassword pass = null;
             IPersistanceUser user = null;
 

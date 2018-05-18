@@ -29,12 +29,20 @@ public abstract class AbstractRepository {
      */
     private void initiate() throws SQLException{
         config=new Configuration();
-        conn= DriverManager.getConnection(config.getServerUrl(),config.getUsername(),config.getPassword());
         executor= Executors.newFixedThreadPool(3);
+    }
+    private void startConnection() {
+        try {
+            conn= DriverManager.getConnection(config.getServerUrl(),config.getUsername(),config.getPassword());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
+
     protected ResponseMessage executeStm(final String statement){
+        startConnection();
         //response message is final because we need to access it from a seperate thread.
         ResponseMessage res = new ResponseMessage();
         Future<ResponseMessage> t =executor.submit(()-> {
@@ -58,11 +66,17 @@ public abstract class AbstractRepository {
                 e.printStackTrace();
             }
         }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 
 
     protected ResponseCode executeUpdate(final String... statements){
+        startConnection();
         List<Future> list = new ArrayList<>();
         final ResponseCode[] res = new ResponseCode[1];
         Arrays.asList(statements).forEach( t ->
@@ -88,6 +102,12 @@ public abstract class AbstractRepository {
                     e.printStackTrace();
                 }
             }
+        }
+        
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return res[0];
     }

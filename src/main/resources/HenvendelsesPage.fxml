@@ -53,8 +53,11 @@
                               <Label layoutX="24.0" layoutY="133.0" prefHeight="17.0" prefWidth="269.0" text="Hvad drejer henvendelsen sig om?" />
                               <TextArea fx:id="txtAreaInqueryDescription" layoutX="23.0" layoutY="160.0" prefHeight="149.0" prefWidth="538.0" promptText="Beskriv problemstillingen og hvilken behov for hjælp der bliver efterspurgt..." wrapText="true" />
                               <TextField fx:id="txtCitizenAddress" layoutX="211.0" layoutY="48.0" promptText="Borgerens Addresse" stylesheets="@ButtonCSS.css" />
-                              <TextField fx:id="txtCitizenEmail" layoutX="210.0" layoutY="89.0" onKeyTyped="#onKeyTypedEmail" promptText="Email: XXXXXXXX" stylesheets="@ButtonCSS.css" />
+                              <TextField fx:id="txtCitizenEmail" layoutX="211.0" layoutY="88.0" onKeyTyped="#onKeyTypedEmail" promptText="Email: XXXXXXXX" stylesheets="@ButtonCSS.css" />
                               <TextField fx:id="txtCitizenPhone" layoutX="392.0" layoutY="48.0" onKeyTyped="#onKeyPressedTelephone" promptText="Telefon: XX XX XX XX" stylesheets="@ButtonCSS.css" />
+                              <Rectangle fx:id="rectangleCPRError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="4.0" layoutX="25.0" layoutY="118.0" stroke="BLACK" strokeType="INSIDE" width="182.0" />
+                              <Rectangle fx:id="rectangleEmailError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="4.0" layoutX="213.0" layoutY="118.0" stroke="BLACK" strokeType="INSIDE" width="182.0" />
+                              <Rectangle fx:id="rectangleTelephoneError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="4.0" layoutX="397.0" layoutY="77.0" stroke="BLACK" strokeType="INSIDE" width="184.0" />
                            </children>
                         </Pane>
                         <GridPane id=".grid" fx:id="gridPane" gridLinesVisible="true" prefHeight="2612.0" prefWidth="572.0" stylesheets="@ButtonCSS.css">

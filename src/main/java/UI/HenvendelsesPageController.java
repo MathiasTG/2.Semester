@@ -29,6 +29,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import DTO.*;
 import javafx.scene.control.TextArea;
@@ -169,6 +170,12 @@ public class HenvendelsesPageController implements Initializable {
     private TextArea textAreaConsentFromOTHERMANAGEMENT;
     @FXML
     private TextArea textAreaConsentFromOFFER;
+    @FXML
+    private Rectangle rectangleCPRError;
+    @FXML
+    private Rectangle rectangleTelephoneError;
+    @FXML
+    private Rectangle rectangleEmailError;
 
 
 
@@ -178,6 +185,9 @@ public class HenvendelsesPageController implements Initializable {
         gridPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         togHowIsConsentGivenVERBAL.setDisable(true);
         togHowIsConsentGivenWRITEN.setDisable(true);
+        this.rectangleCPRError.setVisible(false);
+        this.rectangleTelephoneError.setVisible(false);
+        this.rectangleEmailError.setVisible(false);
         textAreaRepresentativeContactInfo.setDisable(true);
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
@@ -543,24 +553,26 @@ public class HenvendelsesPageController implements Initializable {
     @FXML
     private void onKeyPressedTelephone(KeyEvent event) {
         if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
-            this.txtCitizenPhone.setStyle("-fx-background-color: red;");
+            this.rectangleTelephoneError.setVisible(true);
         else
-            this.txtCitizenPhone.setStyle("-fx-background-color: grey;");
+            this.rectangleTelephoneError.setVisible(false);
     }
 
     @FXML
     private void onKeyPressedCPR(KeyEvent event){
         if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
-            this.txtCitizenCPR.setStyle("-fx-background-color: red;");
+            this.rectangleCPRError.setVisible(true);
         else
-            this.txtCitizenCPR.setStyle("-fx-background-color: lightgrey;");
+            this.rectangleCPRError.setVisible(false);
     }
+
+
 
     @FXML
     private void onKeyTypedEmail(KeyEvent event){
         if (!UI.getDomain().validateEmail(this.txtCitizenEmail.getText()))
-            this.txtCitizenEmail.setStyle("-fx-background-color: red;");
+            this.rectangleEmailError.setVisible(true);
         else
-            this.txtCitizenEmail.setStyle("-fx-background-color: grey");
+            this.rectangleEmailError.setVisible(false);
     }
 }

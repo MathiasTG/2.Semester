@@ -179,8 +179,7 @@ public class HenvendelsesPageController implements Initializable {
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
 
-        //******* NOT THE ACTUAL USER, DELETE WHEN LOGIN AND CREATE USER IS IMPLEMENTED!!!!!!!!!!!!! *******************
-        this.user = new Caseworker("Ulrik", 10, new Password());
+        user = null;
     }    
 
     @FXML

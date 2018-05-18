@@ -42,16 +42,29 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         inquiryBuilder.append(inquiry.getId() + "', ");
         inquiryBuilder.append(inquiry.isDraft() + ", ");
         inquiryBuilder.append(inquiry.isSupportsVUM() + ", ");
-        inquiryBuilder.append(inquiry.getCreatedBy() + ", ");
-        inquiryBuilder.append(inquiry.getDescription() + ", ");
+        if(inquiry.getCreatedBy() != null){
+            inquiryBuilder.append("'" + inquiry.getCreatedBy() + "', '");
+        }else{
+            inquiryBuilder.append(inquiry.getCreatedBy() + ", '");
+        }
+        inquiryBuilder.append(inquiry.getDescription() + "', ");
         inquiryBuilder.append(inquiry.isIntentIsClear() + ", ");
         inquiryBuilder.append(inquiry.isCitizenAwareOfInquiry() + ", ");
         inquiryBuilder.append(inquiry.isCitizenInformedOfRights() + ", ");
-        inquiryBuilder.append(inquiry.isCitizenInformedOfDataReservation() + ", ");
-        inquiryBuilder.append(inquiry.getAgreementOfProgress() + ", ");
-        inquiryBuilder.append(inquiry.getSpecialConditions() + ", ");
-        inquiryBuilder.append(inquiry.getActingMunicipality() + ", ");
-        inquiryBuilder.append(inquiry.getPayingMunicipality() + ");");
+        inquiryBuilder.append(inquiry.isCitizenInformedOfDataReservation() + ", '");
+        inquiryBuilder.append(inquiry.getAgreementOfProgress() + "', '");
+        inquiryBuilder.append(inquiry.getSpecialConditions() + "', ");
+        if(inquiry.getActingMunicipality() != null){
+            inquiryBuilder.append("'" + inquiry.getActingMunicipality() + "', ");
+        }else{
+            inquiryBuilder.append(inquiry.getActingMunicipality() + ", ");
+        }
+        if(inquiry.getPayingMunicipality() != null){
+            inquiryBuilder.append("'" + inquiry.getPayingMunicipality() + "');");
+        }else{
+            inquiryBuilder.append(inquiry.getPayingMunicipality() + ");");
+        }
+
 
 
 

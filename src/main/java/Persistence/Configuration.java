@@ -11,9 +11,9 @@ package Persistence;
  */
 public class Configuration implements IConfiguration {
 
-    String serverUrl = "jdbc:postgresql://horton.elephantsql.com:5432/kkkjzdmr"; //"jdbc:mysql://mysql54.unoeuro.com:3306/bring_software_com_db";
-    String username = "kkkjzdmr"; //"bring_software_com";
-    String password ="hqspkZQtqwtMEw-tjfL1RFz8xQznjQQQ";// "Ntc53aqT";
+    String serverUrl = "jdbc:postgresql://horton.elephantsql.com:5432/kkkjzdmr";
+    String username = "kkkjzdmr";
+    String password ="hqspkZQtqwtMEw-tjfL1RFz8xQznjQQQ";
     
 
     public String getServerUrl() {

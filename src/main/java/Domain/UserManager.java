@@ -40,6 +40,11 @@ public class UserManager {
     }
 
 
+    public IUser getCurrentUser()
+    {
+        return currentUser;
+    }
+
     public int getAuthenticationLevel() {
         if (currentUser!= null) {
            return currentUser.getAccessRight();

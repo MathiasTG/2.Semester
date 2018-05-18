@@ -8,6 +8,8 @@ package Domain;
 import Acq.*;
 import DTO.Inquiry;
 
+import java.util.UUID;
+
 /**
  *
  * @author ulriksandberg
@@ -36,6 +38,19 @@ public class DomainFacade implements IDomainFacade {
 
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
+    }
+
+    private void prepareInquiry() throws Exception {
+        this.inquiry.setId(UUID.randomUUID());
+        IUser currentUser = userManager.getCurrentUser();
+        if(currentUser != null)
+        {
+            this.inquiry.setCreatedBy(userManager.getCurrentUser());
+            //Create inquiry
+        }
+
+        //Reject
+        throw new Exception("Can't create inquiry when no user is logged-in");
     }
 
     @Override

@@ -103,7 +103,7 @@ public abstract class AbstractRepository {
                 }
             }
         }
-        
+
         try {
             conn.close();
         } catch (SQLException e) {

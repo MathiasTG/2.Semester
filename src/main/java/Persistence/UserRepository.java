@@ -108,7 +108,8 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
             Statement query = conn.createStatement();
 
-            ResultSet result = query.executeQuery(loginQuery.toString());
+            ResultSet result = executeStm(loginQuery.toString()).getData();
+            //ResultSet result = query.executeQuery(loginQuery.toString());
 
             IPersistencePassword pass = null;
             IPersistanceUser user = null;

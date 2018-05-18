@@ -22,6 +22,7 @@ public class PersistenceFacade implements IPersistenceFacade {
     private IConfiguration configurations;
     private Inquiry inquiry;
     private IUserRepository userRepository;
+    private IInquiryRepository inquiryRepository;
     
     public PersistenceFacade()
     {
@@ -29,6 +30,8 @@ public class PersistenceFacade implements IPersistenceFacade {
         configurations = new Configuration();
 
         userRepository = new UserRepository();
+        inquiryRepository = new InquiryRepository();
+
 
     }
     
@@ -61,13 +64,12 @@ public class PersistenceFacade implements IPersistenceFacade {
         
         IPersistanceUser user = userRepository.login(userNamer , password);
 
-
         return user;
     }
 
 
     public void injectInquiry(Inquiry inquiry){
-        this.inquiry = inquiry;
+
+        inquiryRepository.create(inquiry);
     }
-    
 }

@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import DTO.*;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
@@ -167,6 +168,7 @@ public class HenvendelsesPageController implements Initializable {
     private TextArea textAreaConsentFromOTHERMANAGEMENT;
     @FXML
     private TextArea textAreaConsentFromOFFER;
+
 
 
     @Override
@@ -536,6 +538,10 @@ public class HenvendelsesPageController implements Initializable {
         }
         
     }
-    
+
+    @FXML
+    private void onKeyPressedTelephone(KeyEvent event) {
+        
+    }
     
 }

@@ -23,5 +23,9 @@ public interface IDomainFacade {
 
     void logout();
 
+    boolean validateNumber(int lenght, String value);
+
+    boolean validateEmail(String email);
+
     
 }

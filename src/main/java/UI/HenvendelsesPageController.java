@@ -8,6 +8,7 @@ package UI;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.security.Key;
 import java.util.*;
 
 import Acq.IUser;
@@ -541,7 +542,25 @@ public class HenvendelsesPageController implements Initializable {
 
     @FXML
     private void onKeyPressedTelephone(KeyEvent event) {
-        
+        if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
+            this.txtCitizenPhone.setStyle("-fx-background-color: red;");
+        else
+            this.txtCitizenPhone.setStyle("-fx-background-color: grey;");
     }
-    
+
+    @FXML
+    private void onKeyPressedCPR(KeyEvent event){
+        if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
+            this.txtCitizenCPR.setStyle("-fx-background-color: red;");
+        else
+            this.txtCitizenCPR.setStyle("-fx-background-color: grey;");
+    }
+
+    @FXML
+    private void onKeyTypedEmail(KeyEvent event){
+        if (!UI.getDomain().validateEmail(this.txtCitizenEmail.getText()))
+            this.txtCitizenEmail.setStyle("-fx-background-color: red;");
+        else
+            this.txtCitizenEmail.setStyle("-fx-background-color: grey");
+    }
 }

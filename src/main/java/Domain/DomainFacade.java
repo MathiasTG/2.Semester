@@ -6,7 +6,6 @@
 package Domain;
 
 import Acq.*;
-import DTO.ConsentEntity;
 import DTO.Inquiry;
 
 import java.util.UUID;
@@ -20,9 +19,10 @@ public class DomainFacade implements IDomainFacade {
     private IPersistenceFacade persistenceFacade;
     private Inquiry inquiry;
     private UserManager userManager;
+    private Validate validate;
 
     public DomainFacade() {
-
+        this.validate = new Validate();
         userManager = new UserManager();
     }
 
@@ -117,6 +117,14 @@ public class DomainFacade implements IDomainFacade {
     public void logout()
     {
         userManager.logout();
+    }
+
+    public boolean validateNumber(int lenght, String value){
+        return this.validate.validateNumber(lenght, value);
+    }
+
+    public boolean validateEmail(String email){
+        return this.validate.validateEmail(email);
     }
 
 }

@@ -191,7 +191,6 @@ public class HenvendelsesPageController implements Initializable {
         textAreaRepresentativeContactInfo.setDisable(true);
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
-
         user = null;
     }    
 

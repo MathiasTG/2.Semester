@@ -27,10 +27,10 @@ public class UserManager {
         // if succesfull do this
         switch (puser.getAccessRight()) {
             case 1:
-                currentUser = new Secretary(puser.getUsername() , puser.getAccessRight() , new Password());
+                currentUser = new Secretary(puser.getID(), puser.getUsername(), puser.getAccessRight());
                 return true;
             case 2:
-                currentUser = new Caseworker(puser.getUsername() , puser.getAccessRight() , new Password());
+                currentUser = new Caseworker(puser.getID(), puser.getUsername(), puser.getAccessRight());
                 return true;
             default:
                 System.out.println("Cant login user with that accesright");

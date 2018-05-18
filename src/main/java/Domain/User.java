@@ -30,5 +30,12 @@ public abstract class User implements IUser {
         this.password = password;
         
     }
+
+    public User(UUID id, String username, int accesRight)
+    {
+        this.id = id;
+        this.username = username;
+        this.accessRight = accesRight;
+    }
     
 }

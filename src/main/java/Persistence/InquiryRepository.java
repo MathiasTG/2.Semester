@@ -43,7 +43,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         inquiryBuilder.append(inquiry.isDraft() + ", ");
         inquiryBuilder.append(inquiry.isSupportsVUM() + ", ");
         if (inquiry.getCreatedBy() != null) {
-            inquiryBuilder.append("'" + inquiry.getCreatedBy() + "', '");
+            inquiryBuilder.append("'" + inquiry.getCreatedBy().getID().toString() + "', '");
         } else {
             inquiryBuilder.append(inquiry.getCreatedBy() + ", '");
         }
@@ -65,8 +65,14 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             inquiryBuilder.append(inquiry.getPayingMunicipality() + ");");
         }
 
-
-        ResultSet result = executeStm(inquiryBuilder.toString()).getData();
+        if(executeUpdate(inquiryBuilder.toString()).equals(ResponseCode.SUCCESS))
+        {
+            System.out.println("Mega godt");
+        }
+        else
+        {
+            System.out.println("Knap så godt");
+        }
     }
 
     @Override

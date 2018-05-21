@@ -75,7 +75,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
     }
 
     @Override
-    public Collection<IPersistanceUser> getAllUsers(int page, int pageSize) {
+    public List<IPersistanceUser> getAllUsers(int page, int pageSize) {
         List<IPersistanceUser> list = new ArrayList<>();
         int from = (pageSize*page)-(pageSize);
         int to = (pageSize*page)-1;

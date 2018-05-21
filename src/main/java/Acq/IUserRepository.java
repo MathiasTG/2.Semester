@@ -3,6 +3,7 @@ package Acq;
 import Persistence.ResponseMessage;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public interface IUserRepository {
@@ -29,7 +30,7 @@ public interface IUserRepository {
      * @param pageSize
      * @return
      */
-    Collection<IPersistanceUser> getAllUsers(int page , int pageSize);
+    List<IPersistanceUser> getAllUsers(int page , int pageSize);
 
 
     /**

@@ -22,10 +22,12 @@ public class DomainFacade implements IDomainFacade {
     private Inquiry inquiry;
     private UserManager userManager;
     private Validate validate;
+    private DataManager dataMan;
 
     public DomainFacade() {
         this.validate = new Validate();
         userManager = new UserManager();
+        dataMan = new DataManager();
     }
 
     public IPersistenceFacade getPersistenceFacade() {
@@ -38,6 +40,8 @@ public class DomainFacade implements IDomainFacade {
          userManager.injectpersistenceFacade(persistenceFacade);
 
     }
+
+    public IPersistenceFacade getPersistence(){ return this.persistenceFacade;}
 
     public void injectInquiry(Inquiry inquiry){
         this.inquiry = inquiry;
@@ -81,7 +85,7 @@ public class DomainFacade implements IDomainFacade {
 
                     break;
                 case 3:
-                    user = new Admin(username, accessright, new Password());
+                    user = new Admin(username, new Password());
 
                     break;
             }
@@ -152,5 +156,7 @@ public class DomainFacade implements IDomainFacade {
     public boolean validateEmail(String email){
         return this.validate.validateEmail(email);
     }
+
+    public List<IUser> revertIPUserToIUser(List<IPersistanceUser> IPUser) { return this.dataMan.revertIPUserToIUser(IPUser);}
 
 }

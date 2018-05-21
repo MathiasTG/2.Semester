@@ -8,7 +8,13 @@ package UI;
 import Acq.IResponse;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import Acq.IUser;
+import Acq.IUserRepository;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,9 +22,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -28,6 +33,9 @@ import javafx.stage.Stage;
  */
 public class AdminPageController implements Initializable {
 
+    private TextField txtEditUserName;
+    private TextField txtEditpassword;
+    private TextField txtEditAccessRight;
     @FXML
     private ToggleGroup RoleGroup;
     @FXML
@@ -40,6 +48,10 @@ public class AdminPageController implements Initializable {
     private Label StatusMessage;
     @FXML
     private TextField UsernameField;
+    @FXML
+    private TableView tableViewUsers;
+
+    private ObservableList<IUser> users;
     private final String SECRETARY = "Sekretær";
     private final String CASEWORKER = "Sagsbehandler";
 
@@ -98,5 +110,45 @@ public class AdminPageController implements Initializable {
         appStage.setScene(newScene);
         appStage.show();
     }
-    
+
+    public void btnDeleteUser(ActionEvent actionEvent) {
+
+    }
+
+    public void btnEditUserName(ActionEvent actionEvent) {
+
+    }
+
+    public void btnEditPassword(ActionEvent actionEvent) {
+
+    }
+
+    public void btnEditAccessRight(ActionEvent actionEvent) {
+
+    }
+
+    public void btnListUsers(ActionEvent actionEvent) {
+        users = FXCollections.observableArrayList();
+        List<IUser> IUsers = UI.getDomain().revertIPUserToIUser(UI.getDomain().getPersistence().getAllUsers(0, 100));
+
+        System.out.println(IUsers);
+
+        /*
+        users.addAll(IUsers);
+
+        TableColumn id = new TableColumn("ID");
+        id.setCellValueFactory(new PropertyValueFactory<IUser, String>("UUID"));
+
+        TableColumn userName = new TableColumn("Navn");
+        userName.setCellValueFactory(new PropertyValueFactory<IUser, String>("userName"));
+
+        TableColumn role = new TableColumn("Adgangs Niveau");
+        role.setCellValueFactory(new PropertyValueFactory<IUser, Integer>("accessRight"));
+
+        this.tableViewUsers.setEditable(true);
+        this.tableViewUsers.setItems(users);
+
+        this.tableViewUsers.getColumns().addAll(id, userName, role);
+        */
+    }
 }

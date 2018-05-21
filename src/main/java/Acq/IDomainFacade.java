@@ -39,5 +39,8 @@ public interface IDomainFacade {
 
     boolean validateEmail(String email);
 
+    List<IUser> revertIPUserToIUser(List<IPersistanceUser> IPUser);
+
+    IPersistenceFacade getPersistence();
     
 }

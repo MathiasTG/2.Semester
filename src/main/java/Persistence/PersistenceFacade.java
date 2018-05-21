@@ -82,6 +82,10 @@ public class PersistenceFacade implements IPersistenceFacade {
         return inquiryRepository.getInquiresByCitizenName(name);
     }
 
+    @Override
+    public List<IPersistanceUser> getAllUsers(int page, int pageSize) {
+        return this.userRepository.getAllUsers(page, pageSize);
+    }
 
     public IPersistanceUser login(String userNamer , String password) {
         

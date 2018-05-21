@@ -31,6 +31,7 @@ public interface IPersistenceFacade {
     IPersistanceUser login(String userName , String password);
 
     void injectInquiry(Inquiry inquiry);
-    
+
+    List<IPersistanceUser> getAllUsers(int page, int pageSize);
     
 }

@@ -50,7 +50,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
     @Override
     public boolean validateUsername(String username) {
         StringBuilder query = new StringBuilder();
-        query.append("Select username from users;");
+        query.append("Select name from users;");
         ResponseMessage r = executeStm(query.toString());
         switch(r.getResponseCode()){
             case SERVER_UNREACHABLE:

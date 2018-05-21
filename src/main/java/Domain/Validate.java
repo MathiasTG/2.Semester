@@ -9,7 +9,7 @@ public class Validate {
     }
 
     public boolean validateNumber(int lenght, String value){
-        if(!value.matches("\\d*") || value.length() != lenght)
+        if(!value.matches("\\d*") || value.length() != lenght) // Regular expression, matches the digits (0-9) exactly
             return false;
         else
             return true;
@@ -19,7 +19,7 @@ public class Validate {
         //The emailRegex is a regular expression provided in a validation regex repository for email
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+   //^matches the beginning of the line, with the allowed specified characters
                 "[a-zA-Z0-9_+&*-]+)*@" +    //Matches 0 or more of the expression to the left, always including @
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +  //The plus matches 1 or more of the regular expression to the left, including '.', meaning longer addresses are allowed
                 "A-Z]{1,7}$";  //$Matches the end of the line, with 1-7 allowed lenght
 
 

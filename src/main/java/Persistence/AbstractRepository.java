@@ -5,10 +5,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.*;
 
 public abstract class AbstractRepository {
-    private IConfiguration config;
+    private static IConfiguration config;
     private static ExecutorService executor;
     protected static Connection conn;
 
@@ -33,7 +34,11 @@ public abstract class AbstractRepository {
     }
     private void startConnection() {
         try {
-            conn= DriverManager.getConnection(config.getServerUrl(),config.getUsername(),config.getPassword());
+            Properties props = new Properties();
+            props.setProperty("user",config.getUsername());
+            props.setProperty("password",config.getPassword());
+
+            conn= DriverManager.getConnection(config.getServerUrl(),props);
         } catch (SQLException e) {
             e.printStackTrace();
         }

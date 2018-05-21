@@ -105,9 +105,9 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     public List<Inquiry> getAllInquiriesByUserId(UUID id) {
         StringBuilder query = new StringBuilder();
         //select * from users where users.id = '3b3d1763-d32a-4980-8871-21858c10641b'
-        query.append("SELECT * FROM inquiry WHERE createdby = " + "'" + id + "'");
+        query.append("SELECT * FROM inquiry WHERE createdby = " + "'" + id + "';");
 
-        ResultSet result = super.executeStm(query.toString()).getData();
+        ResultSet result = executeStm(query.toString()).getData();
 
         List<Inquiry> userInquires = new ArrayList<>();
 

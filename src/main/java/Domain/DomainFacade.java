@@ -44,7 +44,7 @@ public class DomainFacade implements IDomainFacade {
         try {
             prepareInquiry();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

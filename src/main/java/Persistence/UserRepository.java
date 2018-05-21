@@ -119,6 +119,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
         ResultSet resultSet = responseMessage.getData();
 
         try {
+            resultSet.next();
             return new PersistenceUser(
                     UUID.fromString(resultSet.getString(1)),
                     resultSet.getString(2),
@@ -139,7 +140,9 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                 .append("from users u left join password p on u.passwordid = p.passid ")
                 .append("WHERE u.id = '" + uuid.toString()+"';");
         try {
-            String passid= executeStm(query.toString()).getData().getString(1);
+            ResultSet res= executeStm(query.toString()).getData();
+            res.next();
+            String passid=res.getString(1);
             String passdelete="delete from password where passid='"+passid+"';";
             String userdelete ="delete from users where id='"+uuid+"';";
             executeUpdate(userdelete,passdelete);
@@ -164,11 +167,10 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
         loginQuery.append("WHERE u.name = " + "'" + userName + "'" + " AND p.Password = " + "'" + password + "';");
 
         try {
-
             ResultSet result = executeStm(loginQuery.toString()).getData();
             IPersistencePassword pass;
             IPersistanceUser user;
-
+            result.next();
             pass = new PersistencePassword(
                     result.getString(5),
                     LocalDateTime.ofInstant(result.getDate(7).toInstant(), ZoneId.systemDefault()),

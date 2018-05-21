@@ -39,8 +39,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
         try {
 
-            while(result.next())
-            {
+            while (result.next()) {
                 //Map into inquiry
             }
             return userInquires;
@@ -65,8 +64,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
         try {
 
-            while(result.next())
-            {
+            while (result.next()) {
                 //Map into inquiry
             }
             return userInquires;
@@ -91,8 +89,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
         try {
 
-            while(result.next())
-            {
+            while (result.next()) {
                 //Map into inquiry
             }
             return userInquires;
@@ -105,8 +102,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
 
     @Override
-    public List<Inquiry> getAllInquiriesByUserId(UUID id)
-    {
+    public List<Inquiry> getAllInquiriesByUserId(UUID id) {
         StringBuilder query = new StringBuilder();
         //select * from users where users.id = '3b3d1763-d32a-4980-8871-21858c10641b'
         query.append("SELECT * FROM inquiry WHERE createdby = " + "'" + id + "'");
@@ -117,8 +113,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
         try {
 
-            while(result.next())
-            {
+            while (result.next()) {
                 //Map into inquiry
             }
             return userInquires;
@@ -138,9 +133,19 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         inquiryBuilder.append(inquiry.isDraft() + ", ");
         inquiryBuilder.append(inquiry.isSupportsVUM() + ", ");
         if (inquiry.getCreatedBy() != null) {
-            inquiryBuilder.append("'" + inquiry.getCreatedBy().getID().toString() + "', '");
+            inquiryBuilder.append("'" + inquiry.getCreatedBy().getID().toString() + "', ");
         } else {
-            inquiryBuilder.append(inquiry.getCreatedBy() + ", '");
+            inquiryBuilder.append(null + ", ");
+        }
+        if (inquiry.getCitizen() != null) {
+            inquiryBuilder.append("'" + inquiry.getCitizen().getCpr() + "', ");
+        } else {
+            inquiryBuilder.append(null + ", ");
+        }
+        if (inquiry.getSubmittedBy() != null) {
+            inquiryBuilder.append("' " + inquiry.getSubmittedBy().getId().toString() + "', '");
+        } else {
+            inquiryBuilder.append(null + ", '");
         }
         inquiryBuilder.append(inquiry.getDescription() + "', ");
         inquiryBuilder.append(inquiry.isIntentIsClear() + ", ");
@@ -148,24 +153,14 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         inquiryBuilder.append(inquiry.isCitizenInformedOfRights() + ", ");
         inquiryBuilder.append(inquiry.isCitizenInformedOfDataReservation() + ", '");
         inquiryBuilder.append(inquiry.getAgreementOfProgress() + "', '");
-        inquiryBuilder.append(inquiry.getSpecialConditions() + "', ");
-        if (inquiry.getActingMunicipality() != null) {
-            inquiryBuilder.append("'" + inquiry.getActingMunicipality() + "', ");
-        } else {
-            inquiryBuilder.append(inquiry.getActingMunicipality() + ", ");
-        }
-        if (inquiry.getPayingMunicipality() != null) {
-            inquiryBuilder.append("'" + inquiry.getPayingMunicipality() + "');");
-        } else {
-            inquiryBuilder.append(inquiry.getPayingMunicipality() + ");");
-        }
-
-        if(executeUpdate(inquiryBuilder.toString()).equals(ResponseCode.SUCCESS))
-        {
+        inquiryBuilder.append(inquiry.getConsentType().toString() + "', '");
+        inquiryBuilder.append(inquiry.getSpecialConditions() + "', '");
+        inquiryBuilder.append(inquiry.getActingMunicipality() + "', '");
+        inquiryBuilder.append(inquiry.getPayingMunicipality() + ", ");
+        inquiryBuilder.append(inquiry.getIsRelevantToGatherConsent() + ");");
+        if (executeUpdate(inquiryBuilder.toString()).equals(ResponseCode.SUCCESS)) {
             System.out.println("Mega godt");
-        }
-        else
-        {
+        } else {
             System.out.println("Knap så godt");
         }
     }

@@ -3,6 +3,8 @@ package Acq;
 import DTO.Inquiry;
 import Persistence.ResponseMessage;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public interface IInquiryRepository {
@@ -18,21 +20,18 @@ public interface IInquiryRepository {
     Inquiry getById(UUID uuid);
 
 
+    List<Inquiry> getInquriesByInquiryId(UUID id);
+
+    List<Inquiry> getInquiresByCPR(String cpr);
+
+    List<Inquiry> getInquiresByCitizenName(String name);
 
     /**
      *
-     * @param a
+     * @param id
      * @return
      */
-    Inquiry getByParameters(String... a);
-
-
-    /**
-     *
-     * @param user
-     * @return
-     */
-    Inquiry getByUser(IUser user);
+    List<Inquiry> getAllInquiriesByUserId(UUID id);
 
 
     void create(Inquiry inquiry);

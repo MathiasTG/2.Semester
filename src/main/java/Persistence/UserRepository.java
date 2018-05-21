@@ -153,7 +153,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                 System.out.println(result.getString(7) + "\t");
                 System.out.println(result.getString(8) + "\t");
 
-                pass = new PersistencePassword(result.getString(6), null, result.getDate(), true);
+                pass = new PersistencePassword(result.getString(6), null, LocalDateTime.now(), true);
                 user = new PersistenceUser(UUID.fromString(result.getString(1)), result.getString(2), Integer.parseInt(result.getString(4)), pass);
 
             }

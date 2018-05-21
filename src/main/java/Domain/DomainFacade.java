@@ -6,9 +6,10 @@
 package Domain;
 
 import Acq.*;
-import DTO.ConsentEntity;
 import DTO.Inquiry;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,9 +21,10 @@ public class DomainFacade implements IDomainFacade {
     private IPersistenceFacade persistenceFacade;
     private Inquiry inquiry;
     private UserManager userManager;
+    private Validate validate;
 
     public DomainFacade() {
-
+        this.validate = new Validate();
         userManager = new UserManager();
     }
 
@@ -114,9 +116,41 @@ public class DomainFacade implements IDomainFacade {
         return userManager.getAuthenticationLevel();
     }
 
+    @Override
+    public List<Inquiry> downloadCurrentUserInquiries() {
+
+        return persistenceFacade.downloadCurrentUserInquiries(userManager.getCurrentUser().getID());
+    }
+
+    @Override
+    public List<Inquiry> getInquriesByInquiryId(UUID id) {
+
+        return persistenceFacade.getInquriesByInquiryId(id);
+    }
+
+    @Override
+    public List<Inquiry> getInquiresByCPR(String cpr) {
+
+        return persistenceFacade.getInquiresByCPR(cpr);
+    }
+
+    @Override
+    public List<Inquiry> getInquiresByCitizenName(String name) {
+
+        return persistenceFacade.getInquiresByCitizenName(name);
+    }
+
     public void logout()
     {
         userManager.logout();
+    }
+
+    public boolean validateNumber(int lenght, String value){
+        return this.validate.validateNumber(lenght, value);
+    }
+
+    public boolean validateEmail(String email){
+        return this.validate.validateEmail(email);
     }
 
 }

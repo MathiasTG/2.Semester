@@ -4,9 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -43,30 +45,30 @@
                 <MenuItem mnemonicParsing="false" text="Action 2" />
               </items>
             </MenuButton>
-            <Label layoutX="275.0" layoutY="181.0" prefHeight="30.0" prefWidth="134.0" text="CPR">
+            <Label layoutX="302.0" layoutY="181.0" prefHeight="30.0" prefWidth="134.0" text="CPR">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="274.0" layoutY="246.0" prefHeight="30.0" prefWidth="134.0" text="Borger navn">
+            <Label layoutX="301.0" layoutY="246.0" prefHeight="30.0" prefWidth="134.0" text="Borger navn">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>
             </Label>
-            <TextField layoutX="272.0" layoutY="276.0" promptText="Gitte borger" stylesheets="@ButtonCSS.css" />
-            <TextField layoutX="274.0" layoutY="214.0" promptText="xxxxxx-xxxx" stylesheets="@ButtonCSS.css" />
+            <TextField fx:id="txtCitizenName" disable="true" layoutX="299.0" layoutY="276.0" onAction="#handle_SearchCriteriaSelected" promptText="Gitte borger" stylesheets="@ButtonCSS.css" />
+            <TextField fx:id="txtCPR" disable="true" layoutX="301.0" layoutY="214.0" promptText="xxxxxx-xxxx" stylesheets="@ButtonCSS.css" />
             <Label layoutX="263.0" layoutY="65.0" prefHeight="30.0" prefWidth="225.0" text="Fremsøg henvendelse">
                <font>
                   <Font name="Avenir Next Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="274.0" layoutY="117.0" prefHeight="30.0" prefWidth="134.0" text="Henvendelses-Id">
+            <Label layoutX="301.0" layoutY="117.0" prefHeight="30.0" prefWidth="134.0" text="Henvendelses-Id">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>
             </Label>
-            <TextField layoutX="273.0" layoutY="150.0" promptText="xxxxxx-xxxx" stylesheets="@ButtonCSS.css" />
-            <Button id="rich-blue" layoutX="509.0" layoutY="192.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Søg" />
+            <TextField fx:id="txtInquiryId" layoutX="300.0" layoutY="150.0" promptText="xxxxxx-xxxx" stylesheets="@ButtonCSS.css" />
+            <Button id="rich-blue" layoutX="509.0" layoutY="192.0" mnemonicParsing="false" onAction="#handle_BeginSearchOnCriteria" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Søg" />
             <TableView layoutX="257.0" layoutY="361.0" prefHeight="237.0" prefWidth="491.0" stylesheets="@ButtonCSS.css">
               <columns>
                 <TableColumn prefWidth="75.0" text="C1" />
@@ -78,6 +80,18 @@
             </TableView>
             <Button id="rich-red" layoutX="27.0" layoutY="615.0" mnemonicParsing="false" onAction="#handle_logout" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Logout" textFill="WHITE" />
             <Button id="rich-blue" layoutX="380.0" layoutY="619.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Fortsæt Henvendelse" />
+            <RadioButton fx:id="togSearchCriteriaID" layoutX="269.0" layoutY="154.0" mnemonicParsing="false" onAction="#handle_SearchCriteriaSelected" selected="true" stylesheets="@ButtonCSS.css">
+               <toggleGroup>
+                  <ToggleGroup fx:id="togGrSearchCriteria" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="togSearchCriteriaCPR" layoutX="269.0" layoutY="218.0" mnemonicParsing="false" onAction="#handle_SearchCriteriaSelected" stylesheets="@ButtonCSS.css" toggleGroup="$togGrSearchCriteria" />
+            <RadioButton fx:id="togSearchCriteriaNAME" layoutX="269.0" layoutY="279.0" mnemonicParsing="false" onAction="#handle_SearchCriteriaSelected" stylesheets="@ButtonCSS.css" toggleGroup="$togGrSearchCriteria" />
+            <Label fx:id="errorLabel" layoutX="509.0" layoutY="264.0" prefHeight="30.0" prefWidth="190.0">
+               <font>
+                  <Font name="Avenir Book" size="13.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

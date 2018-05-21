@@ -17,6 +17,10 @@ public class Caseworker extends User {
         super(username, accessRight, password);
     }
 
+    public Caseworker(UUID id, String username, int accesRight) {
+        super(id, username, accesRight);
+    }
+
     @Override
     public UUID getID() {
         return super.id;

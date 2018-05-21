@@ -89,6 +89,8 @@ public abstract class AbstractRepository {
                             res[0]=ResponseCode.SUCCESS;
                         }
                     } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                        e.printStackTrace();
                        res[0] =ResponseCode.REJECTED;
                     }
                 }

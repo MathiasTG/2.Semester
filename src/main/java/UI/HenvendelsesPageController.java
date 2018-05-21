@@ -552,17 +552,19 @@ public class HenvendelsesPageController implements Initializable {
     @FXML
     private void onKeyPressedTelephone(KeyEvent event) {
         if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
-            this.rectangleTelephoneError.setVisible(true);
+            this.txtCitizenPhone.setStyle("-fx-background-color: red");
         else
-            this.rectangleTelephoneError.setVisible(false);
+            this.txtCitizenPhone.setStyle("");
     }
 
     @FXML
     private void onKeyPressedCPR(KeyEvent event){
         if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
-            this.rectangleCPRError.setVisible(true);
+            this.txtCitizenCPR.setStyle("-fx-background-color: red");
+            //this.rectangleCPRError.setVisible(true);
         else
-            this.rectangleCPRError.setVisible(false);
+            this.txtCitizenCPR.setStyle("");
+            //this.rectangleCPRError.setVisible(false);
     }
 
 
@@ -570,8 +572,10 @@ public class HenvendelsesPageController implements Initializable {
     @FXML
     private void onKeyTypedEmail(KeyEvent event){
         if (!UI.getDomain().validateEmail(this.txtCitizenEmail.getText()))
-            this.rectangleEmailError.setVisible(true);
+            this.txtCitizenEmail.setStyle("-fx-background-color: red");
+            //this.rectangleEmailError.setVisible(true);
         else
-            this.rectangleEmailError.setVisible(false);
+            this.txtCitizenEmail.setStyle("");
+            //this.rectangleEmailError.setVisible(false);
     }
 }

@@ -98,7 +98,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                                 resultSet.getString(2),
                                 Integer.parseInt(resultSet.getString(3)),
                                 new PersistencePassword(resultSet.getString(5),
-                                        LocalDateTime.ofInstant(resultSet.getDate(7).toInstant(), ZoneId.systemDefault()),
+                                        resultSet.getTimestamp(7).toLocalDateTime(),
                                         resultSet.getBoolean(6)))
                 );
             }
@@ -125,7 +125,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                     resultSet.getString(2),
                     Integer.parseInt(resultSet.getString(3)),
                     new PersistencePassword(resultSet.getString(5),
-                            LocalDateTime.ofInstant(resultSet.getDate(7).toInstant(), ZoneId.systemDefault()),
+                            resultSet.getTimestamp(7).toLocalDateTime(),
                             resultSet.getBoolean(6)));
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -173,7 +173,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             result.next();
             pass = new PersistencePassword(
                     result.getString(5),
-                    LocalDateTime.ofInstant(result.getDate(7).toInstant(), ZoneId.systemDefault()),
+                    result.getTimestamp(7).toLocalDateTime(),
                     result.getBoolean(6));
 
             user = new PersistenceUser(

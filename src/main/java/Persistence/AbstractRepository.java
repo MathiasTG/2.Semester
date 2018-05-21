@@ -14,7 +14,7 @@ public abstract class AbstractRepository {
 
 
     public AbstractRepository()  {
-        if(conn==null)
+        if(executor==null)
             try {
                 initiate();
             } catch (SQLException ex) {
@@ -105,7 +105,7 @@ public abstract class AbstractRepository {
                 }
             }
         }
-        
+
         try {
             conn.close();
         } catch (SQLException e) {

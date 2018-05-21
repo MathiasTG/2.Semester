@@ -9,7 +9,6 @@ public class PersistencePassword implements IPersistencePassword {
 
 
     private String password;
-    private LocalDateTime createdDate;
     private LocalDateTime experationDate;
     private boolean isTemperary;
 
@@ -29,17 +28,11 @@ public class PersistencePassword implements IPersistencePassword {
         return this.isTemperary;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
 
 
-
-
-    public PersistencePassword(String password, LocalDateTime createdDate, LocalDateTime experationDate, boolean isTemperary) {
+    public PersistencePassword(String password, LocalDateTime experationDate, boolean isTemperary) {
 
         this.password = password;
-        this.createdDate = createdDate;
         this.experationDate = experationDate;
         this.isTemperary = isTemperary;
     }

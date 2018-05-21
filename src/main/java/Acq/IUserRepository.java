@@ -17,7 +17,7 @@ public interface IUserRepository {
 
     /**
      *
-     * @param IUser
+     * @param username
      * @return
      */
     boolean validateUsername(String username);
@@ -29,7 +29,7 @@ public interface IUserRepository {
      * @param pageSize
      * @return
      */
-    Collection<IUser> getAllUsers(int page , int pageSize);
+    Collection<IPersistanceUser> getAllUsers(int page , int pageSize);
 
 
     /**
@@ -37,7 +37,7 @@ public interface IUserRepository {
      * @param uuid
      * @return
      */
-    IUser getById(UUID uuid);
+    IPersistanceUser getById(UUID uuid);
 
     /**
      *

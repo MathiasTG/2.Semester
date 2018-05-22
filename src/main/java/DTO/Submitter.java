@@ -10,6 +10,13 @@ public class Submitter {
     public Submitter(SubmitterType type, String info){
         this.type = type;
         this.contactInfo = info;
+        id = UUID.randomUUID();
+    }
+
+    public Submitter(SubmitterType type, String contactInfo, UUID id) {
+        this.type = type;
+        this.contactInfo = contactInfo;
+        this.id = id;
     }
 
     public SubmitterType getType() {

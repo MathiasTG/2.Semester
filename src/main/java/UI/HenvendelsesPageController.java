@@ -403,19 +403,19 @@ public class HenvendelsesPageController implements Initializable {
 
         if (togSubmittedByCITIZEN.isSelected())
             type = SubmitterType.CITIZIN;
-        if (togSubmittedByDOCTOR.isSelected())
+        else if (togSubmittedByDOCTOR.isSelected())
             type = SubmitterType.DOCTOR;
-        if(togSubmittedByHOSPITAL.isSelected())
+        else if(togSubmittedByHOSPITAL.isSelected())
             type = SubmitterType.HOSPITAL;
-        if(togSubmittedByMISCELLAEOUS.isSelected())
+        else if(togSubmittedByMISCELLAEOUS.isSelected())
             type = SubmitterType.MISCELLANEOUS;
-        if(togSubmittedByONGOINGEFFORT.isSelected())
+        else if(togSubmittedByONGOINGEFFORT.isSelected())
             type = SubmitterType.ONGOING_EFFORT;
-        if(togSubmittedByOTHERMANAGEMENT.isSelected())
+        else if(togSubmittedByOTHERMANAGEMENT.isSelected())
             type = SubmitterType.OTER_MUNICIPALITY;
-        if(togSubmittedByRELATIVE.isSelected())
+        else if(togSubmittedByRELATIVE.isSelected())
             type = SubmitterType.RELATIVE;
-        if(togSubmittedByOTHERMUNICIPALITY.isSelected())
+        else if(togSubmittedByOTHERMUNICIPALITY.isSelected())
             type = SubmitterType.OTER_MUNICIPALITY;
         else
             type = null;

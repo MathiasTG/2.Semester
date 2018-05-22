@@ -3,6 +3,7 @@ package DTO;
 import Acq.IBuilder;
 
 import java.net.Proxy;
+import java.util.UUID;
 
 /**
  * @author mathias
@@ -11,6 +12,7 @@ public class Representative {
 
     private String contactInfo;
     private TypeOfRepresentative type;
+    private UUID id;
 
     public static class Builder implements IBuilder<Representative> {
         private String contactInfo;
@@ -40,6 +42,7 @@ public class Representative {
     private Representative(String contactInfo, TypeOfRepresentative type) {
         this.contactInfo = contactInfo;
         this.type = type;
+        id = UUID.randomUUID();
     }
 
     public String getContactInfo() {return this.contactInfo; }
@@ -47,4 +50,9 @@ public class Representative {
     public TypeOfRepresentative getType() {
         return type;
     }
+
+    public UUID getId() {
+        return id;
+    }
 }
+

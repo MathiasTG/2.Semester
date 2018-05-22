@@ -2,7 +2,10 @@ package Persistence;
 
 import Acq.IInquiryRepository;
 import Acq.IUser;
+import DTO.Citizen;
 import DTO.Inquiry;
+import DTO.Representative;
+import DTO.Submitter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -127,9 +130,23 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     @Override
     public void create(Inquiry inquiry) {
 
+
+        if (inquiry.getCitizen() != null && executeStm("Select CPR from citizen where cpr=" + inquiry.getCitizen().getCpr()).getData() == null) {
+
+            createCitizen(inquiry.getCitizen());
+
+        }
+
+        if (inquiry.getSubmittedBy() != null && executeStm("Select ID from submitter where id=" + inquiry.getSubmittedBy().getId().toString()).getData() == null){
+
+            createSubmitter(inquiry.getSubmittedBy());
+
+        }
+
+
         StringBuilder inquiryBuilder = new StringBuilder();
         inquiryBuilder.append("INSERT INTO Inquiry VALUES('");
-        inquiryBuilder.append(inquiry.getId() + "', ");
+        inquiryBuilder.append(inquiry.getId().toString() + "', ");
         inquiryBuilder.append(inquiry.isDraft() + ", ");
         inquiryBuilder.append(inquiry.isSupportsVUM() + ", ");
         if (inquiry.getCreatedBy() != null) {
@@ -143,7 +160,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             inquiryBuilder.append(null + ", ");
         }
         if (inquiry.getSubmittedBy() != null) {
-            inquiryBuilder.append("' " + inquiry.getSubmittedBy().getId().toString() + "', '");
+            inquiryBuilder.append("'" + inquiry.getSubmittedBy().getId().toString() + "', '");
         } else {
             inquiryBuilder.append(null + ", '");
         }
@@ -156,13 +173,62 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         inquiryBuilder.append(inquiry.getConsentType().toString() + "', '");
         inquiryBuilder.append(inquiry.getSpecialConditions() + "', '");
         inquiryBuilder.append(inquiry.getActingMunicipality() + "', '");
-        inquiryBuilder.append(inquiry.getPayingMunicipality() + ", ");
+        inquiryBuilder.append(inquiry.getPayingMunicipality() + "', ");
         inquiryBuilder.append(inquiry.getIsRelevantToGatherConsent() + ");");
         if (executeUpdate(inquiryBuilder.toString()).equals(ResponseCode.SUCCESS)) {
             System.out.println("Mega godt");
         } else {
             System.out.println("Knap så godt");
         }
+    }
+
+    private void createSubmitter(Submitter submittedBy) {
+
+        StringBuilder subBuilder = new StringBuilder();
+        subBuilder.append("INSERT INTO submitter VALUES('")
+                .append(submittedBy.getId().toString() + "', '")
+                .append(submittedBy.getType().toString() + "', '")
+                .append(submittedBy.getContactInfo() + "');");
+
+        executeUpdate(subBuilder.toString());
+
+    }
+
+    private void createCitizen(Citizen citizen) {
+
+        if (citizen.getRepresentative() != null && executeStm("Select ID from representative where id=" + citizen.getRepresentative().getId().toString()).getData() == null) {
+            createRepresentative(citizen.getRepresentative());
+        }
+
+        StringBuilder citizenBuilder = new StringBuilder();
+        Citizen c = citizen;
+
+        citizenBuilder.append("INSERT INTO citizen VALUES('")
+                .append(c.getCpr() + "', '")
+                .append(c.getName() + "', '")
+                .append(c.getAddress() + "', '")
+                .append(c.getEmail() + "', '")
+                .append(c.getPhoneNumber() + "', ");
+
+        if (c.getRepresentative() != null) {
+            citizenBuilder.append("'" + c.getRepresentative().getId().toString() + "');");
+        } else {
+            citizenBuilder.append(null + ");");
+        }
+
+        executeUpdate(citizenBuilder.toString());
+
+    }
+
+    private void createRepresentative(Representative representative) {
+
+        StringBuilder rB = new StringBuilder();
+
+        rB.append("INSERT INTO representative VALUES('")
+                .append(representative.getId().toString() + "', '")
+                .append(representative.getContactInfo() + "', '")
+                .append(representative.getType().toString() + "');");
+        executeUpdate(rB.toString());
     }
 
     @Override

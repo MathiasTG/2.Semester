@@ -99,4 +99,20 @@ public class PersistenceFacade implements IPersistenceFacade {
 
         inquiryRepository.create(inquiry);
     }
+
+    public void deleteById(UUID uuid){
+        this.userRepository.deleteById(uuid);
+    }
+
+    public void changeUserName(IUser user, String name){
+        this.userRepository.changeUserName(user, name);
+    }
+
+    public void changeAccessRight(IUser user, int accessright){
+        this.userRepository.changeAccessRight(user, accessright);
+    }
+
+    public void changePassword(IUser user, String password, boolean isTemporary){
+        userRepository.changePassword(user, password, isTemporary);
+    }
 }

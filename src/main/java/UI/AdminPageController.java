@@ -10,9 +10,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import Acq.IUser;
 import Acq.IUserRepository;
+import com.mysql.jdbc.StringUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,8 +35,11 @@ import javafx.stage.Stage;
  */
 public class AdminPageController implements Initializable {
 
+    @FXML
     private TextField txtEditUserName;
+    @FXML
     private TextField txtEditpassword;
+    @FXML
     private TextField txtEditAccessRight;
     @FXML
     private ToggleGroup RoleGroup;
@@ -54,6 +59,7 @@ public class AdminPageController implements Initializable {
     private ObservableList<IUser> users;
     private final String SECRETARY = "Sekretær";
     private final String CASEWORKER = "Sagsbehandler";
+    private boolean listCreated = false;
 
 
     /**
@@ -112,43 +118,95 @@ public class AdminPageController implements Initializable {
     }
 
     public void btnDeleteUser(ActionEvent actionEvent) {
-
+        if (!this.tableViewUsers.getSelectionModel().isEmpty()) {
+            IUser user = (IUser) this.tableViewUsers.getSelectionModel().getSelectedItem();
+            UI.getDomain().getPersistence().deleteById(user.getID());
+            this.users.remove(user);
+            //this.btnListUsers(actionEvent);
+        }
     }
 
     public void btnEditUserName(ActionEvent actionEvent) {
+        if (!this.tableViewUsers.getSelectionModel().isEmpty()) {
+            String newName = this.txtEditUserName.getText();
+            IUser user = (IUser) this.tableViewUsers.getSelectionModel().getSelectedItem();
+            String oldName = user.getUsername();
 
+            if (!newName.isEmpty()) {
+                UI.getDomain().getPersistence().changeUserName(user, newName);
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i).getUsername().equals(oldName))
+                        users.get(i).setName(newName);
+                }
+                this.tableViewUsers.refresh();
+            } else {
+                this.txtEditUserName.setText("Select user, enter new name");
+            }
+        }
     }
 
     public void btnEditPassword(ActionEvent actionEvent) {
-
+        if (!this.tableViewUsers.getSelectionModel().isEmpty()) {
+            if (!this.txtEditpassword.getText().isEmpty()) {
+                String password = this.txtEditpassword.getText();
+                IUser user = (IUser) this.tableViewUsers.getSelectionModel().getSelectedItem();
+                UI.getDomain().getPersistence().changePassword(user, password, false);
+            }
+        }
     }
 
     public void btnEditAccessRight(ActionEvent actionEvent) {
-
+        if (!this.tableViewUsers.getSelectionModel().isEmpty()) {
+            String newAccessRightString = this.txtEditAccessRight.getText();
+            IUser user = (IUser) this.tableViewUsers.getSelectionModel().getSelectedItem();
+            if (!newAccessRightString.matches("\\d*")) {
+                this.txtEditAccessRight.setText("Indtast tal 1-3");
+                System.out.println("Ikke et tal");
+            } else {
+                int accessRight = Integer.parseInt(newAccessRightString);
+                if (accessRight > 0 && accessRight < 4) {
+                    UI.getDomain().getPersistence().changeAccessRight(user, accessRight);
+                    for (int i = 0; i < users.size(); i++) {
+                        if (users.get(i).getUsername().equals(user.getUsername())) {
+                            users.get(i).setAccessRight(accessRight);
+                            this.tableViewUsers.refresh();
+                        }
+                    }
+                } else {
+                    this.txtEditAccessRight.setText("Indtast tal 1-3");
+                }
+            }
+        }
     }
 
     public void btnListUsers(ActionEvent actionEvent) {
-        users = FXCollections.observableArrayList();
-        List<IUser> IUsers = UI.getDomain().revertIPUserToIUser(UI.getDomain().getPersistence().getAllUsers(0, 100));
 
-        System.out.println(IUsers);
+        if (this.listCreated) {
+            this.tableViewUsers.refresh();
+        }
+        else {
+            this.listCreated = true;
 
-        /*
-        users.addAll(IUsers);
+            users = FXCollections.observableArrayList();
+            List<IUser> IUsers = UI.getDomain().revertIPUserToIUser(UI.getDomain().getPersistence().getAllUsers(1, 100));
 
-        TableColumn id = new TableColumn("ID");
-        id.setCellValueFactory(new PropertyValueFactory<IUser, String>("UUID"));
 
-        TableColumn userName = new TableColumn("Navn");
-        userName.setCellValueFactory(new PropertyValueFactory<IUser, String>("userName"));
+            users.addAll(IUsers);
 
-        TableColumn role = new TableColumn("Adgangs Niveau");
-        role.setCellValueFactory(new PropertyValueFactory<IUser, Integer>("accessRight"));
+            TableColumn id = new TableColumn("ID");
+            id.setCellValueFactory(new PropertyValueFactory<IUser, UUID>("ID"));
 
-        this.tableViewUsers.setEditable(true);
-        this.tableViewUsers.setItems(users);
+            TableColumn userName = new TableColumn("Navn");
+            userName.setCellValueFactory(new PropertyValueFactory<IUser, String>("username"));
 
-        this.tableViewUsers.getColumns().addAll(id, userName, role);
-        */
+            TableColumn role = new TableColumn("Adgangs Niveau");
+            role.setCellValueFactory(new PropertyValueFactory<IUser, Integer>("accessRight"));
+
+            this.tableViewUsers.setEditable(true);
+            this.tableViewUsers.setItems(users);
+
+            this.tableViewUsers.getColumns().addAll(id, userName, role);
+        }
+
     }
 }

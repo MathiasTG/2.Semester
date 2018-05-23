@@ -145,12 +145,49 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             String passid=res.getString(1);
             String passdelete="delete from password where passid='"+passid+"';";
             String userdelete ="delete from users where id='"+uuid+"';";
-            executeUpdate(userdelete,passdelete);
+            executeUpdate(userdelete);
+            executeUpdate(passdelete);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void changeUserName(IUser user, String name){
+            String updateName = "UPDATE users SET name='"+name+"'WHERE name='"+user.getUsername()+"';";
+            executeUpdate(updateName);
+    }
+
+    @Override
+    public void changeAccessRight(IUser user, int accessright){
+        String updateAccess = "UPDATE users SET accessright="+accessright+" WHERE name='"+user.getUsername()+"';";
+        executeUpdate(updateAccess);
 
     }
+
+    @Override
+    public void changePassword(IUser user, String password, boolean isTemporary){
+        StringBuilder query = new StringBuilder();
+        query.append("Select p.passid ")
+                .append("from users u left join password p on u.passwordid = p.passid ")
+                .append("WHERE u.id = '" + user.getID().toString() +"';");
+
+        ResponseMessage responseMessage = executeStm(query.toString());
+        ResultSet resultSet = responseMessage.getData();
+
+        try {
+            resultSet.next();
+            String passid = resultSet.getString(1);
+
+            String updatePassword = "UPDATE password " +
+                    "SET password = '" + password + "', istemporary = " + isTemporary +
+                    " WHERE passid = '" + passid + "';";
+            executeUpdate(updatePassword);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     @Override
     public IPersistanceUser login(String userName, String password) {

@@ -33,5 +33,13 @@ public interface IPersistenceFacade {
     void injectInquiry(Inquiry inquiry);
 
     List<IPersistanceUser> getAllUsers(int page, int pageSize);
+
+    void deleteById(UUID uuid);
+
+    void changeUserName(IUser user, String name);
+
+    void changeAccessRight(IUser user, int accessright);
+
+    void changePassword(IUser user, String password, boolean isTemporary);
     
 }

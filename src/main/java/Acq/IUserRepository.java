@@ -54,10 +54,13 @@ public interface IUserRepository {
      * @return
      */
 
-
+    void changePassword(IUser user, String password, boolean isTemporary);
 
     IPersistanceUser login(String userName, String password);
 
 
+    void changeUserName(IUser user, String name);
+
+    void changeAccessRight(IUser user, int accessright);
 }
 

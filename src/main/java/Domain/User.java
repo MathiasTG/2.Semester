@@ -19,6 +19,7 @@ public abstract class User implements IUser {
     protected String username;
     protected Password password;
     int accessRight;
+    protected String idString;
     
     
     
@@ -28,6 +29,7 @@ public abstract class User implements IUser {
         this.username = username;
         this.accessRight = accessRight;
         this.password = password;
+        this.idString = this.id.toString();
         
     }
 
@@ -37,5 +39,20 @@ public abstract class User implements IUser {
         this.username = username;
         this.accessRight = accesRight;
     }
+
+    public void setName(String name){
+        this.username = name;
+    }
+
+    @Override
+    public String getStringID(){
+        return this.idString;
+    }
+
+    @Override
+    public void setAccessRight(int accessRight){
+        this.accessRight = accessRight;
+    }
+
     
 }

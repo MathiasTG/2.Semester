@@ -16,6 +16,8 @@ public interface IUser {
     String getUsername();
     String getPassword();
     int getAccessRight();
-    
+    String getStringID();
+    void setName(String name);
+    void setAccessRight(int accessRight);
     
 }

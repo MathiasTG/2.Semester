@@ -42,29 +42,17 @@
                                     <Font name="Avenir Next Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="19.0" layoutY="122.0" prefHeight="30.0" prefWidth="134.0" text="Role">
+                              <Label layoutX="19.0" layoutY="182.0" prefHeight="30.0" prefWidth="175.0" text="Rolle og adgangs rettigheder">
                                  <font>
                                     <Font name="Avenir Book" size="13.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="20.0" layoutY="187.0" prefHeight="30.0" prefWidth="134.0" text="Adgangs Rettigheder">
-                                 <font>
-                                    <Font name="Avenir Book" size="13.0" />
-                                 </font>
-                              </Label>
-                              <RadioButton layoutX="17.0" layoutY="152.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Sagsbehandler">
+                              <RadioButton layoutX="17.0" layoutY="212.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Sagsbehandler">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="RoleGroup" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton layoutX="148.0" layoutY="152.0" mnemonicParsing="false" text="Sekretær" toggleGroup="$RoleGroup" />
-                              <RadioButton layoutX="17.0" layoutY="222.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Premium">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="AccesRightsGroup" />
-                                 </toggleGroup>
-                              </RadioButton>
-                              <RadioButton layoutX="106.0" layoutY="222.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Subscriber" toggleGroup="$AccesRightsGroup" />
-                              <RadioButton layoutX="210.0" layoutY="222.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Free user" toggleGroup="$AccesRightsGroup" />
+                              <RadioButton layoutX="148.0" layoutY="212.0" mnemonicParsing="false" text="Sekretær" toggleGroup="$RoleGroup" />
                               <Button id="rich-blue" layoutX="591.0" layoutY="294.0" mnemonicParsing="false" onAction="#handle_createUser" stylesheets="@ButtonCSS.css" text="Opret bruger" />
                               <Label layoutX="20.0" layoutY="56.0" prefHeight="30.0" prefWidth="134.0" text="Brugernavn">
                                  <font>
@@ -98,6 +86,7 @@
                                  </image>
                               </ImageView>
                               <Button id="exit-button" layoutX="4.0" layoutY="295.0" mnemonicParsing="false" onAction="#handle_OnNavigateBack" prefHeight="39.0" prefWidth="102.0" stylesheets="@ButtonCSS.css" text="Tilbage" />
+                              <RadioButton layoutX="17.0" layoutY="250.0" mnemonicParsing="false" text="Admin" toggleGroup="$RoleGroup" />
                            </children></AnchorPane>
                   </content>
                 </Tab>

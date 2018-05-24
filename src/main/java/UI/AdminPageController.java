@@ -57,6 +57,7 @@ public class AdminPageController implements Initializable {
     private ObservableList<IUser> users;
     private final String SECRETARY = "Sekretær";
     private final String CASEWORKER = "Sagsbehandler";
+    private final String ADMIN = "Admin";
     private boolean listCreated = false;
 
 
@@ -81,6 +82,9 @@ public class AdminPageController implements Initializable {
             }
             else if(role.contains(CASEWORKER)){
                 response = UI.getDomain().createUser(UsernameField.getText(), 2);
+            }
+            else if(role.contains(ADMIN)){
+                response = UI.getDomain().createUser(UsernameField.getText(), 3);
             }
             
             if(response.isSuccessful()){

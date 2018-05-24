@@ -62,9 +62,13 @@ public class LoginPageController implements Initializable {
 
        IResponse response = UI.getDomain().logIn(txtUsername.getText() , txtPassword.getText());
 
-        if(response.isSuccessful())
+        if(response.isSuccessful() && UI.getDomain().getCurrentUserAccessRights() > 3)
         {
             navigateNextPage(event, "MainPage.fxml");
+        }
+        else if(response.isSuccessful() && UI.getDomain().getCurrentUserAccessRights() == 3)
+        {
+            navigateNextPage(event, "AdminPage.fxml");
         }
         else
         {
@@ -75,12 +79,6 @@ public class LoginPageController implements Initializable {
 
 
 
-    }
-
-    @FXML
-    private void Handle_AdminClicked(ActionEvent event) throws IOException {
-        
-        navigateNextPage(event, "AdminPage.fxml");
     }
     
     

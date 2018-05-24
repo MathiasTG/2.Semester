@@ -32,6 +32,9 @@ public class UserManager {
             case 2:
                 currentUser = new Caseworker(puser.getID(), puser.getUsername(), puser.getAccessRight());
                 return true;
+            case 3:
+                currentUser = new Admin(puser.getID(), puser.getUsername());
+                return true;
             default:
                 System.out.println("Cant login user with that accesright");
                 return false;

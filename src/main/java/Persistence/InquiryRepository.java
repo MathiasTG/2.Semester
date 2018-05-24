@@ -71,6 +71,8 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                 repSet.next();
                 ResultSet subSet = executeStm("SELECT * FROM submitter WHERE id='" + inquirySet.getString(6) + "'").getData();
                 subSet.next();
+                ResultSet consentSet = executeStm("Select * from gatheredconsent where id in (select consent from consentforinquiry where inquiry = '"
+                        + inquirySet.getString(1) + "')").getData();
 
                 userInquires.add(
                         new Inquiry.Builder(builder.setID(UUID.fromString(userSet.getString(1)))
@@ -105,9 +107,8 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                 .setActingMunicipality(inquirySet.getString(15))
                                 .setPayingMunicipality(inquirySet.getString(16))
                                 .setIsRelevantToGatherConsent(inquirySet.getBoolean(17))
+                                .addGatheredConsents()
                                 .build());
-
-
             }
 
 
@@ -271,7 +272,7 @@ private TypeOfRepresentative castToEnum(String input){
             case "Partsrepræsentant":
                 return TypeOfRepresentative.PART_REPRESENTATIVE;
         }
-        
+
         return null;
 }
 

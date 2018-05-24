@@ -84,8 +84,9 @@ public abstract class AbstractRepository {
         startConnection();
         List<Future> list = new ArrayList<>();
         final ResponseCode[] res = new ResponseCode[1];
-        Arrays.asList(statements).forEach( t ->
-            list.add(executor.submit(()-> {
+
+        list.add(executor.submit(()-> {
+            Arrays.asList(statements).forEach( t ->
                 {
                     try {
                         synchronized (conn) {
@@ -99,7 +100,8 @@ public abstract class AbstractRepository {
                        res[0] =ResponseCode.REJECTED;
                     }
                 }
-            })));
+            );
+        }));
 
         for(Future f : list){
             while(!f.isDone()) {

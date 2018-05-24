@@ -220,8 +220,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             return user;
 
         } catch (SQLException ex) {
-
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             return null;
         }
     }

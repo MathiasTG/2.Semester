@@ -190,7 +190,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     @Override
     public IPersistanceUser login(String userName, String password) {
-
+        System.out.println("reached login");
 
         StringBuilder loginQuery = new StringBuilder();
 
@@ -200,7 +200,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
         loginQuery.append("Select u.id,u.name,u.accessright,p.passid,p.password,p.istemporary,p.expirationdate ");
         loginQuery.append("from users u left join password p on u.passwordid = p.passid ");
-        loginQuery.append("WHERE u.name = " + "'" + userName + "'" + " AND p.Password = " + "'" + password + "';");
+        loginQuery.append("WHERE u.name = " + "'" + userName + "'" + " AND p.password = " + "'" + password + "';");
 
         try {
             ResultSet result = executeStm(loginQuery.toString()).getData();

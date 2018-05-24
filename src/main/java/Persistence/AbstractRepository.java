@@ -47,12 +47,12 @@ public abstract class AbstractRepository {
 
 
     protected ResponseMessage executeStm(final String statement){
-        startConnection();
         //response message is final because we need to access it from a seperate thread.
         ResponseMessage res = new ResponseMessage();
         Future<ResponseMessage> t =executor.submit(()-> {
             {
                 try {
+                    startConnection();
                     synchronized (conn) {
                         PreparedStatement st = conn.prepareStatement(statement);
                         res.setData(st.executeQuery());
@@ -61,6 +61,12 @@ public abstract class AbstractRepository {
                 } catch (SQLException e) {
                     res.setData(null);
                     res.setResponseCode(ResponseCode.REJECTED);
+                }finally {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         },res);
@@ -71,11 +77,7 @@ public abstract class AbstractRepository {
                 e.printStackTrace();
             }
         }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
         return res;
     }
 

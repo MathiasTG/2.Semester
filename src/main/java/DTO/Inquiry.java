@@ -40,7 +40,7 @@ public class Inquiry {
         private Citizen citizen;
         private boolean isDraft;
         private boolean supportsVUM;
-        private IUser createdBy;
+        private IUser createdBy; //IUser necessary
         private String description;
         private boolean intentIsClear;
         private boolean citizenAwareOfInquiry;

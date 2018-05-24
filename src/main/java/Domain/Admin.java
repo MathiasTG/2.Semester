@@ -13,28 +13,33 @@ import java.util.UUID;
  */
 public class Admin extends User {
 
-    public Admin(String username, int accessRight, Password password) {
-        super(username, accessRight, password);
+    private static final int ACCESRIGHT = 3;
+
+    public Admin(String username, Password password) {
+        super(username, ACCESRIGHT, password);
+    }
+    public Admin(UUID id, String username) {
+        super(id, username, ACCESRIGHT);
     }
 
     @Override
     public UUID getID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return super.id;
     }
 
     @Override
     public String getUsername() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return super.username;
     }
 
     @Override
     public String getPassword() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return super.password.toString();
     }
 
     @Override
     public int getAccessRight() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return super.accessRight;
     }
     
 }

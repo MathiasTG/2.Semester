@@ -79,6 +79,10 @@ public class PersistenceFacade implements IPersistenceFacade {
         return inquiryRepository.getInquiresByCitizenName(name);
     }
 
+    @Override
+    public List<IPersistanceUser> getAllUsers(int page, int pageSize) {
+        return this.userRepository.getAllUsers(page, pageSize);
+    }
 
     public IPersistanceUser login(String userNamer , String password) {
         
@@ -91,5 +95,21 @@ public class PersistenceFacade implements IPersistenceFacade {
     public void injectInquiry(Inquiry inquiry){
 
         inquiryRepository.create(inquiry);
+    }
+
+    public void deleteById(UUID uuid){
+        this.userRepository.deleteById(uuid);
+    }
+
+    public void changeUserName(IUser user, String name){
+        this.userRepository.changeUserName(user, name);
+    }
+
+    public void changeAccessRight(IUser user, int accessright){
+        this.userRepository.changeAccessRight(user, accessright);
+    }
+
+    public void changePassword(IUser user, String password, boolean isTemporary){
+        userRepository.changePassword(user, password, isTemporary);
     }
 }

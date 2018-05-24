@@ -19,13 +19,13 @@ public interface IPersistenceFacade {
     boolean verifyUsername(String username);
     IResponse createUser(IUser user);
 
-    List<Inquiry> downloadCurrentUserInquiries(UUID currentUserId);
+    List<Inquiry> downloadCurrentUserInquiries(UUID currentUserId, IUserBuilder builder);
 
-    List<Inquiry> getInquriesByInquiryId(UUID id);
+    List<Inquiry> getInquriesByInquiryId(UUID id, IUserBuilder builder);
 
-    List<Inquiry> getInquiresByCPR(String cpr);
+    List<Inquiry> getInquiresByCPR(String cpr, IUserBuilder builder);
 
-    List<Inquiry> getInquiresByCitizenName(String name);
+    List<Inquiry> getInquiresByCitizenName(String name, IUserBuilder builder);
 
     IPersistanceUser login(String userName , String password);
 

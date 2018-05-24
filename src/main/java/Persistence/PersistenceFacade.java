@@ -60,23 +60,23 @@ public class PersistenceFacade implements IPersistenceFacade {
     }
 
     @Override
-    public List<Inquiry> downloadCurrentUserInquiries(UUID currentUserId) {
-       return inquiryRepository.getAllInquiriesByUserId(currentUserId);
+    public List<Inquiry> downloadCurrentUserInquiries(UUID currentUserId, IUserBuilder builder) {
+       return inquiryRepository.getAllInquiriesByUserId(currentUserId, builder);
     }
 
     @Override
-    public List<Inquiry> getInquriesByInquiryId(UUID id) {
-        return inquiryRepository.getInquriesByInquiryId(id);
+    public List<Inquiry> getInquriesByInquiryId(UUID id, IUserBuilder builder) {
+        return inquiryRepository.getInquriesByInquiryId(id, builder);
     }
 
     @Override
-    public List<Inquiry> getInquiresByCPR(String cpr) {
-        return inquiryRepository.getInquiresByCPR(cpr);
+    public List<Inquiry> getInquiresByCPR(String cpr, IUserBuilder builder) {
+        return inquiryRepository.getInquiresByCPR(cpr, builder);
     }
 
     @Override
-    public List<Inquiry> getInquiresByCitizenName(String name) {
-        return inquiryRepository.getInquiresByCitizenName(name);
+    public List<Inquiry> getInquiresByCitizenName(String name, IUserBuilder builder) {
+        return inquiryRepository.getInquiresByCitizenName(name, builder);
     }
 
     @Override

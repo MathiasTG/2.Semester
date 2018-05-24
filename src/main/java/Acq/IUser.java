@@ -19,5 +19,6 @@ public interface IUser{
     String getStringID();
     void setName(String name);
     void setAccessRight(int accessRight);
+
     
 }

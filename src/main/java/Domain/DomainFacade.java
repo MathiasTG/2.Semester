@@ -122,25 +122,25 @@ public class DomainFacade implements IDomainFacade {
     @Override
     public List<Inquiry> downloadCurrentUserInquiries() {
 
-        return persistenceFacade.downloadCurrentUserInquiries(userManager.getCurrentUser().getID());
+        return persistenceFacade.downloadCurrentUserInquiries(userManager.getCurrentUser().getID(), new UserBuilder());
     }
 
     @Override
     public List<Inquiry> getInquriesByInquiryId(UUID id) {
 
-        return persistenceFacade.getInquriesByInquiryId(id);
+        return persistenceFacade.getInquriesByInquiryId(id, new UserBuilder());
     }
 
     @Override
     public List<Inquiry> getInquiresByCPR(String cpr) {
 
-        return persistenceFacade.getInquiresByCPR(cpr);
+        return persistenceFacade.getInquiresByCPR(cpr, new UserBuilder());
     }
 
     @Override
     public List<Inquiry> getInquiresByCitizenName(String name) {
 
-        return persistenceFacade.getInquiresByCitizenName(name);
+        return persistenceFacade.getInquiresByCitizenName(name, new UserBuilder());
     }
 
     public void logout()

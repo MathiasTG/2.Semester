@@ -14,18 +14,18 @@ public interface IInquiryRepository {
 
 
 
-    List<Inquiry> getInquriesByInquiryId(UUID id);
+    List<Inquiry> getInquriesByInquiryId(UUID id, IUserBuilder builder);
 
-    List<Inquiry> getInquiresByCPR(String cpr);
+    List<Inquiry> getInquiresByCPR(String cpr, IUserBuilder builder);
 
-    List<Inquiry> getInquiresByCitizenName(String name);
+    List<Inquiry> getInquiresByCitizenName(String name, IUserBuilder builder);
 
     /**
      *
      * @param id
      * @return
      */
-    List<Inquiry> getAllInquiriesByUserId(UUID id);
+    List<Inquiry> getAllInquiriesByUserId(UUID id, IUserBuilder builder);
 
 
     void create(Inquiry inquiry);

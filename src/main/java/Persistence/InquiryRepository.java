@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class InquiryRepository extends AbstractRepository implements IInquiryRepository {
 
@@ -71,6 +72,9 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                 repSet.next();
                 ResultSet subSet = executeStm("SELECT * FROM submitter WHERE id='" + inquirySet.getString(6) + "'").getData();
                 subSet.next();
+                ResultSet consentSet = executeStm("Select * from gatheredconsent where id in (select consent from consentforinquiry where inquiry = '"
+                        + inquirySet.getString(1) + "')").getData();
+
 
                 userInquires.add(
                         new Inquiry.Builder(builder.setID(UUID.fromString(userSet.getString(1)))
@@ -86,12 +90,12 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                         .setEmail(citizenSet.getString(4))
                                         .setPhoneNumber(citizenSet.getInt(5))
                                         .setRepresentative(new Representative.Builder(repSet.getString(2),
-                                                TypeOfRepresentative.valueOf(repSet.getString(3)))
+                                                castToRepresentativeType(repSet.getString(3)))
                                                 .setId(UUID.fromString(repSet.getString(1)))
                                                 .build()
                                         ).build())
                                 .setSubmittedBy(new Submitter.Builder(UUID.fromString(subSet.getString(1)))
-                                        .setType(SubmitterType.valueOf(subSet.getString(3)))
+                                        .setType(castToSubmittterType(subSet.getString(3)))
                                         .setContactInfo(subSet.getString(2))
                                         .build())
                                 .setDescription(inquirySet.getString(7))
@@ -100,14 +104,20 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                 .setCitizenInformedOfRights(inquirySet.getBoolean(10))
                                 .setCitizenInformedOfDataReservation(inquirySet.getBoolean(11))
                                 .setAgreementOfProgress(inquirySet.getString(12))
-                                .setConsentType(ConsentType.valueOf(inquirySet.getString(13)))
+                                .setConsentType(castToConsentType(inquirySet.getString(13)))
                                 .setSpecialConditions(inquirySet.getString(14))
                                 .setActingMunicipality(inquirySet.getString(15))
                                 .setPayingMunicipality(inquirySet.getString(16))
                                 .setIsRelevantToGatherConsent(inquirySet.getBoolean(17))
+                                .addGatheredConsents(new ArrayList<>() {{
+                                    while (consentSet.next()) {
+                                        add(new GatheredConsent(
+                                                castToConsentEntity(consentSet.getString(2)),
+                                                consentSet.getString(3),
+                                                UUID.fromString(consentSet.getString(1))));
+                                    }
+                                }})
                                 .build());
-
-
             }
 
 
@@ -260,10 +270,11 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     public void delete(Inquiry inquiry) {
 
     }
-private TypeOfRepresentative castToEnum(String input){
+
+    private TypeOfRepresentative castToRepresentativeType(String input) {
 
 
-        switch (input){
+        switch (input) {
             case "Værge":
                 return TypeOfRepresentative.LEGAL_GUARDIAN;
             case "Fuldmagt":
@@ -271,8 +282,65 @@ private TypeOfRepresentative castToEnum(String input){
             case "Partsrepræsentant":
                 return TypeOfRepresentative.PART_REPRESENTATIVE;
         }
-        
+
         return null;
-}
+    }
+
+    private SubmitterType castToSubmittterType(String input) {
+        switch (input) {
+            case "Igangværende indsats":
+                return SubmitterType.ONGOING_EFFORT;
+            case "Andre kommuner":
+                return SubmitterType.OTER_MUNICIPALITY;
+            case "Andre":
+                return SubmitterType.MISCELLANEOUS;
+            case "Borger":
+                return SubmitterType.CITIZIN;
+            case "Pårørende":
+                return SubmitterType.RELATIVE;
+            case "Læge":
+                return SubmitterType.DOCTOR;
+            case "Hospital":
+                return SubmitterType.HOSPITAL;
+            case "Anden management":
+                return SubmitterType.OTHER_MANAGEMENT;
+        }
+        return null;
+    }
+
+    private ConsentType castToConsentType(String input) {
+        switch (input) {
+            case "Verbalt":
+                return ConsentType.VERBAL;
+            case "Skrevent":
+                return ConsentType.WRITTEN;
+        }
+
+        return null;
+    }
+
+    private ConsentEntity castToConsentEntity(String input) {
+        switch (input) {
+            case "Personlig Læge":
+                return ConsentEntity.PERSONAL_DOCTOR;
+            case "Speciallæge":
+                return ConsentEntity.SPECIAL_DOCTER;
+            case "Hospital":
+                return ConsentEntity.HOSPITAL;
+            case "A-Kasse":
+                return ConsentEntity.UNEMPLOYMENT_FUND;
+            case "Tilbud":
+                return ConsentEntity.OFFER;
+            case "Arbejdsgiver":
+                return ConsentEntity.EMPLOYER;
+            case "Tidligere Kommune":
+                return ConsentEntity.PREVIOUS_MUNICIPALITY;
+            case "Anden forvaltning":
+                return ConsentEntity.OTHER_MANAGEMENT;
+            case "Andre":
+                return ConsentEntity.OTHER;
+        }
+        return null;
+    }
 
 }

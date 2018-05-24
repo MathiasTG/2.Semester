@@ -78,7 +78,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Button id="rich-red" layoutX="27.0" layoutY="615.0" mnemonicParsing="false" onAction="#handle_logout" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Logout" textFill="WHITE" />
+            <Button id="rich-red" layoutX="27.0" layoutY="615.0" mnemonicParsing="false" onAction="#handle_logout" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Log ud" textFill="WHITE" />
             <Button id="rich-blue" layoutX="380.0" layoutY="619.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Fortsæt Henvendelse" />
             <RadioButton fx:id="togSearchCriteriaID" layoutX="269.0" layoutY="154.0" mnemonicParsing="false" onAction="#handle_SearchCriteriaSelected" selected="true" stylesheets="@ButtonCSS.css">
                <toggleGroup>

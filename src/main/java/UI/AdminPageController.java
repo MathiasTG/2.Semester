@@ -13,8 +13,6 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 import Acq.IUser;
-import Acq.IUserRepository;
-import com.mysql.jdbc.StringUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

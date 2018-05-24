@@ -12,12 +12,6 @@ public interface IInquiryRepository {
 
 
 
-    /**
-     *
-     * @param uuid of the Inquiry you want to get
-     * @return the Inquiry of the chosen id
-     */
-    Inquiry getById(UUID uuid);
 
 
     List<Inquiry> getInquriesByInquiryId(UUID id);

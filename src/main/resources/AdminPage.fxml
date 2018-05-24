@@ -85,7 +85,7 @@
                                     <Image url="@Sensum%20Udred-logo.png" />
                                  </image>
                               </ImageView>
-                              <Button id="exit-button" layoutX="4.0" layoutY="295.0" mnemonicParsing="false" onAction="#handle_OnNavigateBack" prefHeight="39.0" prefWidth="102.0" stylesheets="@ButtonCSS.css" text="Tilbage" />
+                              <Button id="exit-button" layoutX="4.0" layoutY="295.0" mnemonicParsing="false" onAction="#handle_OnNavigateBack" prefHeight="39.0" prefWidth="102.0" stylesheets="@ButtonCSS.css" text="Log ud" />
                               <RadioButton layoutX="17.0" layoutY="250.0" mnemonicParsing="false" text="Admin" toggleGroup="$RoleGroup" />
                            </children></AnchorPane>
                   </content>

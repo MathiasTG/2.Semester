@@ -190,7 +190,6 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     @Override
     public IPersistanceUser login(String userName, String password) {
-        System.out.println("reached login");
 
         StringBuilder loginQuery = new StringBuilder();
 

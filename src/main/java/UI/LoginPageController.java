@@ -62,9 +62,8 @@ public class LoginPageController implements Initializable {
 
        IResponse response = UI.getDomain().logIn(txtUsername.getText() , txtPassword.getText());
 
-        if(response.isSuccessful() && UI.getDomain().getCurrentUserAccessRights() > 3) //If the user is a caseworker or secretary, go to mainpage
+        if(response.isSuccessful() && UI.getDomain().getCurrentUserAccessRights() < 3) //If the user is a caseworker or secretary, go to mainpage
         {
-            System.out.println("navigated");
             navigateNextPage(event, "MainPage.fxml");
         }
         else if(response.isSuccessful() && UI.getDomain().getCurrentUserAccessRights() == 3) //If the user is a admin, go to adminpage

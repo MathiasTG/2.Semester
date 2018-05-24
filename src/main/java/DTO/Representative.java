@@ -17,6 +17,7 @@ public class Representative {
     public static class Builder implements IBuilder<Representative> {
         private String contactInfo;
         private TypeOfRepresentative type;
+        private UUID id;
 
         public Builder(String contactInfo, TypeOfRepresentative type){
             this.contactInfo = contactInfo;
@@ -34,15 +35,26 @@ public class Representative {
             return this;
         }
 
+        public Representative.Builder setId (UUID id){
+            this.id = id;
+            return this;
+        }
+
         @Override
         public Representative build() {
-            return new Representative(contactInfo, type);
+            return new Representative(contactInfo, type, id);
         }
     }
     private Representative(String contactInfo, TypeOfRepresentative type) {
         this.contactInfo = contactInfo;
         this.type = type;
         id = UUID.randomUUID();
+    }
+
+    private Representative(String contactInfo, TypeOfRepresentative type, UUID id) {
+        this.contactInfo = contactInfo;
+        this.type = type;
+        this.id = id;
     }
 
     public String getContactInfo() {return this.contactInfo; }
@@ -53,6 +65,18 @@ public class Representative {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public void setType(TypeOfRepresentative type) {
+        this.type = type;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }
 

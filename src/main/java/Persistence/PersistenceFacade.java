@@ -8,10 +8,7 @@ package Persistence;
 import Acq.*;
 import DTO.Inquiry;
 import Domain.Response;
-import Domain.User;
 
-import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 

@@ -4,7 +4,6 @@ import Acq.IBuilder;
 import Acq.IUser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,8 +60,9 @@ public class Inquiry {
             this.createdBy=createdBy;
         }
 
-        public void setId(UUID id) {
+        public Inquiry.Builder setId(UUID id) {
             this.id = id;
+            return this;
         }
 
         public Inquiry.Builder setCitizen(Citizen citizen) {

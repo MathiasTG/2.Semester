@@ -1,12 +1,22 @@
 package DTO;
 
+import java.util.UUID;
+
 public class GatheredConsent {
     private ConsentEntity consentEntity;
     private String contactInfo;
+    private UUID id;
 
     public GatheredConsent(ConsentEntity consentEntity, String contactInfo){
         this.consentEntity=consentEntity;
         this.contactInfo=contactInfo;
+        this.id = UUID.randomUUID();
+    }
+
+    public GatheredConsent(ConsentEntity consentEntity, String contactInfo, UUID id) {
+        this.consentEntity = consentEntity;
+        this.contactInfo = contactInfo;
+        this.id = id;
     }
 
     @Override
@@ -35,5 +45,13 @@ public class GatheredConsent {
 
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

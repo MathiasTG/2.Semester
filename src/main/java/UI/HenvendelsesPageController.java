@@ -6,15 +6,10 @@
 package UI;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
-import java.security.Key;
 import java.util.*;
 
 import Acq.IUser;
-import Domain.Caseworker;
-import Domain.Password;
-import Domain.User;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +19,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
@@ -384,10 +378,13 @@ public class HenvendelsesPageController implements Initializable {
             gatheredConsents.add(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
         if(this.togConsentFromOFFER.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
-        if(this.togConsentFromExternalEmployer.isSelected())
-            gatheredConsents.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
         if(this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
+        if(this.togConsentFromExternalOWNDOCTOR.isSelected())
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.PERSONAL_DOCTOR, this.textAreaConsentFromOWNDOCTOR.getText()));
+        if (this.togConsentFromExternalFORMERMUNICIPALITY.isSelected())
+            gatheredConsents.add(new GatheredConsent(ConsentEntity.PREVIOUS_MUNICIPALITY, this.textAreaConsentFromFORMERMUNICIPALITY.getText()));
+
 
         return gatheredConsents;
     }

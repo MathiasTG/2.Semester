@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class InquiryRepository extends AbstractRepository implements IInquiryRepository {
 
@@ -74,6 +75,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                 ResultSet consentSet = executeStm("Select * from gatheredconsent where id in (select consent from consentforinquiry where inquiry = '"
                         + inquirySet.getString(1) + "')").getData();
 
+
                 userInquires.add(
                         new Inquiry.Builder(builder.setID(UUID.fromString(userSet.getString(1)))
                                 .setUsername(userSet.getString(2))
@@ -107,7 +109,14 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                 .setActingMunicipality(inquirySet.getString(15))
                                 .setPayingMunicipality(inquirySet.getString(16))
                                 .setIsRelevantToGatherConsent(inquirySet.getBoolean(17))
-                                .addGatheredConsents()
+                                .addGatheredConsents(new ArrayList<>() {{
+                                    while (consentSet.next()) {
+                                        add(new GatheredConsent(
+                                                castToConsentEntity(consentSet.getString(2)),
+                                                consentSet.getString(3),
+                                                UUID.fromString(consentSet.getString(1))));
+                                    }
+                                }})
                                 .build());
             }
 
@@ -261,22 +270,24 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     public void delete(Inquiry inquiry) {
 
     }
-    private TypeOfRepresentative castToRepresentativeType(String input){
+
+    private TypeOfRepresentative castToRepresentativeType(String input) {
 
 
-            switch (input){
-                case "Værge":
-                    return TypeOfRepresentative.LEGAL_GUARDIAN;
-                case "Fuldmagt":
-                    return TypeOfRepresentative.POWER_OF_ATTORNEY;
-                case "Partsrepræsentant":
-                    return TypeOfRepresentative.PART_REPRESENTATIVE;
-            }
+        switch (input) {
+            case "Værge":
+                return TypeOfRepresentative.LEGAL_GUARDIAN;
+            case "Fuldmagt":
+                return TypeOfRepresentative.POWER_OF_ATTORNEY;
+            case "Partsrepræsentant":
+                return TypeOfRepresentative.PART_REPRESENTATIVE;
+        }
 
-            return null;
+        return null;
     }
-    private SubmitterType castToSubmittterType(String input){
-        switch(input) {
+
+    private SubmitterType castToSubmittterType(String input) {
+        switch (input) {
             case "Igangværende indsats":
                 return SubmitterType.ONGOING_EFFORT;
             case "Andre kommuner":
@@ -296,8 +307,9 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         }
         return null;
     }
-    private ConsentType castToConsentType(String input){
-        switch (input){
+
+    private ConsentType castToConsentType(String input) {
+        switch (input) {
             case "Verbalt":
                 return ConsentType.VERBAL;
             case "Skrevent":
@@ -305,10 +317,10 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         }
 
         return null;
-}
     }
-    private ConsentEntity castToConsentEntity(String input){
-        switch(input){
+
+    private ConsentEntity castToConsentEntity(String input) {
+        switch (input) {
             case "Personlig Læge":
                 return ConsentEntity.PERSONAL_DOCTOR;
             case "Speciallæge":

@@ -34,7 +34,7 @@ public class Admin extends User {
 
     @Override
     public String getPassword() {
-        return super.password.toString();
+        return super.password.getPassword();
     }
 
     @Override

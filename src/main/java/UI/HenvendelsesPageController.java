@@ -325,7 +325,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
         else
             type = null;
 
-        return new Representative.Builder(contactInfo, type).build();
+        return new Representative.Builder(contactInfo, type).setId(UUID.randomUUID()).build();
     }
 
     /*

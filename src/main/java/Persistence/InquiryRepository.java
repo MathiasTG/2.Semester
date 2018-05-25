@@ -82,6 +82,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                 .setAccessRight(userSet.getInt(4))
                                 .setPassword(passSet.getString(1))
                                 .build())
+                                .setId(UUID.fromString(inquirySet.getString(1)))
                                 .setDraft(inquirySet.getBoolean(2))
                                 .setSupportsVUM(inquirySet.getBoolean(3))
                                 .setCitizen(new Citizen.Builder(citizenSet.getString(1),

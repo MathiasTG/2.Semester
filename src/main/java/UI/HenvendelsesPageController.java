@@ -171,6 +171,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
     @FXML
     private Rectangle rectangleEmailError;
 
+    private Inquiry reopenedInquiry = null;
 
 
     @Override
@@ -186,6 +187,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
+        System.out.println(reopenedInquiry);
     }    
 
     @FXML
@@ -566,5 +568,9 @@ public class HenvendelsesPageController extends AbstractPageController implement
         else
             this.txtCitizenEmail.setStyle("");
             //this.rectangleEmailError.setVisible(false);
+    }
+
+    public void setReopenedInquiry(Inquiry inquiry){
+        this.reopenedInquiry = inquiry;
     }
 }

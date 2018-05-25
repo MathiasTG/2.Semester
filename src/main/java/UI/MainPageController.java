@@ -95,6 +95,29 @@ public class MainPageController extends AbstractPageController implements Initia
     }
 
     @FXML
+    private void handle_ContinueInquiry(ActionEvent event) throws IOException {
+
+        if (inquiryView.getSelectionModel().getSelectedItem() != null) {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("HenvendelsesPage.fxml"));
+
+            Parent adminScene = fxmlLoader.load();
+
+            HenvendelsesPageController hPage = fxmlLoader.<HenvendelsesPageController>getController();
+            hPage.setReopenedInquiry((Inquiry) inquiryView
+                    .getSelectionModel().getSelectedItem());
+
+            Scene newScene = new Scene(adminScene);
+            Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            appStage.setScene(newScene);
+            appStage.show();
+
+        } else {
+            errorLabel.setText("Vælg en henvendelse");
+        }
+    }
+
+    @FXML
     private void handle_logout(ActionEvent event) throws IOException {
 
         UI.getDomain().logout();

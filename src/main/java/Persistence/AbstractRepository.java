@@ -11,7 +11,6 @@ import java.util.concurrent.*;
 public abstract class AbstractRepository {
     private static IConfiguration config;
     private static ExecutorService executor;
-    protected static Connection conn;
 
 
     public AbstractRepository()  {
@@ -32,41 +31,33 @@ public abstract class AbstractRepository {
         config=new Configuration();
         executor= Executors.newFixedThreadPool(3);
     }
-    private void startConnection() {
+    protected Connection startConnection() {
         try {
             Properties props = new Properties();
             props.setProperty("user",config.getUsername());
             props.setProperty("password",config.getPassword());
 
-            conn= DriverManager.getConnection(config.getServerUrl(),props);
+            return DriverManager.getConnection(config.getServerUrl(),props);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getErrorCode());
+            System.err.println(e.getMessage());
+            return null;
         }
     }
 
 
 
-    protected ResponseMessage executeStm(final String statement){
+    protected ResponseMessage executeStm(final PreparedStatement statement){
         //response message is final because we need to access it from a seperate thread.
         ResponseMessage res = new ResponseMessage();
         Future<ResponseMessage> t =executor.submit(()-> {
             {
                 try {
-                    startConnection();
-                    synchronized (conn) {
-                        PreparedStatement st = conn.prepareStatement(statement);
-                        res.setData(st.executeQuery());
+                        res.setData(statement.executeQuery());
                         res.setResponseCode(ResponseCode.SUCCESS);
-                    }
                 } catch (SQLException e) {
                     res.setData(null);
                     res.setResponseCode(ResponseCode.REJECTED);
-                }finally {
-                    try {
-                        conn.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         },res);
@@ -82,28 +73,24 @@ public abstract class AbstractRepository {
     }
 
 
-    protected ResponseCode executeUpdate(final String... statements){
-        startConnection();
+    protected ResponseCode executeUpdate(final PreparedStatement... statements){
         List<Future> list = new ArrayList<>();
         final ResponseCode[] res = new ResponseCode[1];
 
-        list.add(executor.submit(()-> {
+        list.add(executor.submit(()->
             Arrays.asList(statements).forEach( t ->
                 {
                     try {
-                        synchronized (conn) {
-                            PreparedStatement st = conn.prepareStatement(t);
-                            st.executeUpdate();
+                            t.executeUpdate();
                             res[0]=ResponseCode.SUCCESS;
-                        }
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                         e.printStackTrace();
                        res[0] =ResponseCode.REJECTED;
                     }
                 }
-            );
-        }));
+            )
+        ));
 
         for(Future f : list){
             while(!f.isDone()) {
@@ -113,12 +100,6 @@ public abstract class AbstractRepository {
                     e.printStackTrace();
                 }
             }
-        }
-
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return res[0];
     }

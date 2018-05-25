@@ -69,10 +69,10 @@
             </Label>
             <TextField fx:id="txtInquiryId" layoutX="300.0" layoutY="150.0" promptText="xxxxxx-xxxx" stylesheets="@ButtonCSS.css" />
             <Button id="rich-blue" layoutX="509.0" layoutY="192.0" mnemonicParsing="false" onAction="#handle_BeginSearchOnCriteria" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Søg" />
-            <TableView layoutX="257.0" layoutY="361.0" prefHeight="237.0" prefWidth="491.0" stylesheets="@ButtonCSS.css">
+            <TableView layoutX="257.0" layoutY="361.0" prefHeight="237.0" prefWidth="491.0" stylesheets="@ButtonCSS.css" fx:id="inquiryView">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn prefWidth="75.0" text="Borger" fx:id="citizen"/>
+                <TableColumn prefWidth="75.0" text="Henvendelse" fx:id="inquiry"/>
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

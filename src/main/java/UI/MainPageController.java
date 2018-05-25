@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import DTO.Inquiry;
 import javafx.beans.Observable;
@@ -22,10 +23,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -57,6 +56,12 @@ public class MainPageController extends AbstractPageController implements Initia
     public TextField txtInquiryId;
     @FXML
     public Label errorLabel;
+    @FXML
+    public TableView inquiryView;
+    @FXML
+    public TableColumn citizen;
+    @FXML
+    public TableColumn inquiry;
 
 
     private ObservableList<Inquiry> currentUserInquries;
@@ -80,7 +85,11 @@ public class MainPageController extends AbstractPageController implements Initia
 
         currentUserInquries = FXCollections.observableList(result);
 
+        citizen.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("CitizenName"));
 
+        inquiry.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("Id"));
+
+        inquiryView.setItems(currentUserInquries);
     }
 
 

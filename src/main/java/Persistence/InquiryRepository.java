@@ -93,7 +93,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                 //This is allowed because all connections, preparedstatements and resultsets are declared in
                 //Try-with-ressources block. therefore we have no memory leak.
 
-            try(Connection conn = startConnection();//Initiates connection and prepared statements.
+            try(Connection conn = startConnection();//Initiates connection and prepared statements. in try-with-resources
                 PreparedStatement userPre = conn.prepareStatement(userStm);
                 PreparedStatement passPre =conn.prepareStatement(passStm);
                 PreparedStatement citizenPre = conn.prepareStatement(citizenStm);
@@ -165,7 +165,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                             .setActingMunicipality(inquirySet.getString(15))
                                             .setPayingMunicipality(inquirySet.getString(16))
                                             .setIsRelevantToGatherConsent(inquirySet.getBoolean(17))
-                                            .addGatheredConsents(new ArrayList<>() {{
+                                            .addGatheredConsents(new ArrayList<GatheredConsent>() {{
                                                 while (consentSet.next()) {//This is where next is called on consentset.
                                                     add(new GatheredConsent(
                                                             castToConsentEntity(consentSet.getString(2)),

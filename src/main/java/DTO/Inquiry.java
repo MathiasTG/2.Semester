@@ -273,6 +273,10 @@ public class Inquiry {
         return citizen;
     }
 
+    public String getCitizenName(){
+        return citizen.getName();
+    }
+
 
     public void setCitizen(Citizen citizen) {
         this.citizen = citizen;

@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import DTO.Inquiry;
 import javafx.beans.Observable;
@@ -22,10 +23,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -33,7 +32,7 @@ import javafx.stage.Stage;
  *
  * @author ulriksandberg
  */
-public class MainPageController implements Initializable {
+public class MainPageController extends AbstractPageController implements Initializable {
 
     @FXML
     public Label CurrentUserName;
@@ -57,6 +56,12 @@ public class MainPageController implements Initializable {
     public TextField txtInquiryId;
     @FXML
     public Label errorLabel;
+    @FXML
+    public TableView inquiryView;
+    @FXML
+    public TableColumn citizen;
+    @FXML
+    public TableColumn inquiry;
 
 
     private ObservableList<Inquiry> currentUserInquries;
@@ -71,23 +76,45 @@ public class MainPageController implements Initializable {
 
         //Download all inquiries related to the current user.
         downloadCurrentUserInquiries();
-    }    
+    }
 
-    private void downloadCurrentUserInquiries()
-    {
+    private void downloadCurrentUserInquiries() {
 
         List<Inquiry> result = UI.getDomain().downloadCurrentUserInquiries();
 
         currentUserInquries = FXCollections.observableList(result);
 
-
+        setInquiriesInTable(currentUserInquries);
     }
 
 
     @FXML
     private void handle_CreateInquiry(ActionEvent event) throws IOException {
-        
+
         navigateNextPage(event, "HenvendelsesPage.fxml");
+    }
+
+    @FXML
+    private void handle_ContinueInquiry(ActionEvent event) throws IOException {
+
+        if (inquiryView.getSelectionModel().getSelectedItem() != null) {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("HenvendelsesPage.fxml"));
+
+            Parent adminScene = fxmlLoader.load();
+
+            HenvendelsesPageController hPage = fxmlLoader.<HenvendelsesPageController>getController();
+            hPage.setReopenedInquiry((Inquiry) inquiryView
+                    .getSelectionModel().getSelectedItem());
+
+            Scene newScene = new Scene(adminScene);
+            Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            appStage.setScene(newScene);
+            appStage.show();
+
+        } else {
+            errorLabel.setText("Vælg en henvendelse");
+        }
     }
 
     @FXML
@@ -98,26 +125,12 @@ public class MainPageController implements Initializable {
         navigateNextPage(event, "LoginPage.fxml");
     }
 
-    private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
-    {
-        
-        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
-                
-        Scene newScene = new Scene(adminScene);
-        Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
-        appStage.setScene(newScene);
-        appStage.show();
-    }
 
-    private void SetCurrentUserInfo()
-    {
+    private void SetCurrentUserInfo() {
         CurrentUserName.setText(UI.getDomain().getCurrentUserName());
-        if(UI.getDomain().getCurrentUserAccessRights() == 1)
-        {
+        if (UI.getDomain().getCurrentUserAccessRights() == 1) {
             CurrentUserTitle.setText("Sekretær");
-        }
-        else
-        {
+        } else {
             CurrentUserTitle.setText("Sagsbehandler");
         }
     }
@@ -126,53 +139,75 @@ public class MainPageController implements Initializable {
 
         disableTextFields();
 
-        if(togSearchCriteriaID.isSelected())
+        if (togSearchCriteriaID.isSelected())
             txtInquiryId.setDisable(false);
 
-        if(togSearchCriteriaCPR.isSelected())
+        if (togSearchCriteriaCPR.isSelected())
             txtCPR.setDisable(false);
 
-        if(togSearchCriteriaNAME.isSelected())
+        if (togSearchCriteriaNAME.isSelected())
             txtCitizenName.setDisable(false);
     }
 
 
-    private void disableTextFields()
-    {
+    private void disableTextFields() {
         txtInquiryId.setDisable(true);
         txtCitizenName.setDisable(true);
         txtCPR.setDisable(true);
     }
 
+    private void setInquiriesInTable(ObservableList list) {
+        currentUserInquries = list;
+
+        citizen.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("CitizenName"));
+
+        inquiry.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("Id"));
+
+        inquiryView.setItems(currentUserInquries);
+    }
+
     public void handle_BeginSearchOnCriteria(ActionEvent actionEvent) {
 
-        if(togSearchCriteriaID.isSelected()) {
+        List<Inquiry> result = null;
 
-            if(!txtInquiryId.getText().isEmpty())
-            {
+        if (togSearchCriteriaID.isSelected()) {
+
+            if (!txtInquiryId.getText().isEmpty()) {
                 System.out.println("Search for id: " + txtInquiryId.getText());
 
+                result = UI.getDomain().getInquriesByInquiryId(
+                        UUID.fromString(txtInquiryId.getText()));
 
+            } else {
+                errorLabel.setText("Please enter id");
             }
-            errorLabel.setText("Please enter id");
         }
-        if(togSearchCriteriaCPR.isSelected())
-        {
-            if(!txtCPR.getText().isEmpty())
-            {
+        if (togSearchCriteriaCPR.isSelected()) {
+            if (!txtCPR.getText().isEmpty()) {
                 System.out.println("Search for cpr: " + txtCPR.getText());
+
+                result = UI.getDomain().getInquiresByCPR(txtCPR.getText());
+
+            } else {
+                errorLabel.setText("Please enter cpr");
             }
-            errorLabel.setText("Please enter cpr");
         }
 
-        if(togSearchCriteriaNAME.isSelected())
-        {
-            if(!txtCitizenName.getText().isEmpty())
-            {
+        if (togSearchCriteriaNAME.isSelected()) {
+            if (!txtCitizenName.getText().isEmpty()) {
                 System.out.println("Search for name: " + txtCitizenName.getText());
-            }
-            errorLabel.setText("Please enter name");
-        }
 
+                result = UI.getDomain().getInquiresByCitizenName(txtCitizenName.getText());
+
+            } else {
+                errorLabel.setText("Please enter name");
+            }
+        }
+        if (result != null) {
+
+            currentUserInquries = FXCollections.observableList(result);
+            setInquiriesInTable(currentUserInquries);
+
+        }
     }
 }

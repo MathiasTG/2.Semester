@@ -31,7 +31,7 @@ import javafx.stage.Stage;
  *
  * @author ulriksandberg
  */
-public class AdminPageController implements Initializable {
+public class AdminPageController extends AbstractPageController implements Initializable {
 
     @FXML
     private TextField txtEditUserName;
@@ -101,23 +101,17 @@ public class AdminPageController implements Initializable {
     }
 
     @FXML
-    private void handle_OnNavigateBack(ActionEvent event) throws IOException {
-        
-        navigateNextPage(event, "LoginPage.fxml");
+    private void handle_OnNavigateBack(ActionEvent event){
+        try {
+            super.navigateNextPage(event, "LoginPage.fxml");
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
         
     }
     
     
-    private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
-    {
-        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
 
-                
-        Scene newScene = new Scene(adminScene);
-        Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
-        appStage.setScene(newScene);
-        appStage.show();
-    }
 
     public void btnDeleteUser(ActionEvent actionEvent) {
         if (!this.tableViewUsers.getSelectionModel().isEmpty()) {

@@ -34,7 +34,7 @@ import javafx.scene.input.KeyEvent;
  *
  * @author ulriksandberg
  */
-public class HenvendelsesPageController implements Initializable {
+public class HenvendelsesPageController extends AbstractPageController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -171,6 +171,7 @@ public class HenvendelsesPageController implements Initializable {
     @FXML
     private Rectangle rectangleEmailError;
 
+    private Inquiry reopenedInquiry = null;
 
 
     @Override
@@ -186,25 +187,18 @@ public class HenvendelsesPageController implements Initializable {
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
+        System.out.println(reopenedInquiry);
     }    
 
     @FXML
-    private void handle_NavigateBack(ActionEvent event) throws IOException {
+    private void handle_NavigateBack(ActionEvent event) {
 
-        navigateNextPage(event, "MainPage.fxml");
+        try {
+            super.navigateNextPage(event, "MainPage.fxml");
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
 
-    }
-    
-    private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
-    {
-        
-        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
-                
-        Scene newScene = new Scene(adminScene);
-
-        Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
-        appStage.setScene(newScene);
-        appStage.show();
     }
 
     @FXML
@@ -574,5 +568,9 @@ public class HenvendelsesPageController implements Initializable {
         else
             this.txtCitizenEmail.setStyle("");
             //this.rectangleEmailError.setVisible(false);
+    }
+
+    public void setReopenedInquiry(Inquiry inquiry){
+        this.reopenedInquiry = inquiry;
     }
 }

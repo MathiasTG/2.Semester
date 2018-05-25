@@ -32,7 +32,7 @@ import javafx.stage.Stage;
  *
  * @author ulriksandberg
  */
-public class MainPageController implements Initializable {
+public class MainPageController extends AbstractPageController implements Initializable {
 
     @FXML
     public Label CurrentUserName;
@@ -107,16 +107,6 @@ public class MainPageController implements Initializable {
         navigateNextPage(event, "LoginPage.fxml");
     }
 
-    private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
-    {
-        
-        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
-                
-        Scene newScene = new Scene(adminScene);
-        Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
-        appStage.setScene(newScene);
-        appStage.show();
-    }
 
     private void SetCurrentUserInfo()
     {

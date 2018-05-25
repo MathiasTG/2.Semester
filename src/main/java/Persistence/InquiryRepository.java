@@ -110,7 +110,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                 .setActingMunicipality(inquirySet.getString(15))
                                 .setPayingMunicipality(inquirySet.getString(16))
                                 .setIsRelevantToGatherConsent(inquirySet.getBoolean(17))
-                                .addGatheredConsents(new ArrayList<>() {{
+                                .addGatheredConsents(new ArrayList<GatheredConsent>() {{
                                     while (consentSet.next()) {
                                         add(new GatheredConsent(
                                                 castToConsentEntity(consentSet.getString(2)),

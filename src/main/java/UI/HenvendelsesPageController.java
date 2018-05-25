@@ -34,7 +34,7 @@ import javafx.scene.input.KeyEvent;
  *
  * @author ulriksandberg
  */
-public class HenvendelsesPageController implements Initializable {
+public class HenvendelsesPageController extends AbstractPageController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -189,22 +189,14 @@ public class HenvendelsesPageController implements Initializable {
     }    
 
     @FXML
-    private void handle_NavigateBack(ActionEvent event) throws IOException {
+    private void handle_NavigateBack(ActionEvent event) {
 
-        navigateNextPage(event, "MainPage.fxml");
+        try {
+            super.navigateNextPage(event, "MainPage.fxml");
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
 
-    }
-    
-    private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
-    {
-        
-        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
-                
-        Scene newScene = new Scene(adminScene);
-
-        Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
-        appStage.setScene(newScene);
-        appStage.show();
     }
 
     @FXML

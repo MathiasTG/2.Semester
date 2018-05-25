@@ -27,7 +27,7 @@
                   <Image url="@Sensum%20Udred-logo%20(2).png" />
                </image>
             </ImageView>
-            <Button id="rich-blue" layoutX="183.0" layoutY="341.0" mnemonicParsing="false" onAction="#Handle_LoginClicked" prefHeight="39.0" prefWidth="262.0" stylesheets="@ButtonCSS.css" text="Log ind" />
+            <Button id="rich-blue" fx:id="btn_LogInd" layoutX="183.0" layoutY="341.0" mnemonicParsing="false" onAction="#Handle_LoginClicked" prefHeight="39.0" prefWidth="262.0" stylesheets="@ButtonCSS.css" text="Log ind" />
             <TextField fx:id="txtUsername" layoutX="184.0" layoutY="203.0" prefWidth="265.0" stylesheets="@ButtonCSS.css" />
             <Label layoutX="182.0" layoutY="181.0" prefHeight="17.0" prefWidth="149.0" text="Brugernavn:">
                <font>

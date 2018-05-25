@@ -30,7 +30,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             pass.setString(1,passId.toString());
             pass.setString(2,iUser.getPassword());
             pass.setBoolean(3,true);
-            pass.setString(4,LocalDateTime.now().toString());
+            pass.setTimestamp(4,Timestamp.valueOf(LocalDateTime.now()));
 
             user.setString(1,iUser.getID().toString());
             user.setString(2,iUser.getUsername());
@@ -162,7 +162,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                      PreparedStatement userDel = conn.prepareStatement(userdelete)) {
                     passDel.setString(1, passid);
                     userDel.setString(1, uuid.toString());
-                    executeUpdate(passDel,userDel);
+                    executeUpdate(userDel,passDel);
                 }
             }
         } catch (SQLException e) {
@@ -211,7 +211,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             try(ResultSet resultSet = executeStm(statement).getData()) {
                 resultSet.next();
                 String passid = resultSet.getString(1);
-                String updatePassword = "UPDATE password SET password =?, istemporary = WHERE passid = ?;";
+                String updatePassword = "UPDATE password SET password =?, istemporary =? WHERE passid = ?;";
 
                 try(PreparedStatement upstatement = conn.prepareStatement(updatePassword)){
                     upstatement.setString(1,password);
@@ -257,6 +257,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            System.out.println("Or you just tried to do an SQL Injection");
             return null;
         }
     }

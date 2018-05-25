@@ -6,6 +6,7 @@ import DTO.*;
 import Persistence.PersistenceModels.PersistencePassword;
 import Persistence.PersistenceModels.PersistenceUser;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -197,15 +198,15 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             cprPre.setString(1,inquiry.getCitizen().getCpr());
             submitterPre.setString(1,inquiry.getSubmittedBy().getId().toString());
 
-            if (inquiry.getCitizen() != null && executeStm(cprPre).getData() == null) {
+            ResultSet cizExists=executeStm(cprPre).getData();
+            if (inquiry.getCitizen() != null &&  (cizExists==null || !cizExists.next())) {
                 createCitizen(inquiry.getCitizen());
             }
-
-            if (inquiry.getSubmittedBy() != null && executeStm(submitterPre).getData() == null) {
+            ResultSet subExists = executeStm(submitterPre).getData();
+            if (inquiry.getSubmittedBy() != null && (subExists==null || !subExists.next())) {
                 createSubmitter(inquiry.getSubmittedBy());
             }
 
-            StringBuilder inquiryBuilder = new StringBuilder();
             String inquiryString ="INSERT INTO Inquiry VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
             PreparedStatement inquiryPre = conn.prepareStatement(inquiryString);
             inquiryPre.setString(1,inquiry.getId().toString());
@@ -233,11 +234,15 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             inquiryPre.setBoolean(10,inquiry.isCitizenInformedOfRights());
             inquiryPre.setBoolean(11,inquiry.isCitizenInformedOfDataReservation());
             inquiryPre.setString(12,inquiry.getAgreementOfProgress());
-            inquiryPre.setString(13,inquiry.getConsentType().toString());
+            if(inquiry.getConsentType()!=null)
+                inquiryPre.setString(13,inquiry.getConsentType().toString());
+            else
+                inquiryPre.setString(13,null);
             inquiryPre.setString(14,inquiry.getSpecialConditions());
             inquiryPre.setString(15,inquiry.getActingMunicipality());
             inquiryPre.setString(16,inquiry.getPayingMunicipality());
             inquiryPre.setBoolean(17,inquiry.getIsRelevantToGatherConsent());
+
 
             if (executeUpdate(inquiryPre).equals(ResponseCode.SUCCESS)) {
                 System.out.println("Mega godt");
@@ -272,9 +277,12 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             PreparedStatement checkPre = conn.prepareStatement(checkStm);
             PreparedStatement citizenPre = conn.prepareStatement(citizenStm))
         {
-            checkPre.setString(1,citizen.getRepresentative().getId().toString());
-            if (citizen.getRepresentative() != null && executeStm(checkPre).getData() == null) {
-                createRepresentative(citizen.getRepresentative());
+
+            if(citizen.getRepresentative() != null){
+                checkPre.setString(1,citizen.getRepresentative().getId().toString());
+                ResultSet set= executeStm(checkPre).getData();
+                if(set==null || !set.next())
+                    createRepresentative(citizen.getRepresentative());
             }
             citizenPre.setString(1,citizen.getCpr());
             citizenPre.setString(2,citizen.getName());
@@ -286,7 +294,8 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             } else {
                 citizenPre.setString(6,null);
             }
-            executeUpdate(citizenPre);
+            System.out.println("executes citizen update");
+            System.out.println(executeUpdate(citizenPre));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -299,6 +308,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             statement.setString(1,representative.getId().toString());
             statement.setString(2,representative.getContactInfo());
             statement.setString(3,representative.getType().toString());
+            executeUpdate(statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -376,6 +386,8 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     }
 
     private ConsentType castToConsentType(String input) {
+        if(input==null)
+            return null;
         switch (input) {
             case "Verbalt":
                 return ConsentType.VERBAL;

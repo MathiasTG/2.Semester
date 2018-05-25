@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
  *
  * @author ulriksandberg
  */
-public class LoginPageController implements Initializable {
+public class LoginPageController extends AbstractPageController implements Initializable {
 
     @FXML
     public PasswordField txtPassword;
@@ -34,6 +35,8 @@ public class LoginPageController implements Initializable {
     public TextField txtUsername;
     @FXML
     public Label errorLabel;
+    @FXML
+    public Button btn_LogInd;
 
     private Label label;
     
@@ -45,10 +48,11 @@ public class LoginPageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        btn_LogInd.setDefaultButton(true);
     }    
 
     @FXML
-    private void Handle_LoginClicked(ActionEvent event) throws IOException {
+    private void Handle_LoginClicked(ActionEvent event){
 
 
         if(txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty())
@@ -64,11 +68,19 @@ public class LoginPageController implements Initializable {
 
         if(response.isSuccessful() && UI.getDomain().getCurrentUserAccessRights() < 3) //If the user is a caseworker or secretary, go to mainpage
         {
-            navigateNextPage(event, "MainPage.fxml");
+            try {
+                super.navigateNextPage(event, "MainPage.fxml");
+            } catch (IOException e){
+                System.out.println(e.getMessage());
+            }
         }
         else if(response.isSuccessful() && UI.getDomain().getCurrentUserAccessRights() == 3) //If the user is a admin, go to adminpage
         {
-            navigateNextPage(event, "AdminPage.fxml");
+            try {
+                super.navigateNextPage(event, "AdminPage.fxml");
+            } catch (IOException e){
+                System.out.println(e.getMessage());
+            }
         }
         else
         {
@@ -82,16 +94,7 @@ public class LoginPageController implements Initializable {
     }
     
     
-    private void navigateNextPage(ActionEvent sender, String pageName) throws IOException
-    {
-        
-        Parent adminScene = FXMLLoader.load(getClass().getClassLoader().getResource(pageName));
 
-        Scene newScene = new Scene(adminScene);
-        Stage appStage = (Stage) ((Node) sender.getSource()).getScene().getWindow();
-        appStage.setScene(newScene);
-        appStage.show();
-    }
     
     
 }

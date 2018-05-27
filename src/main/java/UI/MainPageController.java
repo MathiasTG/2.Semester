@@ -11,8 +11,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import DTO.Inquiry;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +37,8 @@ import javafx.stage.Stage;
  * @author ulriksandberg
  */
 public class MainPageController extends AbstractPageController implements Initializable {
+
+    ExecutorService service = Executors.newFixedThreadPool(2);
 
     @FXML
     public Label CurrentUserName;
@@ -75,16 +81,18 @@ public class MainPageController extends AbstractPageController implements Initia
         SetCurrentUserInfo();
 
         //Download all inquiries related to the current user.
-        downloadCurrentUserInquiries();
+        service.execute(()->downloadCurrentUserInquiries());
     }
 
     private void downloadCurrentUserInquiries() {
-
+        Platform.runLater(()->errorLabel.setText("Henter henvendelser...."));
         List<Inquiry> result = UI.getDomain().downloadCurrentUserInquiries();
 
         currentUserInquries = FXCollections.observableList(result);
 
+
         setInquiriesInTable(currentUserInquries);
+        Platform.runLater(()->errorLabel.setText(""));
     }
 
 

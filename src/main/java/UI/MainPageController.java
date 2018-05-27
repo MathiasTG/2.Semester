@@ -38,8 +38,7 @@ import javafx.stage.Stage;
  */
 public class MainPageController extends AbstractPageController implements Initializable {
 
-    ExecutorService service = Executors.newFixedThreadPool(2);
-
+    
     @FXML
     public Label CurrentUserName;
 
@@ -81,7 +80,7 @@ public class MainPageController extends AbstractPageController implements Initia
         SetCurrentUserInfo();
 
         //Download all inquiries related to the current user.
-        service.execute(()->downloadCurrentUserInquiries());
+        new Thread(this::downloadCurrentUserInquiries);
     }
 
     private void downloadCurrentUserInquiries() {

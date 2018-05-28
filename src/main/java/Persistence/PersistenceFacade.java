@@ -112,4 +112,9 @@ public class PersistenceFacade implements IPersistenceFacade {
     public void changePassword(IUser user, String password, boolean isTemporary){
         userRepository.changePassword(user, password, isTemporary);
     }
+
+    @Override
+    public void alterInquiry(Inquiry inquiry) {
+        inquiryRepository.alter(inquiry);
+    }
 }

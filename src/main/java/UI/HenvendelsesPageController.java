@@ -172,7 +172,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
     @FXML
     private Rectangle rectangleEmailError;
 
-    private Inquiry reopenedInquiry = null;
+    private Inquiry reopenedInquiry;
 
 
     @Override
@@ -188,15 +188,16 @@ public class HenvendelsesPageController extends AbstractPageController implement
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
-        System.out.println("Inquiry er :"+reopenedInquiry+" ved hpage::initialize.");
-    }    
+        reopenedInquiry = null;
+        System.out.println("Inquiry er :" + reopenedInquiry + " ved hpage::initialize.");
+    }
 
     @FXML
     private void handle_NavigateBack(ActionEvent event) {
 
         try {
             super.navigateNextPage(event, "MainPage.fxml");
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
@@ -204,104 +205,76 @@ public class HenvendelsesPageController extends AbstractPageController implement
 
     @FXML
     private void handle_togGrRepresentativeSelected(ActionEvent event) {
-        
+
         System.out.println("representative selected");
-        
-        if(togRepresentativeLEGALGUARDIAN.isSelected())
-        {
+
+        if (togRepresentativeLEGALGUARDIAN.isSelected()) {
             textAreaRepresentativeContactInfo.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaRepresentativeContactInfo.setDisable(true);
         }
-        
+
     }
 
     @FXML
     private void handle_togGrExternalConsentSelected(ActionEvent event) {
-        
-        if(togConsentFromOFFER.isSelected())
-        {
+
+        if (togConsentFromOFFER.isSelected()) {
             textAreaConsentFromOFFER.setDisable(false);
         }
-        if(togConsentFromExternalOWNDOCTOR.isSelected())
-        {
+        if (togConsentFromExternalOWNDOCTOR.isSelected()) {
             textAreaConsentFromOWNDOCTOR.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaConsentFromSPECIALDOCTOR.setDisable(true);
         }
-        
-        if(togConsentFromExternalSPECIALDOCTOR.isSelected())
-        {
+
+        if (togConsentFromExternalSPECIALDOCTOR.isSelected()) {
             textAreaConsentFromSPECIALDOCTOR.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaConsentFromSPECIALDOCTOR.setDisable(true);
         }
-        
-        if(togConsentFromExternalHOSPITAL.isSelected())
-        {
+
+        if (togConsentFromExternalHOSPITAL.isSelected()) {
             textAreaConsentFromHOSPITAL.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaConsentFromHOSPITAL.setDisable(true);
         }
-        
-        if(togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
-        {
+
+        if (togConsentFromExternalUNEMPLOYMENTFUND.isSelected()) {
             textAreaConsentFromUNEMPLOYMENTFUND.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaConsentFromUNEMPLOYMENTFUND.setDisable(true);
         }
-        
-        if(togConsentFromExternalEmployer.isSelected())
-        {
+
+        if (togConsentFromExternalEmployer.isSelected()) {
             textAreaConsentFromEMPLOYER.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaConsentFromEMPLOYER.setDisable(true);
         }
-        
-        if(togConsentFromExternalFORMERMUNICIPALITY.isSelected())
-        {
+
+        if (togConsentFromExternalFORMERMUNICIPALITY.isSelected()) {
             textAreaConsentFromFORMERMUNICIPALITY.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaConsentFromFORMERMUNICIPALITY.setDisable(true);
         }
-        
-        if(togConsentFromExternalOTHERMANAGEMENT.isSelected())
-        {
+
+        if (togConsentFromExternalOTHERMANAGEMENT.isSelected()) {
             textAreaConsentFromOTHERMANAGEMENT.setDisable(false);
-        }
-        else
-        {
+        } else {
             textAreaConsentFromOTHERMANAGEMENT.setDisable(true);
         }
     }
 
     @FXML
     private void handle_togGrSubmittedBySelected(ActionEvent event) {
-        
+
         System.out.println("submittedBySelected");
-        if(togSubmittedByCITIZEN.isSelected())
-        {
+        if (togSubmittedByCITIZEN.isSelected()) {
             textAreaSubmittedByCONTACTINFO.setDisable(true);
-        }
-        else
-        {
+        } else {
             textAreaSubmittedByCONTACTINFO.setDisable(false);
         }
-        
+
     }
 
 
@@ -310,20 +283,17 @@ public class HenvendelsesPageController extends AbstractPageController implement
     for the Inquiry class´ constructur
     Both from the DTO package
      */
-    public Representative getRepresentative(){
+    public Representative getRepresentative() {
         String contactInfo = this.textAreaRepresentativeContactInfo.getText();
         TypeOfRepresentative type;
 
-        if(togRepresentativeLEGALGUARDIAN.isSelected()){
+        if (togRepresentativeLEGALGUARDIAN.isSelected()) {
             type = TypeOfRepresentative.LEGAL_GUARDIAN;
-        }
-        else if(togRepresentativePOWEROFATTORNEY.isSelected()){
+        } else if (togRepresentativePOWEROFATTORNEY.isSelected()) {
             type = TypeOfRepresentative.POWER_OF_ATTORNEY;
-        }
-        else if (togRepresentativeREPRESENTATIVE.isSelected()){
+        } else if (togRepresentativeREPRESENTATIVE.isSelected()) {
             type = TypeOfRepresentative.PART_REPRESENTATIVE;
-        }
-        else
+        } else
             type = null;
 
         return new Representative.Builder(contactInfo, type).setId(UUID.randomUUID()).build();
@@ -334,7 +304,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
     for the Inquiry class´ constructur
     Both from the DTO package
      */
-    public Citizen getCitizen(Representative representative){
+    public Citizen getCitizen(Representative representative) {
 
         String cpr = this.txtCitizenCPR.getText();
         String name = this.txtCitizenName.getText();
@@ -343,13 +313,10 @@ public class HenvendelsesPageController extends AbstractPageController implement
         int phoneNumber;
         // TODO
         // check for input mismatch exception
-        if(this.txtCitizenPhone.getText().matches("\\d*")) {
+        if (this.txtCitizenPhone.getText().matches("\\d*")) {
             phoneNumber = Integer.parseInt(this.txtCitizenPhone.getText());
         } else
             phoneNumber = 00000000;
-
-
-
 
 
         return new Citizen.Builder(cpr, name, address).setEmail(email).setPhoneNumber(phoneNumber).
@@ -361,21 +328,21 @@ public class HenvendelsesPageController extends AbstractPageController implement
     from different relevant sources. Returns the list, which is used in the Inquiry class´ constructor.
     Both classes are from the DTO pacakge
      */
-    public List<GatheredConsent> getGatheredConsent(){
+    public List<GatheredConsent> getGatheredConsent() {
         List<GatheredConsent> gatheredConsents = new ArrayList<>();
-        if(this.togConsentFromExternalEmployer.isSelected())
+        if (this.togConsentFromExternalEmployer.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
-        if(this.togConsentFromExternalSPECIALDOCTOR.isSelected())
+        if (this.togConsentFromExternalSPECIALDOCTOR.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
-        if(this.togConsentFromExternalHOSPITAL.isSelected())
+        if (this.togConsentFromExternalHOSPITAL.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
-        if(this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
+        if (this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
-        if(this.togConsentFromOFFER.isSelected())
+        if (this.togConsentFromOFFER.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
-        if(this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
+        if (this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
-        if(this.togConsentFromExternalOWNDOCTOR.isSelected())
+        if (this.togConsentFromExternalOWNDOCTOR.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.PERSONAL_DOCTOR, this.textAreaConsentFromOWNDOCTOR.getText()));
         if (this.togConsentFromExternalFORMERMUNICIPALITY.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.PREVIOUS_MUNICIPALITY, this.textAreaConsentFromFORMERMUNICIPALITY.getText()));
@@ -389,7 +356,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
     request. Used in the Inquiry class´constructor
     Both classes are from the DTO package
      */
-    public Submitter getSubmitter(){
+    public Submitter getSubmitter() {
         SubmitterType type;
         String contactInfo = this.textAreaSubmittedByCONTACTINFO.getText();
 
@@ -397,17 +364,17 @@ public class HenvendelsesPageController extends AbstractPageController implement
             type = SubmitterType.CITIZIN;
         else if (togSubmittedByDOCTOR.isSelected())
             type = SubmitterType.DOCTOR;
-        else if(togSubmittedByHOSPITAL.isSelected())
+        else if (togSubmittedByHOSPITAL.isSelected())
             type = SubmitterType.HOSPITAL;
-        else if(togSubmittedByMISCELLAEOUS.isSelected())
+        else if (togSubmittedByMISCELLAEOUS.isSelected())
             type = SubmitterType.MISCELLANEOUS;
-        else if(togSubmittedByONGOINGEFFORT.isSelected())
+        else if (togSubmittedByONGOINGEFFORT.isSelected())
             type = SubmitterType.ONGOING_EFFORT;
-        else if(togSubmittedByOTHERMANAGEMENT.isSelected())
+        else if (togSubmittedByOTHERMANAGEMENT.isSelected())
             type = SubmitterType.OTER_MUNICIPALITY;
-        else if(togSubmittedByRELATIVE.isSelected())
+        else if (togSubmittedByRELATIVE.isSelected())
             type = SubmitterType.RELATIVE;
-        else if(togSubmittedByOTHERMUNICIPALITY.isSelected())
+        else if (togSubmittedByOTHERMUNICIPALITY.isSelected())
             type = SubmitterType.OTER_MUNICIPALITY;
         else
             type = null;
@@ -433,7 +400,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
     }
 
 
-    private Inquiry createInquiry(boolean isDraft){
+    private Inquiry createInquiry(boolean isDraft) {
         Representative representative = this.getRepresentative();
         Citizen citizen = getCitizen(representative);
         String description = this.txtAreaInqueryDescription.getText();
@@ -451,22 +418,22 @@ public class HenvendelsesPageController extends AbstractPageController implement
         List<GatheredConsent> gatheredConsents = this.getGatheredConsent();
 
 
-        if(this.togIsConsentRelevantYES.isSelected()){
+        if (this.togIsConsentRelevantYES.isSelected()) {
             isRelevantToGatherConsent = true;
         } else
             isRelevantToGatherConsent = false;
 
-        if(isRelevantToGatherConsent){
-            if(this.togHowIsConsentGivenVERBAL.isSelected())
+        if (isRelevantToGatherConsent) {
+            if (this.togHowIsConsentGivenVERBAL.isSelected())
                 consentType = ConsentType.VERBAL;
-            else if(this.togHowIsConsentGivenWRITEN.isSelected())
+            else if (this.togHowIsConsentGivenWRITEN.isSelected())
                 consentType = ConsentType.WRITTEN;
             else
                 consentType = null;
         } else
             consentType = null;
 
-        if(this.togIsCitizenInformedOfOnlineSavingYES.isSelected())
+        if (this.togIsCitizenInformedOfOnlineSavingYES.isSelected())
             citizenInformedOfDataReservation = true;
         else
             citizenInformedOfDataReservation = false;
@@ -476,12 +443,12 @@ public class HenvendelsesPageController extends AbstractPageController implement
         else
             citizenInformedOfRights = false;
 
-        if(this.togIsCitizenAwareOfInquiryYES.isSelected())
+        if (this.togIsCitizenAwareOfInquiryYES.isSelected())
             citizenAwareOfInquiry = true;
         else
             citizenAwareOfInquiry = false;
 
-        if(this.togIntentIsClearYES.isSelected())
+        if (this.togIntentIsClearYES.isSelected())
             intentIsClear = true;
         else
             intentIsClear = false;
@@ -511,7 +478,8 @@ public class HenvendelsesPageController extends AbstractPageController implement
         System.out.println("Representative: " + citizen.getRepresentative().getContactInfo());
         */
 
-                return new Inquiry.Builder(this.user).setCitizen(citizen)
+        return new Inquiry.Builder(this.user).setCitizen(citizen)
+                .setId(setIdIfReopened())
                 .setCreatedBy(user).setDescription(description).setIntentIsClear(intentIsClear)
                 .setCitizenAwareOfInquiry(citizenAwareOfInquiry).setCitizenInformedOfRights(citizenInformedOfRights)
                 .setCitizenInformedOfDataReservation(citizenInformedOfDataReservation)
@@ -524,59 +492,61 @@ public class HenvendelsesPageController extends AbstractPageController implement
     }
 
 
-
     @FXML
     private void handle_togGrIsConsentRelevant(ActionEvent event) {
-    
-        if(togIsConsentRelevantYES.isSelected())
-        {
+
+        if (togIsConsentRelevantYES.isSelected()) {
             togHowIsConsentGivenVERBAL.setDisable(false);
             togHowIsConsentGivenWRITEN.setDisable(false);
-        }
-        else
-        {
+        } else {
             togHowIsConsentGivenVERBAL.setDisable(true);
             togHowIsConsentGivenWRITEN.setDisable(true);
         }
-        
+
     }
 
     @FXML
     private void onKeyPressedTelephone(KeyEvent event) {
-        if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
+        if (!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
             this.txtCitizenPhone.setStyle("-fx-background-color: red");
         else
             this.txtCitizenPhone.setStyle("");
     }
 
     @FXML
-    private void onKeyPressedCPR(KeyEvent event){
-        if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
+    private void onKeyPressedCPR(KeyEvent event) {
+        if (!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
             this.txtCitizenCPR.setStyle("-fx-background-color: red");
             //this.rectangleCPRError.setVisible(true);
         else
             this.txtCitizenCPR.setStyle("");
-            //this.rectangleCPRError.setVisible(false);
+        //this.rectangleCPRError.setVisible(false);
     }
 
 
-
     @FXML
-    private void onKeyTypedEmail(KeyEvent event){
+    private void onKeyTypedEmail(KeyEvent event) {
         if (!UI.getDomain().validateEmail(this.txtCitizenEmail.getText()))
             this.txtCitizenEmail.setStyle("-fx-background-color: red");
             //this.rectangleEmailError.setVisible(true);
         else
             this.txtCitizenEmail.setStyle("");
-            //this.rectangleEmailError.setVisible(false);
+        //this.rectangleEmailError.setVisible(false);
     }
 
-    public void setReopenedInquiry(Inquiry inquiry){
+    public void setReopenedInquiry(Inquiry inquiry) {
         this.reopenedInquiry = inquiry;
         Platform.runLater(this::fillOutInquiry);
     }
 
-    private void fillOutInquiry(){
+    private UUID setIdIfReopened(){
+        if (reopenedInquiry != null){
+            return reopenedInquiry.getId();
+        }
+        return null;
+    }
+
+    private void fillOutInquiry() {
         //Citizen fields
         txtCitizenName.appendText(reopenedInquiry.getCitizen().getName());
         txtCitizenAddress.appendText(reopenedInquiry.getCitizen().getAddress());
@@ -586,7 +556,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
 
         txtAreaInqueryDescription.setText(reopenedInquiry.getDescription());
         togIntentIsClearYES.setSelected(reopenedInquiry.isIntentIsClear());
-        if(reopenedInquiry.getSubmittedBy()!=null) {
+        if (reopenedInquiry.getSubmittedBy() != null) {
             switch (reopenedInquiry.getSubmittedBy().getType()) {
                 case CITIZIN:
                     togSubmittedByCITIZEN.setSelected(true);
@@ -622,7 +592,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
             }
         }
         togIsCitizenAwareOfInquiryYES.setSelected(reopenedInquiry.isCitizenAwareOfInquiry());
-        if(reopenedInquiry.getCitizen().getRepresentative()!=null) {
+        if (reopenedInquiry.getCitizen().getRepresentative() != null) {
             switch (reopenedInquiry.getCitizen().getRepresentative().getType()) {
                 case LEGAL_GUARDIAN:
                     togRepresentativeLEGALGUARDIAN.setSelected(true);
@@ -640,9 +610,9 @@ public class HenvendelsesPageController extends AbstractPageController implement
         togRightToByStanderAndRepresentative.setSelected(reopenedInquiry.isCitizenInformedOfRights());
         togIsCitizenInformedOfOnlineSavingYES.setSelected(reopenedInquiry.isCitizenInformedOfDataReservation());
         txtAreaSubmitFurtherProgress.setText(reopenedInquiry.getAgreementOfProgress());
-        if(reopenedInquiry.getIsRelevantToGatherConsent()){
+        if (reopenedInquiry.getIsRelevantToGatherConsent()) {
             togIsConsentRelevantYES.setSelected(true);
-            switch (reopenedInquiry.getConsentType()){
+            switch (reopenedInquiry.getConsentType()) {
                 case VERBAL:
                     togHowIsConsentGivenVERBAL.setSelected(true);
                     break;
@@ -652,9 +622,9 @@ public class HenvendelsesPageController extends AbstractPageController implement
             }
         }
 
-        if(!reopenedInquiry.getGatheredConsents().isEmpty()){
-            for(GatheredConsent c : reopenedInquiry.getGatheredConsents()){
-                switch (c.getConsentEntity()){
+        if (!reopenedInquiry.getGatheredConsents().isEmpty()) {
+            for (GatheredConsent c : reopenedInquiry.getGatheredConsents()) {
+                switch (c.getConsentEntity()) {
                     case OTHER_MANAGEMENT:
                         togConsentFromExternalOTHERMANAGEMENT.setSelected(true);
                         textAreaConsentFromOTHERMANAGEMENT.setText(c.getContactInfo());
@@ -690,11 +660,11 @@ public class HenvendelsesPageController extends AbstractPageController implement
                 }
             }
         }
-        if(reopenedInquiry.getSpecialConditions()!=null)
+        if (reopenedInquiry.getSpecialConditions() != null)
             textAreaExtraOrdinaryConditions.setText(reopenedInquiry.getSpecialConditions());
-        if(reopenedInquiry.getPayingMunicipality()!=null)
+        if (reopenedInquiry.getPayingMunicipality() != null)
             txtPaymentMunicipality.appendText(reopenedInquiry.getPayingMunicipality());
-        if(reopenedInquiry.getActingMunicipality()!=null)
+        if (reopenedInquiry.getActingMunicipality() != null)
             txtActingMunicipality.appendText(reopenedInquiry.getActingMunicipality());
     }
 }

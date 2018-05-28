@@ -71,6 +71,8 @@ public class MainPageController extends AbstractPageController implements Initia
 
     private ObservableList<Inquiry> currentUserInquries;
 
+    private ExecutorService service = Executors.newFixedThreadPool(2);
+
     /**
      * Initializes the controller class.
      */
@@ -80,7 +82,8 @@ public class MainPageController extends AbstractPageController implements Initia
         SetCurrentUserInfo();
 
         //Download all inquiries related to the current user.
-        new Thread(this::downloadCurrentUserInquiries).run();
+        service.execute(new Thread(this::downloadCurrentUserInquiries));
+
     }
 
     private void downloadCurrentUserInquiries() {

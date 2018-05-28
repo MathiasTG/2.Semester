@@ -678,51 +678,66 @@ public class InquiryPageController extends AbstractPageController implements Ini
         togIsCitizenInformedOfOnlineSavingYES.setSelected(reopenedInquiry.isCitizenInformedOfDataReservation());
         txtAreaSubmitFurtherProgress.setText(reopenedInquiry.getAgreementOfProgress());
         if(reopenedInquiry.getIsRelevantToGatherConsent()){
+
             togIsConsentRelevantYES.setSelected(true);
-            switch (reopenedInquiry.getConsentType()){
-                case VERBAL:
-                    togHowIsConsentGivenVERBAL.setSelected(true);
-                    break;
-                case WRITTEN:
-                    togHowIsConsentGivenWRITEN.setSelected(true);
-                    break;
+            togHowIsConsentGivenVERBAL.setDisable(false);
+            togHowIsConsentGivenWRITEN.setDisable(false);
+
+            if(reopenedInquiry.getConsentType()!=null) {
+                switch (reopenedInquiry.getConsentType()) {
+                    case VERBAL:
+                        togHowIsConsentGivenVERBAL.setSelected(true);
+                        break;
+                    case WRITTEN:
+                        togHowIsConsentGivenWRITEN.setSelected(true);
+                        break;
+                }
             }
         }
 
         if(!reopenedInquiry.getGatheredConsents().isEmpty()){
+            System.out.println("list is not empty");
             for(GatheredConsent c : reopenedInquiry.getGatheredConsents()){
                 switch (c.getConsentEntity()){
                     case OTHER_MANAGEMENT:
                         togConsentFromExternalOTHERMANAGEMENT.setSelected(true);
                         textAreaConsentFromOTHERMANAGEMENT.setText(c.getContactInfo());
+                        textAreaConsentFromOTHERMANAGEMENT.setDisable(false);
                         break;
                     case HOSPITAL:
                         togConsentFromExternalHOSPITAL.setSelected(true);
                         textAreaConsentFromHOSPITAL.setText(c.getContactInfo());
+                        textAreaConsentFromHOSPITAL.setDisable(false);
                         break;
                     case OFFER:
                         togConsentFromOFFER.setSelected(true);
                         textAreaConsentFromOFFER.setText(c.getContactInfo());
+                        textAreaConsentFromOFFER.setDisable(false);
                         break;
                     case EMPLOYER:
                         togConsentFromExternalEmployer.setSelected(true);
                         textAreaConsentFromEMPLOYER.setText(c.getContactInfo());
+                        textAreaConsentFromEMPLOYER.setDisable(false);
                         break;
                     case SPECIAL_DOCTER:
                         togConsentFromExternalSPECIALDOCTOR.setSelected(true);
                         textAreaConsentFromSPECIALDOCTOR.setText(c.getContactInfo());
+                        textAreaConsentFromSPECIALDOCTOR.setDisable(false);
                         break;
                     case PERSONAL_DOCTOR:
                         togConsentFromExternalOWNDOCTOR.setSelected(true);
                         textAreaConsentFromOWNDOCTOR.setText(c.getContactInfo());
+                        textAreaConsentFromOWNDOCTOR.setDisable(false);
                         break;
                     case UNEMPLOYMENT_FUND:
                         togConsentFromExternalUNEMPLOYMENTFUND.setSelected(true);
                         textAreaConsentFromUNEMPLOYMENTFUND.setText(c.getContactInfo());
+                        textAreaConsentFromUNEMPLOYMENTFUND.setDisable(false);
                         break;
                     case PREVIOUS_MUNICIPALITY:
                         togConsentFromExternalFORMERMUNICIPALITY.setSelected(true);
                         textAreaConsentFromFORMERMUNICIPALITY.setText(c.getContactInfo());
+                        textAreaConsentFromFORMERMUNICIPALITY.setDisable(false);
                         break;
                 }
             }

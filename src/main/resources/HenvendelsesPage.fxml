@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="679.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.HenvendelsesPageController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="679.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.InquiryPageController">
    <children>
       <Pane layoutX="100.0" layoutY="55.0" prefHeight="882.0" prefWidth="979.0" stylesheets="@ButtonCSS.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>

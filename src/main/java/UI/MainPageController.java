@@ -110,7 +110,7 @@ public class MainPageController extends AbstractPageController implements Initia
 
             Parent adminScene = fxmlLoader.load();
 
-            HenvendelsesPageController hPage = fxmlLoader.<HenvendelsesPageController>getController();
+            InquiryPageController hPage = fxmlLoader.<InquiryPageController>getController();
             hPage.setReopenedInquiry((Inquiry) inquiryView
                     .getSelectionModel().getSelectedItem());
 

@@ -78,21 +78,17 @@ public class DomainFacade implements IDomainFacade {
 
         if (persistenceFacade.verifyUsername(username)) {
 
-            String type = null;
             IUser user = null;
 
             switch (accessright) {
                 case 1:
                     user = new Secretary(username, accessright, new Password());
-
                     break;
                 case 2:
                     user = new Caseworker(username,accessright, new Password());
-
                     break;
                 case 3:
                     user = new Admin(username, new Password());
-
                     break;
             }
 

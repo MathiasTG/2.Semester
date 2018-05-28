@@ -80,7 +80,7 @@ public class MainPageController extends AbstractPageController implements Initia
         SetCurrentUserInfo();
 
         //Download all inquiries related to the current user.
-        new Thread(this::downloadCurrentUserInquiries);
+        new Thread(this::downloadCurrentUserInquiries).run();
     }
 
     private void downloadCurrentUserInquiries() {

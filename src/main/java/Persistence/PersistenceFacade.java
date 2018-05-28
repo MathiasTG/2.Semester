@@ -115,6 +115,6 @@ public class PersistenceFacade implements IPersistenceFacade {
 
     @Override
     public void alterInquiry(Inquiry inquiry) {
-        inquiryRepository.alter(inquiry);
+        inquiryRepository.updateInquiry(inquiry);
     }
 }

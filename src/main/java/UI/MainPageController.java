@@ -7,17 +7,14 @@ package UI;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import DTO.Inquiry;
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,7 +35,7 @@ import javafx.stage.Stage;
  */
 public class MainPageController extends AbstractPageController implements Initializable {
 
-    
+
     @FXML
     public Label CurrentUserName;
 
@@ -67,11 +64,13 @@ public class MainPageController extends AbstractPageController implements Initia
     public TableColumn citizen;
     @FXML
     public TableColumn inquiry;
+    @FXML
+    public Label loadingIndicator;
 
 
     private ObservableList<Inquiry> currentUserInquries;
 
-    private ExecutorService service = Executors.newFixedThreadPool(2);
+    private ExecutorService service = Executors.newFixedThreadPool(3);
 
     /**
      * Initializes the controller class.
@@ -86,15 +85,20 @@ public class MainPageController extends AbstractPageController implements Initia
 
     }
 
+    @FXML
+    private void handle_getAllUserInquries(ActionEvent event) {
+        service.execute(new Thread(this::downloadCurrentUserInquiries));
+    }
+
     private void downloadCurrentUserInquiries() {
-        Platform.runLater(()->errorLabel.setText("Henter henvendelser...."));
+        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser...."));
         List<Inquiry> result = UI.getDomain().downloadCurrentUserInquiries();
 
         currentUserInquries = FXCollections.observableList(result);
 
 
         setInquiriesInTable(currentUserInquries);
-        Platform.runLater(()->errorLabel.setText(""));
+        Platform.runLater(() -> loadingIndicator.setText(""));
     }
 
 
@@ -177,7 +181,11 @@ public class MainPageController extends AbstractPageController implements Initia
     }
 
     public void handle_BeginSearchOnCriteria(ActionEvent actionEvent) {
+        service.execute(new Thread(this::beginSearchOnCriteria));
+    }
 
+    public void beginSearchOnCriteria() {
+        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser...."));
         List<Inquiry> result = null;
 
         if (togSearchCriteriaID.isSelected()) {
@@ -189,7 +197,7 @@ public class MainPageController extends AbstractPageController implements Initia
                         UUID.fromString(txtInquiryId.getText()));
 
             } else {
-                errorLabel.setText("Please enter id");
+                Platform.runLater(() -> errorLabel.setText("Indtast ID"));
             }
         }
         if (togSearchCriteriaCPR.isSelected()) {
@@ -199,7 +207,7 @@ public class MainPageController extends AbstractPageController implements Initia
                 result = UI.getDomain().getInquiresByCPR(txtCPR.getText());
 
             } else {
-                errorLabel.setText("Please enter cpr");
+                Platform.runLater(() -> errorLabel.setText("Indtast cpr"));
             }
         }
 
@@ -210,7 +218,7 @@ public class MainPageController extends AbstractPageController implements Initia
                 result = UI.getDomain().getInquiresByCitizenName(txtCitizenName.getText());
 
             } else {
-                errorLabel.setText("Please enter name");
+                Platform.runLater(() -> errorLabel.setText("Indtast navn"));
             }
         }
         if (result != null) {
@@ -219,5 +227,6 @@ public class MainPageController extends AbstractPageController implements Initia
             setInquiriesInTable(currentUserInquries);
 
         }
+        Platform.runLater(() -> loadingIndicator.setText(""));
     }
 }

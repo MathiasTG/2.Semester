@@ -44,5 +44,5 @@ public interface IInquiryRepository {
      */
     void delete(Inquiry inquiry);
 
-    void alter(Inquiry inquiry);
+    void updateInquiry(Inquiry inquiry);
 }

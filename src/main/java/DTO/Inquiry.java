@@ -130,7 +130,7 @@ public class Inquiry {
 
 
         public Inquiry.Builder addGatheredConsents(List<GatheredConsent> gatheredConsents) {
-            this.gatheredConsents = gatheredConsents;
+            this.gatheredConsents.addAll(gatheredConsents);
             return this;
         }
 

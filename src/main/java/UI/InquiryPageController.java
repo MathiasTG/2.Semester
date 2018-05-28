@@ -34,7 +34,7 @@ import javafx.scene.input.KeyEvent;
  *
  * @author ulriksandberg
  */
-public class HenvendelsesPageController extends AbstractPageController implements Initializable {
+public class InquiryPageController extends AbstractPageController implements Initializable {
 
     /**
      * Initializes the controller class.

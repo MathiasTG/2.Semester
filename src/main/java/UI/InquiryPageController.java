@@ -11,6 +11,7 @@ import java.util.*;
 
 import Acq.IUser;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -171,6 +172,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
     @FXML
     private Rectangle rectangleEmailError;
 
+    private Inquiry reopenedInquiry = null;
 
 
     @Override
@@ -186,6 +188,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
+        System.out.println("Inquiry er :"+reopenedInquiry+" ved hpage::initialize.");
     }    
 
     @FXML
@@ -323,7 +326,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
         else
             type = null;
 
-        return new Representative.Builder(contactInfo, type).build();
+        return new Representative.Builder(contactInfo, type).setId(UUID.randomUUID()).build();
     }
 
     /*
@@ -566,5 +569,132 @@ public class InquiryPageController extends AbstractPageController implements Ini
         else
             this.txtCitizenEmail.setStyle("");
             //this.rectangleEmailError.setVisible(false);
+    }
+
+    public void setReopenedInquiry(Inquiry inquiry){
+        this.reopenedInquiry = inquiry;
+        Platform.runLater(this::fillOutInquiry);
+    }
+
+    private void fillOutInquiry(){
+        //Citizen fields
+        txtCitizenName.appendText(reopenedInquiry.getCitizen().getName());
+        txtCitizenAddress.appendText(reopenedInquiry.getCitizen().getAddress());
+        txtCitizenCPR.appendText(reopenedInquiry.getCitizen().getCpr());
+        txtCitizenPhone.appendText(String.valueOf(reopenedInquiry.getCitizen().getPhoneNumber()));
+        txtCitizenEmail.appendText(reopenedInquiry.getCitizen().getEmail());
+
+        txtAreaInqueryDescription.setText(reopenedInquiry.getDescription());
+        togIntentIsClearYES.setSelected(reopenedInquiry.isIntentIsClear());
+        if(reopenedInquiry.getSubmittedBy()!=null) {
+            switch (reopenedInquiry.getSubmittedBy().getType()) {
+                case CITIZIN:
+                    togSubmittedByCITIZEN.setSelected(true);
+                    break;
+                case MISCELLANEOUS:
+                    togSubmittedByMISCELLAEOUS.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    break;
+                case OTER_MUNICIPALITY:
+                    togSubmittedByOTHERMUNICIPALITY.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    break;
+                case DOCTOR:
+                    togSubmittedByDOCTOR.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    break;
+                case HOSPITAL:
+                    togSubmittedByHOSPITAL.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    break;
+                case RELATIVE:
+                    togSubmittedByRELATIVE.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    break;
+                case ONGOING_EFFORT:
+                    togSubmittedByONGOINGEFFORT.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    break;
+                case OTHER_MANAGEMENT:
+                    togSubmittedByOTHERMUNICIPALITY.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    break;
+            }
+        }
+        togIsCitizenAwareOfInquiryYES.setSelected(reopenedInquiry.isCitizenAwareOfInquiry());
+        if(reopenedInquiry.getCitizen().getRepresentative()!=null) {
+            switch (reopenedInquiry.getCitizen().getRepresentative().getType()) {
+                case LEGAL_GUARDIAN:
+                    togRepresentativeLEGALGUARDIAN.setSelected(true);
+                    textAreaRepresentativeContactInfo.setText(reopenedInquiry.getCitizen().getRepresentative().getContactInfo());
+                    break;
+                case POWER_OF_ATTORNEY:
+                    togRepresentativePOWEROFATTORNEY.setSelected(true);
+                    break;
+                case PART_REPRESENTATIVE:
+                    togRepresentativeREPRESENTATIVE.setSelected(true);
+                    break;
+            }
+        }
+
+        togRightToByStanderAndRepresentative.setSelected(reopenedInquiry.isCitizenInformedOfRights());
+        togIsCitizenInformedOfOnlineSavingYES.setSelected(reopenedInquiry.isCitizenInformedOfDataReservation());
+        txtAreaSubmitFurtherProgress.setText(reopenedInquiry.getAgreementOfProgress());
+        if(reopenedInquiry.getIsRelevantToGatherConsent()){
+            togIsConsentRelevantYES.setSelected(true);
+            switch (reopenedInquiry.getConsentType()){
+                case VERBAL:
+                    togHowIsConsentGivenVERBAL.setSelected(true);
+                    break;
+                case WRITTEN:
+                    togHowIsConsentGivenWRITEN.setSelected(true);
+                    break;
+            }
+        }
+
+        if(!reopenedInquiry.getGatheredConsents().isEmpty()){
+            for(GatheredConsent c : reopenedInquiry.getGatheredConsents()){
+                switch (c.getConsentEntity()){
+                    case OTHER_MANAGEMENT:
+                        togConsentFromExternalOTHERMANAGEMENT.setSelected(true);
+                        textAreaConsentFromOTHERMANAGEMENT.setText(c.getContactInfo());
+                        break;
+                    case HOSPITAL:
+                        togConsentFromExternalHOSPITAL.setSelected(true);
+                        textAreaConsentFromHOSPITAL.setText(c.getContactInfo());
+                        break;
+                    case OFFER:
+                        togConsentFromOFFER.setSelected(true);
+                        textAreaConsentFromOFFER.setText(c.getContactInfo());
+                        break;
+                    case EMPLOYER:
+                        togConsentFromExternalEmployer.setSelected(true);
+                        textAreaConsentFromEMPLOYER.setText(c.getContactInfo());
+                        break;
+                    case SPECIAL_DOCTER:
+                        togConsentFromExternalSPECIALDOCTOR.setSelected(true);
+                        textAreaConsentFromSPECIALDOCTOR.setText(c.getContactInfo());
+                        break;
+                    case PERSONAL_DOCTOR:
+                        togConsentFromExternalOWNDOCTOR.setSelected(true);
+                        textAreaConsentFromOWNDOCTOR.setText(c.getContactInfo());
+                        break;
+                    case UNEMPLOYMENT_FUND:
+                        togConsentFromExternalUNEMPLOYMENTFUND.setSelected(true);
+                        textAreaConsentFromUNEMPLOYMENTFUND.setText(c.getContactInfo());
+                        break;
+                    case PREVIOUS_MUNICIPALITY:
+                        togConsentFromExternalFORMERMUNICIPALITY.setSelected(true);
+                        textAreaConsentFromFORMERMUNICIPALITY.setText(c.getContactInfo());
+                        break;
+                }
+            }
+        }
+        if(reopenedInquiry.getSpecialConditions()!=null)
+            textAreaExtraOrdinaryConditions.setText(reopenedInquiry.getSpecialConditions());
+        if(reopenedInquiry.getPayingMunicipality()!=null)
+            txtPaymentMunicipality.appendText(reopenedInquiry.getPayingMunicipality());
+        if(reopenedInquiry.getActingMunicipality()!=null)
+            txtActingMunicipality.appendText(reopenedInquiry.getActingMunicipality());
     }
 }

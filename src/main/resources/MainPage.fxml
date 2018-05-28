@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="672.0" prefWidth="763.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainPageController">
+<AnchorPane id="AnchorPane" prefHeight="672.0" prefWidth="763.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainPageController">
    <children>
       <Pane layoutX="90.0" layoutY="45.0" prefHeight="717.0" prefWidth="853.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -69,17 +69,17 @@
             </Label>
             <TextField fx:id="txtInquiryId" layoutX="300.0" layoutY="150.0" promptText="xxxxxx-xxxx" stylesheets="@ButtonCSS.css" />
             <Button id="rich-blue" layoutX="509.0" layoutY="192.0" mnemonicParsing="false" onAction="#handle_BeginSearchOnCriteria" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Søg" />
-            <TableView layoutX="257.0" layoutY="361.0" prefHeight="237.0" prefWidth="491.0" stylesheets="@ButtonCSS.css" fx:id="inquiryView">
+            <TableView fx:id="inquiryView" layoutX="257.0" layoutY="361.0" prefHeight="237.0" prefWidth="491.0" stylesheets="@ButtonCSS.css">
               <columns>
-                <TableColumn prefWidth="75.0" text="Borger" fx:id="citizen"/>
-                <TableColumn prefWidth="75.0" text="Henvendelse" fx:id="inquiry"/>
+                <TableColumn fx:id="citizen" prefWidth="75.0" text="Borger" />
+                <TableColumn fx:id="inquiry" prefWidth="75.0" text="Henvendelse" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
             <Button id="rich-red" layoutX="27.0" layoutY="615.0" mnemonicParsing="false" onAction="#handle_logout" prefHeight="39.0" prefWidth="190.0" stylesheets="@ButtonCSS.css" text="Log ud" textFill="WHITE" />
-            <Button id="rich-blue" layoutX="380.0" layoutY="619.0" mnemonicParsing="false" stylesheets="@ButtonCSS.css" text="Fortsæt Henvendelse" />
+            <Button id="rich-blue" layoutX="380.0" layoutY="619.0" mnemonicParsing="false" onAction="#handle_ContinueInquiry" stylesheets="@ButtonCSS.css" text="Fortsæt Henvendelse" />
             <RadioButton fx:id="togSearchCriteriaID" layoutX="269.0" layoutY="154.0" mnemonicParsing="false" onAction="#handle_SearchCriteriaSelected" selected="true" stylesheets="@ButtonCSS.css">
                <toggleGroup>
                   <ToggleGroup fx:id="togGrSearchCriteria" />

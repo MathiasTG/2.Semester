@@ -11,8 +11,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import DTO.Inquiry;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,6 +38,7 @@ import javafx.stage.Stage;
  */
 public class MainPageController extends AbstractPageController implements Initializable {
 
+    
     @FXML
     public Label CurrentUserName;
 
@@ -75,28 +80,48 @@ public class MainPageController extends AbstractPageController implements Initia
         SetCurrentUserInfo();
 
         //Download all inquiries related to the current user.
-        downloadCurrentUserInquiries();
-    }    
+        new Thread(this::downloadCurrentUserInquiries);
+    }
 
-    private void downloadCurrentUserInquiries()
-    {
-
+    private void downloadCurrentUserInquiries() {
+        Platform.runLater(()->errorLabel.setText("Henter henvendelser...."));
         List<Inquiry> result = UI.getDomain().downloadCurrentUserInquiries();
 
         currentUserInquries = FXCollections.observableList(result);
 
-        citizen.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("CitizenName"));
 
-        inquiry.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("Id"));
-
-        inquiryView.setItems(currentUserInquries);
+        setInquiriesInTable(currentUserInquries);
+        Platform.runLater(()->errorLabel.setText(""));
     }
 
 
     @FXML
     private void handle_CreateInquiry(ActionEvent event) throws IOException {
-        
+
         navigateNextPage(event, "HenvendelsesPage.fxml");
+    }
+
+    @FXML
+    private void handle_ContinueInquiry(ActionEvent event) throws IOException {
+
+        if (inquiryView.getSelectionModel().getSelectedItem() != null) {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("HenvendelsesPage.fxml"));
+
+            Parent adminScene = fxmlLoader.load();
+
+            HenvendelsesPageController hPage = fxmlLoader.<HenvendelsesPageController>getController();
+            hPage.setReopenedInquiry((Inquiry) inquiryView
+                    .getSelectionModel().getSelectedItem());
+
+            Scene newScene = new Scene(adminScene);
+            Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            appStage.setScene(newScene);
+            appStage.show();
+
+        } else {
+            errorLabel.setText("Vælg en henvendelse");
+        }
     }
 
     @FXML
@@ -108,15 +133,11 @@ public class MainPageController extends AbstractPageController implements Initia
     }
 
 
-    private void SetCurrentUserInfo()
-    {
+    private void SetCurrentUserInfo() {
         CurrentUserName.setText(UI.getDomain().getCurrentUserName());
-        if(UI.getDomain().getCurrentUserAccessRights() == 1)
-        {
+        if (UI.getDomain().getCurrentUserAccessRights() == 1) {
             CurrentUserTitle.setText("Sekretær");
-        }
-        else
-        {
+        } else {
             CurrentUserTitle.setText("Sagsbehandler");
         }
     }
@@ -125,53 +146,75 @@ public class MainPageController extends AbstractPageController implements Initia
 
         disableTextFields();
 
-        if(togSearchCriteriaID.isSelected())
+        if (togSearchCriteriaID.isSelected())
             txtInquiryId.setDisable(false);
 
-        if(togSearchCriteriaCPR.isSelected())
+        if (togSearchCriteriaCPR.isSelected())
             txtCPR.setDisable(false);
 
-        if(togSearchCriteriaNAME.isSelected())
+        if (togSearchCriteriaNAME.isSelected())
             txtCitizenName.setDisable(false);
     }
 
 
-    private void disableTextFields()
-    {
+    private void disableTextFields() {
         txtInquiryId.setDisable(true);
         txtCitizenName.setDisable(true);
         txtCPR.setDisable(true);
     }
 
+    private void setInquiriesInTable(ObservableList list) {
+        currentUserInquries = list;
+
+        citizen.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("CitizenName"));
+
+        inquiry.setCellValueFactory(new PropertyValueFactory<Inquiry, String>("Id"));
+
+        inquiryView.setItems(currentUserInquries);
+    }
+
     public void handle_BeginSearchOnCriteria(ActionEvent actionEvent) {
 
-        if(togSearchCriteriaID.isSelected()) {
+        List<Inquiry> result = null;
 
-            if(!txtInquiryId.getText().isEmpty())
-            {
+        if (togSearchCriteriaID.isSelected()) {
+
+            if (!txtInquiryId.getText().isEmpty()) {
                 System.out.println("Search for id: " + txtInquiryId.getText());
 
+                result = UI.getDomain().getInquriesByInquiryId(
+                        UUID.fromString(txtInquiryId.getText()));
 
+            } else {
+                errorLabel.setText("Please enter id");
             }
-            errorLabel.setText("Please enter id");
         }
-        if(togSearchCriteriaCPR.isSelected())
-        {
-            if(!txtCPR.getText().isEmpty())
-            {
+        if (togSearchCriteriaCPR.isSelected()) {
+            if (!txtCPR.getText().isEmpty()) {
                 System.out.println("Search for cpr: " + txtCPR.getText());
+
+                result = UI.getDomain().getInquiresByCPR(txtCPR.getText());
+
+            } else {
+                errorLabel.setText("Please enter cpr");
             }
-            errorLabel.setText("Please enter cpr");
         }
 
-        if(togSearchCriteriaNAME.isSelected())
-        {
-            if(!txtCitizenName.getText().isEmpty())
-            {
+        if (togSearchCriteriaNAME.isSelected()) {
+            if (!txtCitizenName.getText().isEmpty()) {
                 System.out.println("Search for name: " + txtCitizenName.getText());
-            }
-            errorLabel.setText("Please enter name");
-        }
 
+                result = UI.getDomain().getInquiresByCitizenName(txtCitizenName.getText());
+
+            } else {
+                errorLabel.setText("Please enter name");
+            }
+        }
+        if (result != null) {
+
+            currentUserInquries = FXCollections.observableList(result);
+            setInquiriesInTable(currentUserInquries);
+
+        }
     }
 }

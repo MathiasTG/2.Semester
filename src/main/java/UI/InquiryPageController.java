@@ -548,7 +548,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
             this.txtCitizenPhone.setStyle("");
         }
         else if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
-            this.txtCitizenPhone.setStyle("-fx-background-color: red");
+            this.txtCitizenPhone.setStyle("-fx-background-color: FF000088");
         else
             this.txtCitizenPhone.setStyle("");
     }
@@ -560,7 +560,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
             this.txtCitizenCPR.setStyle("");
         }
         else if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
-            this.txtCitizenCPR.setStyle("-fx-background-color: red");
+            this.txtCitizenCPR.setStyle("-fx-background-color: FF000088");
             //this.rectangleCPRError.setVisible(true);
         else
             this.txtCitizenCPR.setStyle("");
@@ -572,7 +572,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
     @FXML
     private void onKeyTypedEmail(KeyEvent event){
         if (!UI.getDomain().validateEmail(this.txtCitizenEmail.getText()))
-            this.txtCitizenEmail.setStyle("-fx-background-color: red");
+            this.txtCitizenEmail.setStyle("-fx-background-color: FF000088");
             //this.rectangleEmailError.setVisible(true);
         else
             this.txtCitizenEmail.setStyle("");

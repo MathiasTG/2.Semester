@@ -370,41 +370,46 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                 createSubmitter(inquiry.getSubmittedBy());
             }
 
-            String inquiryString ="INSERT INTO Inquiry VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+            String inquiryString ="UPDATE Inquiry set isdraft = ?, supportvum = ?, createdby = ?," +
+                    " conserning = ?, submittedby = ?, descriptionofinquiry = ?, intentisclear = ?," +
+                    " citizenawareofinquiry = ?,citizeninformedofrights = ?, citizeninformedofdatareservation = ?," +
+                    " agreementofprogress = ?, consenttype = ?, specialconditions = ?, actingmunicipality = ?," +
+                    " payingmunicipality = ?, isconsentrelevant = ? " +
+                    "where id = ?;";
             PreparedStatement inquiryPre = conn.prepareStatement(inquiryString);
-            inquiryPre.setString(1,inquiry.getId().toString());
-            inquiryPre.setBoolean(2,inquiry.isDraft());
-            inquiryPre.setBoolean(3,inquiry.isSupportsVUM());
+            inquiryPre.setBoolean(1,inquiry.isDraft());
+            inquiryPre.setBoolean(2,inquiry.isSupportsVUM());
             if (inquiry.getCreatedBy() != null) {
-                inquiryPre.setString(4,inquiry.getCreatedBy().getID().toString());
+                inquiryPre.setString(3,inquiry.getCreatedBy().getID().toString());
+            } else {
+                inquiryPre.setString(3,null);
+            }
+            if (inquiry.getCitizen() != null) {
+                inquiryPre.setString(4,inquiry.getCitizen().getCpr());
             } else {
                 inquiryPre.setString(4,null);
             }
-            if (inquiry.getCitizen() != null) {
-                inquiryPre.setString(5,inquiry.getCitizen().getCpr());
+            if (inquiry.getSubmittedBy() != null) {
+                inquiryPre.setString(5,inquiry.getSubmittedBy().getId().toString());
             } else {
                 inquiryPre.setString(5,null);
             }
-            if (inquiry.getSubmittedBy() != null) {
-                inquiryPre.setString(6,inquiry.getSubmittedBy().getId().toString());
-            } else {
-                inquiryPre.setString(6,null);
-            }
 
-            inquiryPre.setString(7,inquiry.getDescription());
-            inquiryPre.setBoolean(8,inquiry.isIntentIsClear());
-            inquiryPre.setBoolean(9,inquiry.isCitizenAwareOfInquiry());
-            inquiryPre.setBoolean(10,inquiry.isCitizenInformedOfRights());
-            inquiryPre.setBoolean(11,inquiry.isCitizenInformedOfDataReservation());
-            inquiryPre.setString(12,inquiry.getAgreementOfProgress());
+            inquiryPre.setString(6,inquiry.getDescription());
+            inquiryPre.setBoolean(7,inquiry.isIntentIsClear());
+            inquiryPre.setBoolean(8,inquiry.isCitizenAwareOfInquiry());
+            inquiryPre.setBoolean(9,inquiry.isCitizenInformedOfRights());
+            inquiryPre.setBoolean(10,inquiry.isCitizenInformedOfDataReservation());
+            inquiryPre.setString(11,inquiry.getAgreementOfProgress());
             if(inquiry.getConsentType()!=null)
-                inquiryPre.setString(13,inquiry.getConsentType().toString());
+                inquiryPre.setString(12,inquiry.getConsentType().toString());
             else
-                inquiryPre.setString(13,null);
-            inquiryPre.setString(14,inquiry.getSpecialConditions());
-            inquiryPre.setString(15,inquiry.getActingMunicipality());
-            inquiryPre.setString(16,inquiry.getPayingMunicipality());
-            inquiryPre.setBoolean(17,inquiry.getIsRelevantToGatherConsent());
+                inquiryPre.setString(12,null);
+            inquiryPre.setString(13,inquiry.getSpecialConditions());
+            inquiryPre.setString(14,inquiry.getActingMunicipality());
+            inquiryPre.setString(15,inquiry.getPayingMunicipality());
+            inquiryPre.setBoolean(16,inquiry.getIsRelevantToGatherConsent());
+            inquiryPre.setString(17,inquiry.getId().toString());
 
 
             if (executeUpdate(inquiryPre).equals(ResponseCode.SUCCESS)) {

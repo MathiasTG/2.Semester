@@ -57,8 +57,6 @@ public class DomainFacade implements IDomainFacade {
         if(currentUser != null)
         {
             this.inquiry.setCreatedBy(userManager.getCurrentUser());
-            //Create inquiry
-            persistenceFacade.injectInquiry(this.inquiry);
         }
         else {
             //Reject

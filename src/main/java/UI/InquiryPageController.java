@@ -172,7 +172,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
     @FXML
     private Rectangle rectangleEmailError;
 
-    private Inquiry reopenedInquiry = null;
+    private Inquiry reopenedInquiry;
 
 
     @Override
@@ -188,6 +188,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
+        reopenedInquiry = null;
         System.out.println("Inquiry er :"+reopenedInquiry+" ved hpage::initialize.");
     }    
 
@@ -425,11 +426,21 @@ public class InquiryPageController extends AbstractPageController implements Ini
     @FXML
     private void handle_createApplication(ActionEvent event) {
         UI.getDomain().injectInquiry(this.createInquiry(false));
+        try {
+            super.navigateNextPage(event, "MainPage.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handle_saveInquiry(ActionEvent event) {
         UI.getDomain().injectInquiry(this.createInquiry(true));
+        try {
+            super.navigateNextPage(event, "MainPage.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -511,7 +522,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
         System.out.println("Representative: " + citizen.getRepresentative().getContactInfo());
         */
 
-                return new Inquiry.Builder(this.user).setCitizen(citizen)
+                return new Inquiry.Builder(this.user).setId(ifReopenedGetId()).setCitizen(citizen)
                 .setCreatedBy(user).setDescription(description).setIntentIsClear(intentIsClear)
                 .setCitizenAwareOfInquiry(citizenAwareOfInquiry).setCitizenInformedOfRights(citizenInformedOfRights)
                 .setCitizenInformedOfDataReservation(citizenInformedOfDataReservation)
@@ -577,6 +588,13 @@ public class InquiryPageController extends AbstractPageController implements Ini
         else
             this.txtCitizenEmail.setStyle("");
             //this.rectangleEmailError.setVisible(false);
+    }
+
+    private UUID ifReopenedGetId(){
+        if (reopenedInquiry != null){
+            return reopenedInquiry.getId();
+        }
+        return null;
     }
 
     public void setReopenedInquiry(Inquiry inquiry){

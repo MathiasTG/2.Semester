@@ -43,4 +43,6 @@ public interface IInquiryRepository {
      * @param inquiry deletes the chosen inguiry from the database
      */
     void delete(Inquiry inquiry);
+
+    void alter(Inquiry inquiry);
 }

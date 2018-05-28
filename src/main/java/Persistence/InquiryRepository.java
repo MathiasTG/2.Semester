@@ -138,6 +138,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                             .setAccessRight(userSet.getInt(4))
                                             .setPassword(passSet.getString(1))
                                             .build())
+                                            .setId(UUID.fromString(inquirySet.getString(1)))
                                             .setDraft(inquirySet.getBoolean(2))
                                             .setSupportsVUM(inquirySet.getBoolean(3))
                                             .setCitizen(new Citizen.Builder(citizenSet.getString(1),
@@ -151,8 +152,8 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                                             .build()
                                                     ).build())
                                             .setSubmittedBy(new Submitter.Builder(UUID.fromString(subSet.getString(1)))
-                                                    .setType(castToSubmittterType(subSet.getString(3)))
-                                                    .setContactInfo(subSet.getString(2))
+                                                    .setType(castToSubmittterType(subSet.getString(2)))
+                                                    .setContactInfo(subSet.getString(3))
                                                     .build())
                                             .setDescription(inquirySet.getString(7))
                                             .setIntentIsClear(inquirySet.getBoolean(8))
@@ -345,6 +346,78 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
     @Override
     public void delete(Inquiry inquiry) {
+
+    }
+
+    @Override
+    public void alter(Inquiry inquiry) {
+        String cprStm = "Select CPR from citizen where cpr=?";
+        String submitterStm ="Select ID from submitter where id=?";
+
+        try(Connection conn = startConnection();
+            PreparedStatement cprPre =conn.prepareStatement(cprStm);
+            PreparedStatement submitterPre=conn.prepareStatement(submitterStm)){
+
+            cprPre.setString(1,inquiry.getCitizen().getCpr());
+            submitterPre.setString(1,inquiry.getSubmittedBy().getId().toString());
+
+            ResultSet cizExists=executeStm(cprPre).getData();
+            if (inquiry.getCitizen() != null &&  (cizExists==null || !cizExists.next())) {
+                createCitizen(inquiry.getCitizen());
+            }
+            ResultSet subExists = executeStm(submitterPre).getData();
+            if (inquiry.getSubmittedBy() != null && (subExists==null || !subExists.next())) {
+                createSubmitter(inquiry.getSubmittedBy());
+            }
+
+            String inquiryString ="INSERT INTO Inquiry VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+            PreparedStatement inquiryPre = conn.prepareStatement(inquiryString);
+            inquiryPre.setString(1,inquiry.getId().toString());
+            inquiryPre.setBoolean(2,inquiry.isDraft());
+            inquiryPre.setBoolean(3,inquiry.isSupportsVUM());
+            if (inquiry.getCreatedBy() != null) {
+                inquiryPre.setString(4,inquiry.getCreatedBy().getID().toString());
+            } else {
+                inquiryPre.setString(4,null);
+            }
+            if (inquiry.getCitizen() != null) {
+                inquiryPre.setString(5,inquiry.getCitizen().getCpr());
+            } else {
+                inquiryPre.setString(5,null);
+            }
+            if (inquiry.getSubmittedBy() != null) {
+                inquiryPre.setString(6,inquiry.getSubmittedBy().getId().toString());
+            } else {
+                inquiryPre.setString(6,null);
+            }
+
+            inquiryPre.setString(7,inquiry.getDescription());
+            inquiryPre.setBoolean(8,inquiry.isIntentIsClear());
+            inquiryPre.setBoolean(9,inquiry.isCitizenAwareOfInquiry());
+            inquiryPre.setBoolean(10,inquiry.isCitizenInformedOfRights());
+            inquiryPre.setBoolean(11,inquiry.isCitizenInformedOfDataReservation());
+            inquiryPre.setString(12,inquiry.getAgreementOfProgress());
+            if(inquiry.getConsentType()!=null)
+                inquiryPre.setString(13,inquiry.getConsentType().toString());
+            else
+                inquiryPre.setString(13,null);
+            inquiryPre.setString(14,inquiry.getSpecialConditions());
+            inquiryPre.setString(15,inquiry.getActingMunicipality());
+            inquiryPre.setString(16,inquiry.getPayingMunicipality());
+            inquiryPre.setBoolean(17,inquiry.getIsRelevantToGatherConsent());
+
+
+            if (executeUpdate(inquiryPre).equals(ResponseCode.SUCCESS)) {
+                System.out.println("Mega godt");
+            } else {
+                System.out.println("Knap så godt");
+            }
+            if (inquiry.getIsRelevantToGatherConsent()) {
+                gatherConsent(inquiry);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 

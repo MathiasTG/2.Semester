@@ -81,13 +81,13 @@ public class MainPageController extends AbstractPageController implements Initia
         SetCurrentUserInfo();
 
         //Download all inquiries related to the current user.
-        service.execute(new Thread(this::downloadCurrentUserInquiries));
+        service.execute(this::downloadCurrentUserInquiries);
 
     }
 
     @FXML
     private void handle_getAllUserInquries(ActionEvent event) {
-        service.execute(new Thread(this::downloadCurrentUserInquiries));
+        service.execute(this::downloadCurrentUserInquiries);
     }
 
     private void downloadCurrentUserInquiries() {

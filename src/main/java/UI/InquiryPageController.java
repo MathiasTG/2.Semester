@@ -189,7 +189,6 @@ public class InquiryPageController extends AbstractPageController implements Ini
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
         reopenedInquiry = null;
-        System.out.println("Inquiry er :"+reopenedInquiry+" ved hpage::initialize.");
     }    
 
     @FXML

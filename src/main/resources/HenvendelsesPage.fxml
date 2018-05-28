@@ -29,12 +29,12 @@
                   <Image url="@Sensum%20Udred-logo%20(2).png" />
                </image>
             </ImageView>
-            <Label layoutX="29.0" layoutY="128.0" prefHeight="30.0" prefWidth="134.0" text="Ulrik Sandberg" textFill="WHITE">
+            <Label fx:id="CurrentUserName" layoutX="29.0" layoutY="128.0" prefHeight="30.0" prefWidth="134.0" text="Ulrik Sandberg" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="29.0" layoutY="153.0" prefHeight="30.0" prefWidth="134.0" text="Sagsbehandler" textFill="WHITE">
+            <Label fx:id="CurrentUserTitle" layoutX="29.0" layoutY="153.0" prefHeight="30.0" prefWidth="134.0" text="Sagsbehandler" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>

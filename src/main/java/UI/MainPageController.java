@@ -91,7 +91,7 @@ public class MainPageController extends AbstractPageController implements Initia
     }
 
     private void downloadCurrentUserInquiries() {
-        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser...."));
+        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser.."));
         List<Inquiry> result = UI.getDomain().downloadCurrentUserInquiries();
 
         currentUserInquries = FXCollections.observableList(result);
@@ -181,11 +181,11 @@ public class MainPageController extends AbstractPageController implements Initia
     }
 
     public void handle_BeginSearchOnCriteria(ActionEvent actionEvent) {
-        service.execute(new Thread(this::beginSearchOnCriteria));
+        service.execute(this::beginSearchOnCriteria);
     }
 
     public void beginSearchOnCriteria() {
-        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser...."));
+        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser.."));
         List<Inquiry> result = null;
 
         if (togSearchCriteriaID.isSelected()) {

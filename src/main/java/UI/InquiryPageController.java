@@ -20,6 +20,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
@@ -46,6 +47,10 @@ public class InquiryPageController extends AbstractPageController implements Ini
 
     @FXML
     private GridPane gridPane;
+    @FXML
+    private Label CurrentUserTitle;
+    @FXML
+    private Label CurrentUserName;
     @FXML
     private javafx.scene.control.TextField txtCitizenName;
     @FXML
@@ -189,6 +194,13 @@ public class InquiryPageController extends AbstractPageController implements Ini
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
         reopenedInquiry = null;
+
+        CurrentUserName.setText(UI.getDomain().getCurrentUserName());
+        if (UI.getDomain().getCurrentUserAccessRights() == 1) {
+            CurrentUserTitle.setText("Sekretær");
+        } else {
+            CurrentUserTitle.setText("Sagsbehandler");
+        }
     }    
 
     @FXML

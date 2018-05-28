@@ -543,7 +543,11 @@ public class InquiryPageController extends AbstractPageController implements Ini
 
     @FXML
     private void onKeyPressedTelephone(KeyEvent event) {
-        if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
+        if(this.txtCitizenPhone.getText().isEmpty())
+        {
+            this.txtCitizenPhone.setStyle("");
+        }
+        else if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
             this.txtCitizenPhone.setStyle("-fx-background-color: red");
         else
             this.txtCitizenPhone.setStyle("");
@@ -551,7 +555,11 @@ public class InquiryPageController extends AbstractPageController implements Ini
 
     @FXML
     private void onKeyPressedCPR(KeyEvent event){
-        if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
+        if(this.txtCitizenCPR.getText().isEmpty())
+        {
+            this.txtCitizenCPR.setStyle("");
+        }
+        else if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
             this.txtCitizenCPR.setStyle("-fx-background-color: red");
             //this.rectangleCPRError.setVisible(true);
         else

@@ -20,6 +20,11 @@ public interface IDomainFacade {
     IResponse createUser(String username, int accesRights);
 
     IResponse logIn(String userName , String password);
+
+    /**
+     * Injects a DTO object of the inquiry type, to the domain facade
+     * @param inquiry, the inquiry which transfers to the domain facade
+     */
     void injectInquiry(Inquiry inquiry);
 
     String getCurrentUserName();
@@ -35,10 +40,26 @@ public interface IDomainFacade {
 
     void logout();
 
+    /**
+     * Checks wether a String is a certain length, and only contains numbers
+     * @param lenght The allowed lenght of the number being checked
+     * @param value The String to be checked for validity
+     * @return true if the String only contains numbers, and is as long as specified
+     */
     boolean validateNumber(int lenght, String value);
 
+    /**
+     * Checks whether a string representing a email is valid, based on a regular expression
+     * @param email The string to be checked
+     * @return true if the email is valid, false if not
+     */
     boolean validateEmail(String email);
 
+    /**
+     * Manually "Casts" a list of IPersistenseUsers to IUsers
+     * @param IPUser is a user defined in the IPersistenceUser interface
+     * @return a list of IUsers, whom are local to the domain layer
+     */
     List<IUser> revertIPUserToIUser(List<IPersistanceUser> IPUser);
 
     IPersistenceFacade getPersistence();

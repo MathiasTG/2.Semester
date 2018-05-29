@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -37,6 +38,9 @@ public class LoginPageController extends AbstractPageController implements Initi
     public Label errorLabel;
     @FXML
     public Button btn_LogInd;
+
+    @FXML
+    public ImageView memeScreen;
 
     private Label label;
     
@@ -61,6 +65,11 @@ public class LoginPageController extends AbstractPageController implements Initi
             return;
         }
 
+        if(txtUsername.getText().equals("meme") && txtPassword.getText().equals("meme"))
+        {
+            memeScreen.setVisible(true);
+            return;
+        }
 
         //login
 

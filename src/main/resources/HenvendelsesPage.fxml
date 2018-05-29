@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="679.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.HenvendelsesPageController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="679.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.InquiryPageController">
    <children>
       <Pane layoutX="100.0" layoutY="55.0" prefHeight="882.0" prefWidth="979.0" stylesheets="@ButtonCSS.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -29,12 +29,12 @@
                   <Image url="@Sensum%20Udred-logo%20(2).png" />
                </image>
             </ImageView>
-            <Label layoutX="29.0" layoutY="128.0" prefHeight="30.0" prefWidth="134.0" text="Ulrik Sandberg" textFill="WHITE">
+            <Label fx:id="CurrentUserName" layoutX="29.0" layoutY="128.0" prefHeight="30.0" prefWidth="134.0" text="Ulrik Sandberg" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="29.0" layoutY="153.0" prefHeight="30.0" prefWidth="134.0" text="Sagsbehandler" textFill="WHITE">
+            <Label fx:id="CurrentUserTitle" layoutX="29.0" layoutY="153.0" prefHeight="30.0" prefWidth="134.0" text="Sagsbehandler" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="13.0" />
                </font>

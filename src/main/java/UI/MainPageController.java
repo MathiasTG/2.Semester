@@ -7,13 +7,14 @@ package UI;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import DTO.Inquiry;
-import javafx.beans.Observable;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,6 +34,7 @@ import javafx.stage.Stage;
  * @author ulriksandberg
  */
 public class MainPageController extends AbstractPageController implements Initializable {
+
 
     @FXML
     public Label CurrentUserName;
@@ -62,9 +64,13 @@ public class MainPageController extends AbstractPageController implements Initia
     public TableColumn citizen;
     @FXML
     public TableColumn inquiry;
+    @FXML
+    public Label loadingIndicator;
 
 
     private ObservableList<Inquiry> currentUserInquries;
+
+    private ExecutorService service = Executors.newFixedThreadPool(3);
 
     /**
      * Initializes the controller class.
@@ -75,16 +81,24 @@ public class MainPageController extends AbstractPageController implements Initia
         SetCurrentUserInfo();
 
         //Download all inquiries related to the current user.
-        downloadCurrentUserInquiries();
+        service.execute(this::downloadCurrentUserInquiries);
+
+    }
+
+    @FXML
+    private void handle_getAllUserInquries(ActionEvent event) {
+        service.execute(this::downloadCurrentUserInquiries);
     }
 
     private void downloadCurrentUserInquiries() {
-
+        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser.."));
         List<Inquiry> result = UI.getDomain().downloadCurrentUserInquiries();
 
         currentUserInquries = FXCollections.observableList(result);
 
+
         setInquiriesInTable(currentUserInquries);
+        Platform.runLater(() -> loadingIndicator.setText(""));
     }
 
 
@@ -103,7 +117,7 @@ public class MainPageController extends AbstractPageController implements Initia
 
             Parent adminScene = fxmlLoader.load();
 
-            HenvendelsesPageController hPage = fxmlLoader.<HenvendelsesPageController>getController();
+            InquiryPageController hPage = fxmlLoader.<InquiryPageController>getController();
             hPage.setReopenedInquiry((Inquiry) inquiryView
                     .getSelectionModel().getSelectedItem());
 
@@ -167,7 +181,11 @@ public class MainPageController extends AbstractPageController implements Initia
     }
 
     public void handle_BeginSearchOnCriteria(ActionEvent actionEvent) {
+        service.execute(this::beginSearchOnCriteria);
+    }
 
+    public void beginSearchOnCriteria() {
+        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser.."));
         List<Inquiry> result = null;
 
         if (togSearchCriteriaID.isSelected()) {
@@ -179,7 +197,7 @@ public class MainPageController extends AbstractPageController implements Initia
                         UUID.fromString(txtInquiryId.getText()));
 
             } else {
-                errorLabel.setText("Please enter id");
+                Platform.runLater(() -> errorLabel.setText("Indtast ID"));
             }
         }
         if (togSearchCriteriaCPR.isSelected()) {
@@ -189,7 +207,7 @@ public class MainPageController extends AbstractPageController implements Initia
                 result = UI.getDomain().getInquiresByCPR(txtCPR.getText());
 
             } else {
-                errorLabel.setText("Please enter cpr");
+                Platform.runLater(() -> errorLabel.setText("Indtast cpr"));
             }
         }
 
@@ -200,7 +218,7 @@ public class MainPageController extends AbstractPageController implements Initia
                 result = UI.getDomain().getInquiresByCitizenName(txtCitizenName.getText());
 
             } else {
-                errorLabel.setText("Please enter name");
+                Platform.runLater(() -> errorLabel.setText("Indtast navn"));
             }
         }
         if (result != null) {
@@ -209,5 +227,6 @@ public class MainPageController extends AbstractPageController implements Initia
             setInquiriesInTable(currentUserInquries);
 
         }
+        Platform.runLater(() -> loadingIndicator.setText(""));
     }
 }

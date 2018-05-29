@@ -52,18 +52,23 @@ public class DomainFacade implements IDomainFacade {
     }
 
     private void prepareInquiry() throws Exception {
-        this.inquiry.setId(UUID.randomUUID());
         IUser currentUser = userManager.getCurrentUser();
+
         if(currentUser != null)
         {
             this.inquiry.setCreatedBy(userManager.getCurrentUser());
-            //Create inquiry
-            persistenceFacade.injectInquiry(this.inquiry);
         }
         else {
             //Reject
             throw new Exception("Can't create inquiry when no user is logged-in");
         }
+        if (inquiry.getId() == null) {
+            this.inquiry.setId(UUID.randomUUID());
+            persistenceFacade.injectInquiry(this.inquiry);
+        }else{
+            persistenceFacade.alterInquiry(this.inquiry);
+        }
+
     }
 
     @Override
@@ -71,21 +76,17 @@ public class DomainFacade implements IDomainFacade {
 
         if (persistenceFacade.verifyUsername(username)) {
 
-            String type = null;
             IUser user = null;
 
             switch (accessright) {
                 case 1:
                     user = new Secretary(username, accessright, new Password());
-
                     break;
                 case 2:
                     user = new Caseworker(username,accessright, new Password());
-
                     break;
                 case 3:
                     user = new Admin(username, new Password());
-
                     break;
             }
 

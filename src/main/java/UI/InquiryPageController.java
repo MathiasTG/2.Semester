@@ -11,6 +11,7 @@ import java.util.*;
 
 import Acq.IUser;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
@@ -34,7 +36,7 @@ import javafx.scene.input.KeyEvent;
  *
  * @author ulriksandberg
  */
-public class HenvendelsesPageController extends AbstractPageController implements Initializable {
+public class InquiryPageController extends AbstractPageController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -45,6 +47,10 @@ public class HenvendelsesPageController extends AbstractPageController implement
 
     @FXML
     private GridPane gridPane;
+    @FXML
+    private Label CurrentUserTitle;
+    @FXML
+    private Label CurrentUserName;
     @FXML
     private javafx.scene.control.TextField txtCitizenName;
     @FXML
@@ -171,7 +177,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
     @FXML
     private Rectangle rectangleEmailError;
 
-    private Inquiry reopenedInquiry = null;
+    private Inquiry reopenedInquiry;
 
 
     @Override
@@ -187,7 +193,14 @@ public class HenvendelsesPageController extends AbstractPageController implement
         //txtSpecifyOtherConsentFromExternal.setDisable(true);
         textAreaSubmittedByCONTACTINFO.setDisable(true);
         user = null;
-        System.out.println(reopenedInquiry);
+        reopenedInquiry = null;
+
+        CurrentUserName.setText(UI.getDomain().getCurrentUserName());
+        if (UI.getDomain().getCurrentUserAccessRights() == 1) {
+            CurrentUserTitle.setText("Sekretær");
+        } else {
+            CurrentUserTitle.setText("Sagsbehandler");
+        }
     }    
 
     @FXML
@@ -223,6 +236,8 @@ public class HenvendelsesPageController extends AbstractPageController implement
         if(togConsentFromOFFER.isSelected())
         {
             textAreaConsentFromOFFER.setDisable(false);
+        }else{
+            textAreaConsentFromOFFER.setDisable(true);
         }
         if(togConsentFromExternalOWNDOCTOR.isSelected())
         {
@@ -230,7 +245,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
         }
         else
         {
-            textAreaConsentFromSPECIALDOCTOR.setDisable(true);
+            textAreaConsentFromOWNDOCTOR.setDisable(true);
         }
         
         if(togConsentFromExternalSPECIALDOCTOR.isSelected())
@@ -324,8 +339,14 @@ public class HenvendelsesPageController extends AbstractPageController implement
         }
         else
             type = null;
+        if(reopenedInquiry==null){
+            return new Representative.Builder(contactInfo, type).setId(UUID.randomUUID()).build();
+        }else{
+            reopenedInquiry.getCitizen().getRepresentative().setContactInfo(contactInfo);
+            reopenedInquiry.getCitizen().getRepresentative().setType(type);
+            return reopenedInquiry.getCitizen().getRepresentative();
+        }
 
-        return new Representative.Builder(contactInfo, type).setId(UUID.randomUUID()).build();
     }
 
     /*
@@ -362,24 +383,33 @@ public class HenvendelsesPageController extends AbstractPageController implement
      */
     public List<GatheredConsent> getGatheredConsent(){
         List<GatheredConsent> gatheredConsents = new ArrayList<>();
-        if(this.togConsentFromExternalEmployer.isSelected())
+
+        if (this.togConsentFromExternalEmployer.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
-        if(this.togConsentFromExternalSPECIALDOCTOR.isSelected())
+        if (this.togConsentFromExternalSPECIALDOCTOR.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
-        if(this.togConsentFromExternalHOSPITAL.isSelected())
+        if (this.togConsentFromExternalHOSPITAL.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
-        if(this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
+        if (this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
-        if(this.togConsentFromOFFER.isSelected())
+        if (this.togConsentFromOFFER.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
-        if(this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
+        if (this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
-        if(this.togConsentFromExternalOWNDOCTOR.isSelected())
+        if (this.togConsentFromExternalOWNDOCTOR.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.PERSONAL_DOCTOR, this.textAreaConsentFromOWNDOCTOR.getText()));
         if (this.togConsentFromExternalFORMERMUNICIPALITY.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.PREVIOUS_MUNICIPALITY, this.textAreaConsentFromFORMERMUNICIPALITY.getText()));
 
-
+        if(reopenedInquiry!=null){//Sets existing consents to their original UUID.
+            for(GatheredConsent existingCon : reopenedInquiry.getGatheredConsents()){
+                for(GatheredConsent markedCon : gatheredConsents){
+                    if (existingCon.getConsentEntity().equals(markedCon.getConsentEntity())) {
+                        markedCon.setId(existingCon.getId());
+                    }
+                }
+            }
+        }
         return gatheredConsents;
     }
 
@@ -410,8 +440,13 @@ public class HenvendelsesPageController extends AbstractPageController implement
             type = SubmitterType.OTER_MUNICIPALITY;
         else
             type = null;
-
-        return new Submitter(type, contactInfo);
+        if (reopenedInquiry==null)
+            return new Submitter(type, contactInfo);
+        else{
+            reopenedInquiry.getSubmittedBy().setType(type);
+            reopenedInquiry.getSubmittedBy().setContactInfo(contactInfo);
+            return reopenedInquiry.getSubmittedBy();
+        }
 
     }
 
@@ -424,11 +459,21 @@ public class HenvendelsesPageController extends AbstractPageController implement
     @FXML
     private void handle_createApplication(ActionEvent event) {
         UI.getDomain().injectInquiry(this.createInquiry(false));
+        try {
+            super.navigateNextPage(event, "MainPage.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handle_saveInquiry(ActionEvent event) {
         UI.getDomain().injectInquiry(this.createInquiry(true));
+        try {
+            super.navigateNextPage(event, "MainPage.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -510,7 +555,7 @@ public class HenvendelsesPageController extends AbstractPageController implement
         System.out.println("Representative: " + citizen.getRepresentative().getContactInfo());
         */
 
-                return new Inquiry.Builder(this.user).setCitizen(citizen)
+                return new Inquiry.Builder(this.user).setId(ifReopenedGetId()).setCitizen(citizen)
                 .setCreatedBy(user).setDescription(description).setIntentIsClear(intentIsClear)
                 .setCitizenAwareOfInquiry(citizenAwareOfInquiry).setCitizenInformedOfRights(citizenInformedOfRights)
                 .setCitizenInformedOfDataReservation(citizenInformedOfDataReservation)
@@ -542,16 +587,24 @@ public class HenvendelsesPageController extends AbstractPageController implement
 
     @FXML
     private void onKeyPressedTelephone(KeyEvent event) {
-        if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
-            this.txtCitizenPhone.setStyle("-fx-background-color: red");
+        if(this.txtCitizenPhone.getText().isEmpty())
+        {
+            this.txtCitizenPhone.setStyle("");
+        }
+        else if(!UI.getDomain().validateNumber(8, this.txtCitizenPhone.getText()))
+            this.txtCitizenPhone.setStyle("-fx-background-color: FF000088");
         else
             this.txtCitizenPhone.setStyle("");
     }
 
     @FXML
     private void onKeyPressedCPR(KeyEvent event){
-        if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
-            this.txtCitizenCPR.setStyle("-fx-background-color: red");
+        if(this.txtCitizenCPR.getText().isEmpty())
+        {
+            this.txtCitizenCPR.setStyle("");
+        }
+        else if(!UI.getDomain().validateNumber(10, this.txtCitizenCPR.getText()))
+            this.txtCitizenCPR.setStyle("-fx-background-color: FF000088");
             //this.rectangleCPRError.setVisible(true);
         else
             this.txtCitizenCPR.setStyle("");
@@ -563,14 +616,180 @@ public class HenvendelsesPageController extends AbstractPageController implement
     @FXML
     private void onKeyTypedEmail(KeyEvent event){
         if (!UI.getDomain().validateEmail(this.txtCitizenEmail.getText()))
-            this.txtCitizenEmail.setStyle("-fx-background-color: red");
+            this.txtCitizenEmail.setStyle("-fx-background-color: FF000088");
             //this.rectangleEmailError.setVisible(true);
         else
             this.txtCitizenEmail.setStyle("");
             //this.rectangleEmailError.setVisible(false);
     }
 
+    private UUID ifReopenedGetId(){
+        if (reopenedInquiry != null){
+            return reopenedInquiry.getId();
+        }
+        return null;
+    }
+
     public void setReopenedInquiry(Inquiry inquiry){
         this.reopenedInquiry = inquiry;
+        Platform.runLater(this::fillOutInquiry);
+    }
+
+    private void fillOutInquiry(){
+        //Citizen fields
+        txtCitizenName.appendText(reopenedInquiry.getCitizen().getName());
+        txtCitizenAddress.appendText(reopenedInquiry.getCitizen().getAddress());
+        txtCitizenCPR.appendText(reopenedInquiry.getCitizen().getCpr());
+        txtCitizenPhone.appendText(String.valueOf(reopenedInquiry.getCitizen().getPhoneNumber()));
+        txtCitizenEmail.appendText(reopenedInquiry.getCitizen().getEmail());
+
+        txtAreaInqueryDescription.setText(reopenedInquiry.getDescription());
+        if(reopenedInquiry.isIntentIsClear()) {
+            togIntentIsClearYES.setSelected(true);
+        }else{
+            togIntentIsClearNO.setSelected(true);
+        }
+        if(reopenedInquiry.getSubmittedBy()!=null) {
+            switch (reopenedInquiry.getSubmittedBy().getType()) {
+                case CITIZIN:
+                    togSubmittedByCITIZEN.setSelected(true);
+                    break;
+                case MISCELLANEOUS:
+                    togSubmittedByMISCELLAEOUS.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
+                    break;
+                case OTER_MUNICIPALITY:
+                    togSubmittedByOTHERMUNICIPALITY.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
+                    break;
+                case DOCTOR:
+                    togSubmittedByDOCTOR.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
+                    break;
+                case HOSPITAL:
+                    togSubmittedByHOSPITAL.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
+                    break;
+                case RELATIVE:
+                    togSubmittedByRELATIVE.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
+                    break;
+                case ONGOING_EFFORT:
+                    togSubmittedByONGOINGEFFORT.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
+                    break;
+                case OTHER_MANAGEMENT:
+                    togSubmittedByOTHERMUNICIPALITY.setSelected(true);
+                    textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
+                    break;
+            }
+        }
+        if(reopenedInquiry.isCitizenAwareOfInquiry())
+            togIsCitizenAwareOfInquiryYES.setSelected(true);
+        else
+            togIsCitizenAwareOfInquiryNO.setSelected(true);
+
+        if(reopenedInquiry.getCitizen().getRepresentative()!=null) {
+            switch (reopenedInquiry.getCitizen().getRepresentative().getType()) {
+                case LEGAL_GUARDIAN:
+                    togRepresentativeLEGALGUARDIAN.setSelected(true);
+                    textAreaRepresentativeContactInfo.setText(reopenedInquiry.getCitizen().getRepresentative().getContactInfo());
+                    textAreaRepresentativeContactInfo.setDisable(false);
+                    break;
+                case POWER_OF_ATTORNEY:
+                    togRepresentativePOWEROFATTORNEY.setSelected(true);
+                    break;
+                case PART_REPRESENTATIVE:
+                    togRepresentativeREPRESENTATIVE.setSelected(true);
+                    break;
+            }
+        }
+
+        togRightToByStanderAndRepresentative.setSelected(reopenedInquiry.isCitizenInformedOfRights());
+        if(reopenedInquiry.isCitizenInformedOfDataReservation())
+            togIsCitizenInformedOfOnlineSavingYES.setSelected(true);
+        else
+            togIsCitizenInformedOfOnlineSavingNO.setSelected(true);
+
+        txtAreaSubmitFurtherProgress.setText(reopenedInquiry.getAgreementOfProgress());
+        if(reopenedInquiry.getIsRelevantToGatherConsent()){
+
+            togIsConsentRelevantYES.setSelected(true);
+            togHowIsConsentGivenVERBAL.setDisable(false);
+            togHowIsConsentGivenWRITEN.setDisable(false);
+
+            if(reopenedInquiry.getConsentType()!=null) {
+                switch (reopenedInquiry.getConsentType()) {
+                    case VERBAL:
+                        togHowIsConsentGivenVERBAL.setSelected(true);
+                        break;
+                    case WRITTEN:
+                        togHowIsConsentGivenWRITEN.setSelected(true);
+                        break;
+                }
+            }
+        }else{
+            togIsConsentRelevantNO.setSelected(true);
+        }
+
+        if(!reopenedInquiry.getGatheredConsents().isEmpty()){
+            for(GatheredConsent c : reopenedInquiry.getGatheredConsents()){
+                switch (c.getConsentEntity()){
+                    case OTHER_MANAGEMENT:
+                        togConsentFromExternalOTHERMANAGEMENT.setSelected(true);
+                        textAreaConsentFromOTHERMANAGEMENT.setText(c.getContactInfo());
+                        textAreaConsentFromOTHERMANAGEMENT.setDisable(false);
+                        break;
+                    case HOSPITAL:
+                        togConsentFromExternalHOSPITAL.setSelected(true);
+                        textAreaConsentFromHOSPITAL.setText(c.getContactInfo());
+                        textAreaConsentFromHOSPITAL.setDisable(false);
+                        break;
+                    case OFFER:
+                        togConsentFromOFFER.setSelected(true);
+                        textAreaConsentFromOFFER.setText(c.getContactInfo());
+                        textAreaConsentFromOFFER.setDisable(false);
+                        break;
+                    case EMPLOYER:
+                        togConsentFromExternalEmployer.setSelected(true);
+                        textAreaConsentFromEMPLOYER.setText(c.getContactInfo());
+                        textAreaConsentFromEMPLOYER.setDisable(false);
+                        break;
+                    case SPECIAL_DOCTER:
+                        togConsentFromExternalSPECIALDOCTOR.setSelected(true);
+                        textAreaConsentFromSPECIALDOCTOR.setText(c.getContactInfo());
+                        textAreaConsentFromSPECIALDOCTOR.setDisable(false);
+                        break;
+                    case PERSONAL_DOCTOR:
+                        togConsentFromExternalOWNDOCTOR.setSelected(true);
+                        textAreaConsentFromOWNDOCTOR.setText(c.getContactInfo());
+                        textAreaConsentFromOWNDOCTOR.setDisable(false);
+                        break;
+                    case UNEMPLOYMENT_FUND:
+                        togConsentFromExternalUNEMPLOYMENTFUND.setSelected(true);
+                        textAreaConsentFromUNEMPLOYMENTFUND.setText(c.getContactInfo());
+                        textAreaConsentFromUNEMPLOYMENTFUND.setDisable(false);
+                        break;
+                    case PREVIOUS_MUNICIPALITY:
+                        togConsentFromExternalFORMERMUNICIPALITY.setSelected(true);
+                        textAreaConsentFromFORMERMUNICIPALITY.setText(c.getContactInfo());
+                        textAreaConsentFromFORMERMUNICIPALITY.setDisable(false);
+                        break;
+                }
+            }
+        }
+        if(reopenedInquiry.getSpecialConditions()!=null)
+            textAreaExtraOrdinaryConditions.setText(reopenedInquiry.getSpecialConditions());
+        if(reopenedInquiry.getPayingMunicipality()!=null)
+            txtPaymentMunicipality.appendText(reopenedInquiry.getPayingMunicipality());
+        if(reopenedInquiry.getActingMunicipality()!=null)
+            txtActingMunicipality.appendText(reopenedInquiry.getActingMunicipality());
     }
 }

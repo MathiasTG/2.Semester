@@ -40,5 +40,6 @@ public interface IPersistenceFacade {
     void changeAccessRight(IUser user, int accessright);
 
     void changePassword(IUser user, String password, boolean isTemporary);
-    
+
+    void alterInquiry(Inquiry inquiry);
 }

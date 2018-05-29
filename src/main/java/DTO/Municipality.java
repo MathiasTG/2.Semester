@@ -1,6 +1,7 @@
 package DTO;
 
 
+//***** DELETE
 public class Municipality {
     private String name;
     private String contactInfo;

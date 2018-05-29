@@ -236,6 +236,8 @@ public class InquiryPageController extends AbstractPageController implements Ini
         if(togConsentFromOFFER.isSelected())
         {
             textAreaConsentFromOFFER.setDisable(false);
+        }else{
+            textAreaConsentFromOFFER.setDisable(true);
         }
         if(togConsentFromExternalOWNDOCTOR.isSelected())
         {
@@ -243,7 +245,7 @@ public class InquiryPageController extends AbstractPageController implements Ini
         }
         else
         {
-            textAreaConsentFromSPECIALDOCTOR.setDisable(true);
+            textAreaConsentFromOWNDOCTOR.setDisable(true);
         }
         
         if(togConsentFromExternalSPECIALDOCTOR.isSelected())
@@ -337,8 +339,14 @@ public class InquiryPageController extends AbstractPageController implements Ini
         }
         else
             type = null;
+        if(reopenedInquiry==null){
+            return new Representative.Builder(contactInfo, type).setId(UUID.randomUUID()).build();
+        }else{
+            reopenedInquiry.getCitizen().getRepresentative().setContactInfo(contactInfo);
+            reopenedInquiry.getCitizen().getRepresentative().setType(type);
+            return reopenedInquiry.getCitizen().getRepresentative();
+        }
 
-        return new Representative.Builder(contactInfo, type).setId(UUID.randomUUID()).build();
     }
 
     /*
@@ -375,24 +383,33 @@ public class InquiryPageController extends AbstractPageController implements Ini
      */
     public List<GatheredConsent> getGatheredConsent(){
         List<GatheredConsent> gatheredConsents = new ArrayList<>();
-        if(this.togConsentFromExternalEmployer.isSelected())
+
+        if (this.togConsentFromExternalEmployer.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.EMPLOYER, this.textAreaConsentFromEMPLOYER.getText()));
-        if(this.togConsentFromExternalSPECIALDOCTOR.isSelected())
+        if (this.togConsentFromExternalSPECIALDOCTOR.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.SPECIAL_DOCTER, this.textAreaConsentFromSPECIALDOCTOR.getText()));
-        if(this.togConsentFromExternalHOSPITAL.isSelected())
+        if (this.togConsentFromExternalHOSPITAL.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.HOSPITAL, this.textAreaConsentFromHOSPITAL.getText()));
-        if(this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
+        if (this.togConsentFromExternalUNEMPLOYMENTFUND.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.UNEMPLOYMENT_FUND, this.textAreaConsentFromUNEMPLOYMENTFUND.getText()));
-        if(this.togConsentFromOFFER.isSelected())
+        if (this.togConsentFromOFFER.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OFFER, this.textAreaConsentFromOFFER.getText()));
-        if(this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
+        if (this.togConsentFromExternalOTHERMANAGEMENT.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.OTHER_MANAGEMENT, this.textAreaConsentFromOTHERMANAGEMENT.getText()));
-        if(this.togConsentFromExternalOWNDOCTOR.isSelected())
+        if (this.togConsentFromExternalOWNDOCTOR.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.PERSONAL_DOCTOR, this.textAreaConsentFromOWNDOCTOR.getText()));
         if (this.togConsentFromExternalFORMERMUNICIPALITY.isSelected())
             gatheredConsents.add(new GatheredConsent(ConsentEntity.PREVIOUS_MUNICIPALITY, this.textAreaConsentFromFORMERMUNICIPALITY.getText()));
 
-
+        if(reopenedInquiry!=null){//Sets existing consents to their original UUID.
+            for(GatheredConsent existingCon : reopenedInquiry.getGatheredConsents()){
+                for(GatheredConsent markedCon : gatheredConsents){
+                    if (existingCon.getConsentEntity().equals(markedCon.getConsentEntity())) {
+                        markedCon.setId(existingCon.getId());
+                    }
+                }
+            }
+        }
         return gatheredConsents;
     }
 
@@ -423,8 +440,13 @@ public class InquiryPageController extends AbstractPageController implements Ini
             type = SubmitterType.OTER_MUNICIPALITY;
         else
             type = null;
-
-        return new Submitter(type, contactInfo);
+        if (reopenedInquiry==null)
+            return new Submitter(type, contactInfo);
+        else{
+            reopenedInquiry.getSubmittedBy().setType(type);
+            reopenedInquiry.getSubmittedBy().setContactInfo(contactInfo);
+            return reopenedInquiry.getSubmittedBy();
+        }
 
     }
 
@@ -622,7 +644,11 @@ public class InquiryPageController extends AbstractPageController implements Ini
         txtCitizenEmail.appendText(reopenedInquiry.getCitizen().getEmail());
 
         txtAreaInqueryDescription.setText(reopenedInquiry.getDescription());
-        togIntentIsClearYES.setSelected(reopenedInquiry.isIntentIsClear());
+        if(reopenedInquiry.isIntentIsClear()) {
+            togIntentIsClearYES.setSelected(true);
+        }else{
+            togIntentIsClearNO.setSelected(true);
+        }
         if(reopenedInquiry.getSubmittedBy()!=null) {
             switch (reopenedInquiry.getSubmittedBy().getType()) {
                 case CITIZIN:
@@ -631,39 +657,51 @@ public class InquiryPageController extends AbstractPageController implements Ini
                 case MISCELLANEOUS:
                     togSubmittedByMISCELLAEOUS.setSelected(true);
                     textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
                     break;
                 case OTER_MUNICIPALITY:
                     togSubmittedByOTHERMUNICIPALITY.setSelected(true);
                     textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
                     break;
                 case DOCTOR:
                     togSubmittedByDOCTOR.setSelected(true);
                     textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
                     break;
                 case HOSPITAL:
                     togSubmittedByHOSPITAL.setSelected(true);
                     textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
                     break;
                 case RELATIVE:
                     togSubmittedByRELATIVE.setSelected(true);
                     textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
                     break;
                 case ONGOING_EFFORT:
                     togSubmittedByONGOINGEFFORT.setSelected(true);
                     textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
                     break;
                 case OTHER_MANAGEMENT:
                     togSubmittedByOTHERMUNICIPALITY.setSelected(true);
                     textAreaSubmittedByCONTACTINFO.setText(reopenedInquiry.getSubmittedBy().getContactInfo());
+                    textAreaSubmittedByCONTACTINFO.setDisable(false);
                     break;
             }
         }
-        togIsCitizenAwareOfInquiryYES.setSelected(reopenedInquiry.isCitizenAwareOfInquiry());
+        if(reopenedInquiry.isCitizenAwareOfInquiry())
+            togIsCitizenAwareOfInquiryYES.setSelected(true);
+        else
+            togIsCitizenAwareOfInquiryNO.setSelected(true);
+
         if(reopenedInquiry.getCitizen().getRepresentative()!=null) {
             switch (reopenedInquiry.getCitizen().getRepresentative().getType()) {
                 case LEGAL_GUARDIAN:
                     togRepresentativeLEGALGUARDIAN.setSelected(true);
                     textAreaRepresentativeContactInfo.setText(reopenedInquiry.getCitizen().getRepresentative().getContactInfo());
+                    textAreaRepresentativeContactInfo.setDisable(false);
                     break;
                 case POWER_OF_ATTORNEY:
                     togRepresentativePOWEROFATTORNEY.setSelected(true);
@@ -675,7 +713,11 @@ public class InquiryPageController extends AbstractPageController implements Ini
         }
 
         togRightToByStanderAndRepresentative.setSelected(reopenedInquiry.isCitizenInformedOfRights());
-        togIsCitizenInformedOfOnlineSavingYES.setSelected(reopenedInquiry.isCitizenInformedOfDataReservation());
+        if(reopenedInquiry.isCitizenInformedOfDataReservation())
+            togIsCitizenInformedOfOnlineSavingYES.setSelected(true);
+        else
+            togIsCitizenInformedOfOnlineSavingNO.setSelected(true);
+
         txtAreaSubmitFurtherProgress.setText(reopenedInquiry.getAgreementOfProgress());
         if(reopenedInquiry.getIsRelevantToGatherConsent()){
 
@@ -693,10 +735,11 @@ public class InquiryPageController extends AbstractPageController implements Ini
                         break;
                 }
             }
+        }else{
+            togIsConsentRelevantNO.setSelected(true);
         }
 
         if(!reopenedInquiry.getGatheredConsents().isEmpty()){
-            System.out.println("list is not empty");
             for(GatheredConsent c : reopenedInquiry.getGatheredConsents()){
                 switch (c.getConsentEntity()){
                     case OTHER_MANAGEMENT:

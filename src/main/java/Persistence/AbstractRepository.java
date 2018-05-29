@@ -81,8 +81,8 @@ public abstract class AbstractRepository {
             Arrays.asList(statements).forEach( t ->
                 {
                     try {
-                            t.executeUpdate();
-                            res[0]=ResponseCode.SUCCESS;
+                        t.executeUpdate();
+                        res[0]=ResponseCode.SUCCESS;
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                         e.printStackTrace();

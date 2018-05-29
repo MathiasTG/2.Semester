@@ -3,7 +3,9 @@ package Persistence;
 import Acq.IInquiryRepository;
 import Acq.IUserBuilder;
 import DTO.*;
+import Domain.Response;
 
+import javax.management.ImmutableDescriptor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -240,14 +242,11 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             inquiryPre.setBoolean(17, inquiry.getIsRelevantToGatherConsent());
 
 
-            if (executeUpdate(inquiryPre).equals(ResponseCode.SUCCESS)) {
-                System.out.println("Mega godt");
-            } else {
-                System.out.println("Knap så godt");
-            }
-            if (inquiry.getIsRelevantToGatherConsent()) {
+
+            executeUpdate(inquiryPre);
+            if(inquiry.getGatheredConsents()!=null)
                 gatherConsent(inquiry);
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -319,6 +318,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
              PreparedStatement conPre = conn.prepareStatement(conStm);
              PreparedStatement relPre = conn.prepareStatement(relStm)) {
             for (GatheredConsent consent : consentList) {
+
                 conPre.setString(1, consent.getId().toString());
                 conPre.setString(2, consent.getConsentEntity().toString());
                 conPre.setString(3, consent.getContactInfo());
@@ -346,32 +346,20 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
     @Override
     public void updateInquiry(Inquiry inquiry) {
-        String cprStm = "Select CPR from citizen where cpr=?";
-        String submitterStm = "Select ID from submitter where id=?";
-
+        if (inquiry.getCitizen() != null) {
+            updateCitizen(inquiry.getCitizen());
+        }
+        if (inquiry.getSubmittedBy() != null) {
+            updateSubmitter(inquiry.getSubmittedBy());
+        }
+        String inquiryString = "UPDATE Inquiry set isdraft = ?, supportvum = ?, createdby = ?," +
+                " conserning = ?, descriptionofinquiry = ?, intentisclear = ?," +
+                " citizenawareofinquiry = ?,citizeninformedofrights = ?, citizeninformedofdatareservation = ?," +
+                " agreementofprogress = ?, consenttype = ?, specialconditions = ?, actingmunicipality = ?," +
+                " payingmunicipality = ?, isconsentrelevant = ? " +
+                "where id = ?;";
         try (Connection conn = startConnection();
-             PreparedStatement cprPre = conn.prepareStatement(cprStm);
-             PreparedStatement submitterPre = conn.prepareStatement(submitterStm)) {
-
-            cprPre.setString(1, inquiry.getCitizen().getCpr());
-            submitterPre.setString(1, inquiry.getSubmittedBy().getId().toString());
-
-            ResultSet cizExists = executeStm(cprPre).getData();
-            if (inquiry.getCitizen() != null && (cizExists == null || !cizExists.next())) {
-                updateCitizen(inquiry.getCitizen());
-            }
-            ResultSet subExists = executeStm(submitterPre).getData();
-            if (inquiry.getSubmittedBy() != null && (subExists == null || !subExists.next())) {
-                updateSubmitter(inquiry.getSubmittedBy());
-            }
-
-            String inquiryString = "UPDATE Inquiry set isdraft = ?, supportvum = ?, createdby = ?," +
-                    " conserning = ?, descriptionofinquiry = ?, intentisclear = ?," +
-                    " citizenawareofinquiry = ?,citizeninformedofrights = ?, citizeninformedofdatareservation = ?," +
-                    " agreementofprogress = ?, consenttype = ?, specialconditions = ?, actingmunicipality = ?," +
-                    " payingmunicipality = ?, isconsentrelevant = ? " +
-                    "where id = ?;";
-            PreparedStatement inquiryPre = conn.prepareStatement(inquiryString);
+             PreparedStatement inquiryPre = conn.prepareStatement(inquiryString)) {
             inquiryPre.setBoolean(1, inquiry.isDraft());
             inquiryPre.setBoolean(2, inquiry.isSupportsVUM());
             if (inquiry.getCreatedBy() != null) {
@@ -403,14 +391,11 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             inquiryPre.setString(16, inquiry.getId().toString());
 
 
-            if (executeUpdate(inquiryPre).equals(ResponseCode.SUCCESS)) {
-                System.out.println("Mega godt");
-            } else {
-                System.out.println("Knap så godt");
-            }
-            if (inquiry.getIsRelevantToGatherConsent()) {
+            executeUpdate(inquiryPre);
+
+            if (inquiry.getGatheredConsents()!=null)
                 updateConsent(inquiry);
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -418,21 +403,56 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     }
 
     private void updateConsent(Inquiry inquiry) {
+        String checkStm ="Select * from gatheredconsent where id in (select consent from consentforinquiry where inquiry = ?)";
+
+
+
         String conStm = "update gatheredConsent set consententity = ?,contactinfo = ? where id = ?;";
+        String conCreateStm = "insert into gatheredConsent values (?,?,?);";
+        String coninstm="insert into consentforinquiry values (?,?);";
 
         List<GatheredConsent> consentList = inquiry.getGatheredConsents();
 
         try (Connection conn = startConnection();
+             PreparedStatement checkPre =conn.prepareStatement(checkStm);
              PreparedStatement conPre = conn.prepareStatement(conStm)){
 
+            checkPre.setString(1,inquiry.getId().toString());
+            ResultSet  consentSet= executeStm(checkPre).getData();
+            List<GatheredConsent> dbList= new ArrayList<>(){{
+                while (consentSet.next()) {//This is where next is called on consentset.
+                    add(new GatheredConsent(
+                            castToConsentEntity(consentSet.getString(2)),
+                            consentSet.getString(3),
+                            UUID.fromString(consentSet.getString(1))));
+                }
+            }};
+            boolean existed = false;
             for (GatheredConsent consent : consentList) {
-                conPre.setString(1, consent.getConsentEntity().toString());
-                conPre.setString(2, consent.getContactInfo());
-                conPre.setString(3, consent.getId().toString());
+                existed=false;
+                for(GatheredConsent dbcon: dbList){
+                    if(consent.getConsentEntity().equals(dbcon.getConsentEntity())){
+                        conPre.setString(1, consent.getConsentEntity().toString());
+                        conPre.setString(2, consent.getContactInfo());
+                        conPre.setString(3, consent.getId().toString());
+                        executeUpdate(conPre);
+                        existed=true;
+                        break;
+                    }
+                }
+                if(existed==false){
+                    try(PreparedStatement conCreatePre = conn.prepareStatement(conCreateStm);
+                        PreparedStatement coninPre = conn.prepareStatement(coninstm)){
+                        conCreatePre.setString(1,consent.getId().toString());
+                        conCreatePre.setString(2,consent.getConsentEntity().toString());
+                        conCreatePre.setString(3,consent.getContactInfo());
 
-                executeUpdate(conPre);
-                conPre.clearParameters();
+                        coninPre.setString(1,inquiry.getId().toString());
+                        coninPre.setString(2,consent.getId().toString());
 
+                        executeUpdate(conCreatePre,coninPre);
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -440,26 +460,22 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     }
 
     private void updateCitizen(Citizen citizen) {
-        String checkStm = "Select ID from representative where id=?;";
         String citizenStm = "update citizen set name = ?, address = ?, email = ?, phonenumber = ? where cpr = ?;";
         try (Connection conn = startConnection();
-             PreparedStatement checkPre = conn.prepareStatement(checkStm);
              PreparedStatement citizenPre = conn.prepareStatement(citizenStm)) {
 
             if (citizen.getRepresentative() != null) {
-                checkPre.setString(1, citizen.getRepresentative().getId().toString());
-                ResultSet set = executeStm(checkPre).getData();
-                if (set == null || !set.next())
-                    updateRepresentative(citizen.getRepresentative());
+                updateRepresentative(citizen.getRepresentative());
             }
-            citizenPre.setString(1, citizen.getCpr());
+
             citizenPre.setString(1, citizen.getName());
             citizenPre.setString(2, citizen.getAddress());
             citizenPre.setString(3, citizen.getEmail());
             citizenPre.setString(4, String.valueOf(citizen.getPhoneNumber()));
+            citizenPre.setString(5, citizen.getCpr());
 
-            System.out.println("executes citizen update");
-            System.out.println(executeUpdate(citizenPre));
+
+            executeUpdate(citizenPre);
         } catch (SQLException e) {
             e.printStackTrace();
         }

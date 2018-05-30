@@ -24,13 +24,20 @@ public abstract class AbstractRepository {
     }
 
     /**
-     * initiates connection and executor.
+     * initiates connection to database and starts executor.
      * @throws SQLException
      */
     private void initiate() throws SQLException{
         config=new Configuration();
         executor= Executors.newFixedThreadPool(3);
     }
+
+    /**
+     *
+     * Call to get the current database connection. Use to establish connection to database.
+     *
+     * @return Database Connection
+     */
     protected Connection startConnection() {
         try {
             Properties props = new Properties();
@@ -46,7 +53,13 @@ public abstract class AbstractRepository {
     }
 
 
-
+    /**
+     *
+     * Use to perform SQL queries upon the database
+     *
+     * @param statement executing SQL statement
+     * @return ResponseMessage containing results from database
+     */
     protected ResponseMessage executeStm(final PreparedStatement statement){
         //response message is final because we need to access it from a seperate thread.
         ResponseMessage res = new ResponseMessage();
@@ -72,7 +85,13 @@ public abstract class AbstractRepository {
         return res;
     }
 
-
+    /**
+     *
+     * Use to perform SQL updates upon the database
+     *
+     * @param statements executing SQL statement
+     * @return ResponseMessage containing results from database
+     */
     protected ResponseCode executeUpdate(final PreparedStatement... statements){
         final ResponseCode[] res = new ResponseCode[1];
 

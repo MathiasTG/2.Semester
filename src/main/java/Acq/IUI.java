@@ -10,7 +10,17 @@ package Acq;
  * @author ulriksandberg
  */
 public interface IUI {
-    
+
+    /**
+     *  This method injects the domain layer to the UI layer
+     * @param domainFacade The domain facade to inject
+     */
     void injectDomain(IDomainFacade domainFacade);
+
+    /**
+     *
+     * Starting the application
+     * @param args Commandline arguments
+     */
     void startApplication(String[] args);
 }

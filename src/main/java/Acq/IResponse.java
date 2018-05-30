@@ -10,7 +10,17 @@ package Acq;
  * @author Markb
  */
 public interface IResponse {
-    
+
+
+    /**
+     *
+     * @return boolean value indicates succes if the result
+     */
     public boolean isSuccessful();
+
+    /**
+     *
+     * @return The value of the response messages
+     */
     public String getMessage();
 }

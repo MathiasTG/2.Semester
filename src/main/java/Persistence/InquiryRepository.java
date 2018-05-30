@@ -419,7 +419,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
             checkPre.setString(1,inquiry.getId().toString());
             ResultSet  consentSet= executeStm(checkPre).getData();
-            List<GatheredConsent> dbList= new ArrayList<>(){{
+            List<GatheredConsent> dbList= new ArrayList<GatheredConsent>(){{
                 while (consentSet.next()) {//This is where next is called on consentset.
                     add(new GatheredConsent(
                             castToConsentEntity(consentSet.getString(2)),

@@ -26,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -67,6 +68,9 @@ public class MainPageController extends AbstractPageController implements Initia
     @FXML
     public Label loadingIndicator;
 
+    @FXML
+    public ImageView loadingIndicatorGif;
+
 
     private ObservableList<Inquiry> currentUserInquries;
 
@@ -91,14 +95,22 @@ public class MainPageController extends AbstractPageController implements Initia
     }
 
     private void downloadCurrentUserInquiries() {
-        Platform.runLater(() -> loadingIndicator.setText("Henter henvendelser.."));
+        Platform.runLater(() -> {
+                    loadingIndicator.setText("Henter henvendelser..");
+                    loadingIndicatorGif.setVisible(true);
+                }
+        );
         List<Inquiry> result = UI.getDomain().downloadCurrentUserInquiries();
 
         currentUserInquries = FXCollections.observableList(result);
 
 
         setInquiriesInTable(currentUserInquries);
-        Platform.runLater(() -> loadingIndicator.setText(""));
+        Platform.runLater(() ->{
+            loadingIndicator.setText("");
+            loadingIndicatorGif.setVisible(false);
+        }
+        );
     }
 
 

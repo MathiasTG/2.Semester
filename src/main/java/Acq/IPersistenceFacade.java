@@ -15,7 +15,12 @@ import java.util.UUID;
  * @author ulriksandberg
  */
 public interface IPersistenceFacade {
-    
+
+    /**
+     * Validates Username in persistence.
+     * @param username
+     * @return true value if Username is available else returns false
+     */
     boolean verifyUsername(String username);
     IResponse createUser(IUser user);
 

@@ -19,38 +19,62 @@ public interface IInquiryRepository {
     List<Inquiry> getInquriesByInquiryId(UUID id, IUserBuilder builder);
 
     /**
-     * Makes a call to the database and returns a list of inquiries with the id.
-     * @param cpr which should belong to a citizen belonging to an inquiry in the database
-     * @param builder is used for building a user for building an inquiry
-     * @return list of inquiries for a citizen found by cpr
+     * Request all inquiries with respect to the given parameter.
+     * @param cpr of citizen as a String value
+     * @param builder IUserBuilder
+     * @return List<Inquiry></>
      */
     List<Inquiry> getInquiresByCPR(String cpr, IUserBuilder builder);
 
     /**
-     * Makes a call to the database and returns a list of inquiries with the id.
-     * @param name which should belong to a citizen belonging to an inquiry in the database
-     * @param builder is used for building a user for building an inquiry
-     * @return list of inquiries for a citizen found by name
+     *
+     * Request all inquiries with respect to the given parameter.
+     *
+     * @param name of the citizen wished to search for
+     * @param builder IUserBuilder
+     * @return List<Inquiry></>
      */
     List<Inquiry> getInquiresByCitizenName(String name, IUserBuilder builder);
 
     /**
-     * Makes a call to the database and returns a list of inquiries made by user.
-     * @param id of the user who made the inquiry
-     * @param builder is used for building a user for building an inquiry
-     * @return list of inquiries made by a user
+     *
+     * Request all inquiries of the currentUser by his/hers ID.
+     *
+     * @param id UUID of currentUser
+     * @param builder IUserBuilder
+     * @return List<Inquiry></>
      */
     List<Inquiry> getAllInquiriesByUserId(UUID id, IUserBuilder builder);
 
     /**
-     * Adds an inquiry to the database
-     * @param inquiry the inquiry to be added to the database
+     *
+     * Creates an inquiry in the database
+     *
+     * @param inquiry you want to create in the database
      */
     void create(Inquiry inquiry);
 
     /**
-     * Updates an inquiry in the database
-     * @param inquiry the inquiry which will be used to update the one in the database
+     *
+     * Saves an inquiry in the database
+     *
+     * @param inquiry you want to save in the database
+     */
+    void create(Inquiry inquiry);
+
+    /**
+     *
+     * Deletes an inquiry in the database
+     *
+     * @param inquiry deletes the chosen inguiry from the database
+     */
+    void delete(Inquiry inquiry);
+
+    /**
+     *
+     * Updates and inquiry in the database
+     *
+     * @param inquiry you want to update
      */
     void updateInquiry(Inquiry inquiry);
 }

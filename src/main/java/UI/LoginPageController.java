@@ -97,12 +97,7 @@ public class LoginPageController extends AbstractPageController implements Initi
         }
 
         // if response is true navigate next page
-
-
-
     }
-    
-    
 
     
     

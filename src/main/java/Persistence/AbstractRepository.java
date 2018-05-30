@@ -74,10 +74,9 @@ public abstract class AbstractRepository {
 
 
     protected ResponseCode executeUpdate(final PreparedStatement... statements){
-        List<Future> list = new ArrayList<>();
         final ResponseCode[] res = new ResponseCode[1];
 
-        list.add(executor.submit(()->
+        Future f = executor.submit(()->
             Arrays.asList(statements).forEach( t ->
                 {
                     try {
@@ -90,15 +89,13 @@ public abstract class AbstractRepository {
                     }
                 }
             )
-        ));
+        );
 
-        for(Future f : list){
-            while(!f.isDone()) {
-                try {
-                    Thread.sleep(3);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while(!f.isDone()) {
+            try {
+                Thread.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         return res[0];

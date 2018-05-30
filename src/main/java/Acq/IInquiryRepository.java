@@ -56,11 +56,9 @@ public interface IInquiryRepository {
 
     /**
      *
-     * Saves an inquiry in the database
-     *
      * @param inquiry you want to save in the database
      */
-    void create(Inquiry inquiry);
+    void save(Inquiry inquiry);
 
     /**
      *

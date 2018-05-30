@@ -63,7 +63,7 @@ public abstract class AbstractRepository {
         },res);
         while (!t.isDone()) {
             try {
-                Thread.sleep(10);
+                Thread.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

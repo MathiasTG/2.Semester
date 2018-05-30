@@ -23,10 +23,11 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
         String baseUser ="insert into users values (?,?,?,?);";
 
-        try(Connection conn = startConnection();
+        try(Connection conn = startConnection();//starting connections and prepared statements
                 PreparedStatement pass=conn.prepareStatement(basePassStm);
                 PreparedStatement user=conn.prepareStatement(baseUser))
         {
+            //setting parameters for password and user statements
             pass.setString(1,passId.toString());
             pass.setString(2,iUser.getPassword());
             pass.setBoolean(3,true);
@@ -36,7 +37,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             user.setString(2,iUser.getUsername());
             user.setString(3,passId.toString());
             user.setInt(4,iUser.getAccessRight());
-
+            //executing the statements and returning ResponseMessage.
             return new ResponseMessage(null,executeUpdate(pass,user));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,6 +62,8 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
         try(Connection conn = startConnection()) {
             PreparedStatement statement =conn.prepareStatement(query.toString());
             ResponseMessage r = executeStm(statement);
+            //Evaluates responsecode
+            //Could possibly be extended to throw exception on come response codes.
             switch(r.getResponseCode()){
                 case SERVER_UNREACHABLE:
                     return false;
@@ -72,6 +75,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                     return false;
             }
             ResultSet set = r.getData();
+            //checks the returned usernames for one that matches the parameter.
             while(set.next())
                 if(set.getString(1).equals(username))
                     return false;
@@ -95,10 +99,11 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                 .append("limit "+to)
                 .append(" offset "+from+";");
 
-        try(Connection conn = startConnection()) {
+        try(Connection conn = startConnection()) {//Starts connection and prepared statements.
             PreparedStatement statement = conn.prepareStatement(query.toString());
             ResponseMessage responseMessage = executeStm(statement);
             ResultSet resultSet = responseMessage.getData();
+            //adds all returned users to a the list.
             while (resultSet.next()) {
                 list.add(
                         new PersistenceUser(
@@ -140,7 +145,7 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return  null;
+            return null;
         }
     }
 
@@ -150,7 +155,8 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
         query.append("Select p.passid ")
                 .append("from users u left join password p on u.passwordid = p.passid ")
                 .append("WHERE u.id = ?;");
-        try(Connection conn = startConnection();
+
+        try(Connection conn = startConnection();//Starts connection and prepared statements.
             PreparedStatement statement = conn.prepareStatement(query.toString())){
             statement.setString(1,uuid.toString());
             try(ResultSet res= executeStm(statement).getData()) {
@@ -158,10 +164,13 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
                 String passid = res.getString(1);
                 String passdelete = "delete from password where passid=?;";
                 String userdelete = "delete from users where id=?;";
-                try (PreparedStatement passDel = conn.prepareStatement(passdelete);
+                //Deletes a user and the password of the user
+                try (PreparedStatement passDel = conn.prepareStatement(passdelete);//Starts prepared statements for
+                     //delete statements for user and password
                      PreparedStatement userDel = conn.prepareStatement(userdelete)) {
                     passDel.setString(1, passid);
                     userDel.setString(1, uuid.toString());
+                    //executes the statements
                     executeUpdate(userDel,passDel);
                 }
             }
@@ -238,7 +247,6 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
             PreparedStatement statement = conn.prepareStatement(loginQuery.toString())) {
             statement.setString(1,userName);
             statement.setString(2,password);
-
             try(ResultSet result = executeStm(statement).getData()){
                 IPersistencePassword pass;
                 IPersistanceUser user;

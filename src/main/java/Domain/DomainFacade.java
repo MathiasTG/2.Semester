@@ -51,6 +51,11 @@ public class DomainFacade implements IDomainFacade {
         }
     }
 
+    /**
+    * The following method prepares an inquiry. Since the UI layer does not have access to the current user
+    * one is appended here.
+    *
+    */
     private void prepareInquiry() throws Exception {
         IUser currentUser = userManager.getCurrentUser();
 
@@ -59,7 +64,7 @@ public class DomainFacade implements IDomainFacade {
             this.inquiry.setCreatedBy(userManager.getCurrentUser());
         }
         else {
-            //Reject
+            //Change this in the next iteration since we should not just throw a base exception
             throw new Exception("Can't create inquiry when no user is logged-in");
         }
         if (inquiry.getId() == null) {

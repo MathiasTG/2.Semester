@@ -10,33 +10,36 @@ public interface IUserRepository {
 
 
     /**
+     * Creates a user
      *
-     * @param iUser
+     * @param iUser representing a IUser object
+     * @return returns a response message saying if the method was succesful or not
      */
     ResponseMessage createUser(IUser iUser);
 
 
     /**
-     *
-     * @param username
-     * @return
+     * Validates a user by the username
+     * @param username String of username to validate
+     * @return true if the user validates succesful or false if not
      */
     boolean validateUsername(String username);
 
 
     /**
      *
-     * @param page
-     * @param pageSize
-     * @return
+     * NOTE - all params must be over 0
+     * @param page Starting page of the list of the user
+     * @param pageSize Ending size of the userlist
+     * @return A sepcified length of a list with IPersistanceusers
      */
     List<IPersistanceUser> getAllUsers(int page , int pageSize);
 
 
     /**
      *
-     * @param uuid
-     * @return
+     * @param uuid the desired ID to search for the user
+     * @return a single user that match the UUID or null if nothing matches
      */
     IPersistanceUser getById(UUID uuid);
 
@@ -47,12 +50,6 @@ public interface IUserRepository {
     void deleteById(UUID uuid);
 
 
-    /**
-     *
-     * @param userName
-     * @param password
-     * @return
-     */
 
     /**
      * Changes the password of the user that is given as a parameter, in the database

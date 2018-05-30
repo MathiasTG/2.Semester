@@ -363,8 +363,12 @@ public class InquiryPageController extends AbstractPageController implements Ini
         int phoneNumber;
         // TODO
         // check for input mismatch exception
-        if(this.txtCitizenPhone.getText().matches("\\d*")) {
-            phoneNumber = Integer.parseInt(this.txtCitizenPhone.getText());
+        if(this.txtCitizenPhone.getText().matches("\\d*") || !this.txtCitizenPhone.getText().isEmpty()) {
+            try {
+                phoneNumber = Integer.parseInt(this.txtCitizenPhone.getText());
+            } catch (NumberFormatException ex){
+                phoneNumber = 00000000;
+            }
         } else
             phoneNumber = 00000000;
 

@@ -79,6 +79,8 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
     private List<Inquiry> buildInquiry(PreparedStatement query, IUserBuilder builder) {
 
         List<Inquiry> userInquires = new ArrayList<>();
+
+        //defining statements for getting data.
         String userStm = "SELECT * FROM users WHERE id=?";
         String passStm = "SELECT * FROM password WHERE passid=?";
         String citizenStm = "SELECT * FROM citizen WHERE cpr=?";
@@ -90,7 +92,6 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             while (inquirySet.next()) {//For every row in the inquirySet, we do the below
                 //This is allowed because all connections, preparedstatements and resultsets are declared in
                 //Try-with-ressources block. therefore we have no memory leak.
-
                 try (Connection conn = startConnection();//Initiates connection and prepared statements. in try-with-resources
                      PreparedStatement userPre = conn.prepareStatement(userStm);
                      PreparedStatement passPre = conn.prepareStatement(passStm);
@@ -164,7 +165,9 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
                                             .setPayingMunicipality(inquirySet.getString(16))
                                             .setIsRelevantToGatherConsent(inquirySet.getBoolean(17))
                                             .addGatheredConsents(new ArrayList<GatheredConsent>() {{
-                                                while (consentSet.next()) {//This is where next is called on consentset.
+                                                while (consentSet.next()) {
+                                                    //This is where next is called on consentset.
+                                                    //it was not called before, because it would mess up the while loop
                                                     add(new GatheredConsent(
                                                             castToConsentEntity(consentSet.getString(2)),
                                                             consentSet.getString(3),
@@ -189,24 +192,29 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         String cprStm = "Select CPR from citizen where cpr=?";
         String submitterStm = "Select ID from submitter where id=?";
 
-        try (Connection conn = startConnection();
+        try (Connection conn = startConnection();//Starts connection and prepared statements.
              PreparedStatement cprPre = conn.prepareStatement(cprStm);
              PreparedStatement submitterPre = conn.prepareStatement(submitterStm)) {
 
+            //sets parameters in prepared statements.
             cprPre.setString(1, inquiry.getCitizen().getCpr());
             submitterPre.setString(1, inquiry.getSubmittedBy().getId().toString());
 
             ResultSet cizExists = executeStm(cprPre).getData();
+            //check to ensure that citizen from inquiry is not null
+            //and the resultset for citizen is neither null, nor empty
             if (inquiry.getCitizen() != null && (cizExists == null || !cizExists.next())) {
                 createCitizen(inquiry.getCitizen());
             }
             ResultSet subExists = executeStm(submitterPre).getData();
+            //same logic as above check for citizen.
             if (inquiry.getSubmittedBy() != null && (subExists == null || !subExists.next())) {
                 createSubmitter(inquiry.getSubmittedBy());
             }
 
             String inquiryString = "INSERT INTO Inquiry VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
             PreparedStatement inquiryPre = conn.prepareStatement(inquiryString);
+            //Inserts parameters to the prepared statement.
             inquiryPre.setString(1, inquiry.getId().toString());
             inquiryPre.setBoolean(2, inquiry.isDraft());
             inquiryPre.setBoolean(3, inquiry.isSupportsVUM());
@@ -241,11 +249,13 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
             inquiryPre.setString(16, inquiry.getPayingMunicipality());
             inquiryPre.setBoolean(17, inquiry.getIsRelevantToGatherConsent());
 
+            //parameter setting done
+
 
 
             executeUpdate(inquiryPre);
             if(inquiry.getGatheredConsents()!=null)
-                gatherConsent(inquiry);
+                gatherConsent(inquiry);//sets the consents.
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -253,6 +263,10 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
     }
 
+    /**
+     * support method for creating submitter in database
+     * @param submittedBy
+     */
     private void createSubmitter(Submitter submittedBy) {
         String subStm = "INSERT INTO submitter VALUES(?,?,?);";
         try (Connection conn = startConnection(); PreparedStatement statement = conn.prepareStatement(subStm)) {
@@ -265,6 +279,10 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         }
     }
 
+    /**
+     * support method for creating citizen in database
+     * @param citizen
+     */
     private void createCitizen(Citizen citizen) {
         String checkStm = "Select ID from representative where id=?;";
         String citizenStm = "INSERT INTO citizen VALUES(?,?,?,?,?,?);";
@@ -296,6 +314,10 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
     }
 
+    /**
+     * support method for creating representative in database
+     * @param representative
+     */
     private void createRepresentative(Representative representative) {
         String stm = "INSERT INTO representative VALUES(?,?,?);";
         try (Connection conn = startConnection(); PreparedStatement statement = conn.prepareStatement(stm)) {
@@ -308,6 +330,11 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         }
     }
 
+    /**
+     * support method for creating GatheredConsents in the database.
+     * should be called after the inquiry itself has been created in the database.
+     * @param inquiry
+     */
     private void gatherConsent(Inquiry inquiry) {
 
         String conStm = "Insert into gatheredConsent VALUES(?,?,?);";
@@ -334,34 +361,39 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         }
     }
 
+
     @Override
     public void save(Inquiry inquiry) {
-
+        throw new UnsupportedOperationException("Operation not implemented yet");
     }
 
     @Override
     public void delete(Inquiry inquiry) {
-
+        throw new UnsupportedOperationException("Operation not implemented yet");
     }
 
     @Override
     public void updateInquiry(Inquiry inquiry) {
+
         if (inquiry.getCitizen() != null) {
             updateCitizen(inquiry.getCitizen());
         }
         if (inquiry.getSubmittedBy() != null) {
             updateSubmitter(inquiry.getSubmittedBy());
         }
+
         String inquiryString = "UPDATE Inquiry set isdraft = ?, supportvum = ?, createdby = ?," +
                 " conserning = ?, descriptionofinquiry = ?, intentisclear = ?," +
                 " citizenawareofinquiry = ?,citizeninformedofrights = ?, citizeninformedofdatareservation = ?," +
                 " agreementofprogress = ?, consenttype = ?, specialconditions = ?, actingmunicipality = ?," +
-                " payingmunicipality = ?, isconsentrelevant = ? " +
+                " payingmunicipality = ?, isconsentrelevant = ?" +
                 "where id = ?;";
-        try (Connection conn = startConnection();
+        try (Connection conn = startConnection();//Starting connection and prepared statements
              PreparedStatement inquiryPre = conn.prepareStatement(inquiryString)) {
+
             inquiryPre.setBoolean(1, inquiry.isDraft());
             inquiryPre.setBoolean(2, inquiry.isSupportsVUM());
+
             if (inquiry.getCreatedBy() != null) {
                 inquiryPre.setString(3, inquiry.getCreatedBy().getID().toString());
             } else {
@@ -402,6 +434,11 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
     }
 
+    /**
+     * support method for updating consents in the database
+     * should be called AFTER updating inquiry
+     * @param inquiry
+     */
     private void updateConsent(Inquiry inquiry) {
         String checkStm ="Select * from gatheredconsent where id in (select consent from consentforinquiry where inquiry = ?)";
 
@@ -419,7 +456,7 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
             checkPre.setString(1,inquiry.getId().toString());
             ResultSet  consentSet= executeStm(checkPre).getData();
-            List<GatheredConsent> dbList= new ArrayList<>(){{
+            List<GatheredConsent> dbList= new ArrayList<GatheredConsent>(){{
                 while (consentSet.next()) {//This is where next is called on consentset.
                     add(new GatheredConsent(
                             castToConsentEntity(consentSet.getString(2)),
@@ -459,6 +496,10 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         }
     }
 
+    /**
+     * support method for updating the citizen in the database
+     * @param citizen
+     */
     private void updateCitizen(Citizen citizen) {
         String citizenStm = "update citizen set name = ?, address = ?, email = ?, phonenumber = ? where cpr = ?;";
         try (Connection conn = startConnection();
@@ -482,6 +523,10 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
 
     }
 
+    /**
+     * support method for updating representative
+     * @param representative
+     */
     private void updateRepresentative(Representative representative) {
         String stm = "update representative set contactinfo = ?, type = ? where id = ?;";
         try (Connection conn = startConnection(); PreparedStatement statement = conn.prepareStatement(stm)) {
@@ -494,6 +539,10 @@ public class InquiryRepository extends AbstractRepository implements IInquiryRep
         }
     }
 
+    /**
+     * supportMethod for updating submitter.
+     * @param submitter
+     */
     private void updateSubmitter(Submitter submitter) {
         String subStm = "update submitter set submittertype = ?, contactinfo =? where id = ?;";
         try (Connection conn = startConnection(); PreparedStatement statement = conn.prepareStatement(subStm)) {

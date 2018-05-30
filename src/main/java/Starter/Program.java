@@ -18,15 +18,18 @@ public class Program {
     
     
     public static void main(String[] args) {
-        
+
+
         IUI uiFacade = new UI();
         IDomainFacade domainFacade = new DomainFacade();
         IPersistenceFacade persistenceFacade = new PersistenceFacade();
-        
+
+        // Injecting Persistance layer in domain
         domainFacade.injectPersistence(persistenceFacade);
+
+        //Injecting Domain in Ui layer
         uiFacade.injectDomain(domainFacade);
         
-        System.out.println("System ready to launch, beeeb boob, beeeeeeb, boob bub");
         uiFacade.startApplication(args);
 
     }

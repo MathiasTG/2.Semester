@@ -78,7 +78,6 @@ public class AdminPageController extends AbstractPageController implements Initi
         if(role != null){
             if(role.contains(SECRETARY)){
                 response = UI.getDomain().createUser(UsernameField.getText(), 1);
-
             }
             else if(role.contains(CASEWORKER)){
                 response = UI.getDomain().createUser(UsernameField.getText(), 2);

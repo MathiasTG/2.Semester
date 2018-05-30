@@ -9,6 +9,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+/**
+ * Changes the current stage to the one specified with the pageName
+ * Extended by all page controllers
+ */
 public abstract class AbstractPageController {
 
     protected void navigateNextPage(ActionEvent sender, String pageName) throws IOException
